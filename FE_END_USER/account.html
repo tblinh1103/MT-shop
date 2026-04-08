@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Tài khoản - Minh Thành Computer</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/logo.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="account-page">
+
+  <header id="header" class="header sticky-top">
+    <!-- Top Bar -->
+    <div class="top-bar py-1">
+      <div class="container-fluid container-xl">
+        <div class="row align-items-center">
+          <div class="col-lg-4 d-none d-lg-flex">
+            <div class="top-bar-item">
+              <i class="bi bi-telephone-fill me-2"></i>
+              <span>Quý khách cần hỗ trợ? Vui lòng gọi: </span>
+              <a href="tel:+1234567890">0963 703 556</a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-12 text-center">
+            <div class="announcement-slider swiper init-swiper">
+              <script type="application/json" class="swiper-config">
+                {
+                  "loop": true,
+                  "speed": 600,
+                  "autoplay": {
+                    "delay": 3000
+                  },
+                  "slidesPerView": 1,
+                  "direction": "vertical",
+                  "effect": "slide"
+                }
+              </script>
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">🚚 Miễn phí vận chuyển</div>
+                <div class="swiper-slide">💰 Hoàn hàng miễn phí trong 30 ngày</div>
+                <div class="swiper-slide">👩‍💼 Nhân viên hỗ trợ 24/7</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header -->
+    <div class="main-header">
+      <div class="container-fluid container-xl">
+        <div class="d-flex py-3 align-items-center justify-content-between">
+
+          <!-- Logo -->
+          <a href="index.html" class="logo d-flex align-items-center">
+            <h1 class="sitename">MINH THANH COMPUTER</h1>
+          </a>
+
+          <!-- Search -->
+          <form class="search-form desktop-search-form">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" name="keyword">
+              <button class="btn" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <!-- Actions -->
+          <div class="header-actions d-flex align-items-center justify-content-end">
+
+            <!-- Mobile Search Toggle -->
+            <button class="header-action-btn mobile-search-toggle d-xl-none" type="button" data-bs-toggle="collapse"
+              data-bs-target="#mobileSearch" aria-expanded="false" aria-controls="mobileSearch">
+              <i class="bi bi-search"></i>
+            </button>
+
+            <!-- Account -->
+            <div class="dropdown account-dropdown">
+              <button class="header-action-btn" data-bs-toggle="dropdown">
+                <i class="bi bi-person"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-header">
+                  <h6>Chào mừng tới <span class="sitename">Minh Thành Computer</span></h6>
+                  <p class="mb-0">Truy cập tài khoản &amp; Quản lý đơn hàng</p>
+                </div>
+                <div class="dropdown-body pt-1 pb-1">
+                  <a class="dropdown-item d-flex align-items-center" href="account.html">
+                    <i class="bi bi-person-circle me-2"></i>
+                    <span>Tài khoản</span>
+                  </a>
+                </div>
+                <div class="dropdown-footer">
+                  <a href="register.html" class="btn btn-primary w-100 mb-2" id="btnRegister">Đăng ký</a>
+                  <a href="login.html" class="btn btn-outline-primary w-100" id="btnLogin">Đăng nhập</a>
+                  <a href="" class="btn btn-outline-primary w-100 logout-link" id="btnLogout">Đăng xuất</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cart -->
+            <a href="cart.html" class="header-action-btn cart-btn">
+              <i class="bi bi-cart3"></i>
+              <span class="badge">0</span>
+            </a>
+
+            <!-- Mobile Navigation Toggle -->
+            <i class="mobile-nav-toggle d-xl-none bi bi-list me-0"></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="header-nav">
+      <div class="container-fluid container-xl position-relative">
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="index.html" class="active">Trang chủ</a></li>
+            <li><a href="product-overview-by-category.html?category=phones">Điện thoại</a></li>
+            <li><a href="product-overview-by-category.html?category=laptops">Laptop</a></li>
+            <li class="dropdown"><a href="#"><span>Phụ kiện</span> <i
+                  class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="product-overview-by-category.html?category=charging-adapters">Củ sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-cables">Cáp sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=mouses">Chuột</a></li>
+                <li><a href="product-overview-by-category.html?category=keyboards">Bàn phím</a></li>
+              </ul>
+            </li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="support.html">Hỗ trợ</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Mobile Search Form -->
+    <div class="collapse" id="mobileSearch">
+      <div class="container">
+        <form class="search-form">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for products">
+            <button class="btn" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Tài khoản</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li class="current">Tài khoản</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Account Section -->
+    <section id="account" class="account section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Mobile Menu Toggle -->
+        <div class="mobile-menu d-lg-none mb-4">
+          <button class="mobile-menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#profileMenu">
+            <i class="bi bi-grid"></i>
+            <span>Menu</span>
+          </button>
+        </div>
+
+        <div class="row g-4">
+          <!-- Profile Menu -->
+          <div class="col-lg-3">
+            <div class="profile-menu collapse d-lg-block" id="profileMenu">
+              <!-- User Info -->
+              <div class="user-info" data-aos="fade-right">
+                <div class="user-avatar">
+                  <img src="assets/img/person/avt-profile.jpg" alt="Profile" loading="lazy">
+                  <span class="status-badge"><i class="bi bi-shield-check"></i></span>
+                </div>
+                <h4 id="fullname">Sarah Anderson</h4>
+                <div class="user-status">
+                  <i class="bi bi-award"></i>
+                  <span>Khách hàng</span>
+                </div>
+              </div>
+
+              <!-- Navigation Menu -->
+              <nav class="menu-nav">
+                <ul class="nav flex-column" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#orders">
+                      <i class="bi bi-box-seam"></i>
+                      <span>Đơn hàng</span>
+                      <span class="badge">3</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#reviews">
+                      <i class="bi bi-star"></i>
+                      <span>Đánh giá</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#addresses">
+                      <i class="bi bi-geo-alt"></i>
+                      <span>Địa chỉ</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#settings">
+                      <i class="bi bi-gear"></i>
+                      <span>Cài đặt tài khoản</span>
+                    </a>
+                  </li>
+                </ul>
+
+                <div class="menu-footer">
+                  <a href="support.html" class="help-link">
+                    <i class="bi bi-question-circle"></i>
+                    <span>Trung tâm trợ giúp</span>
+                  </a>
+                  <a href="#" class="logout-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Đăng xuất</span>
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </div>
+
+          <!-- Content Area -->
+          <div class="col-lg-9">
+            <div class="content-area">
+              <div class="tab-content">
+                <!-- Orders Tab -->
+                <div class="tab-pane fade show active" id="orders">
+                  <div class="section-header" data-aos="fade-up">
+                    <h2>Đơn hàng</h2>
+                    <div class="header-actions">
+                      <div class="dropdown">
+                        <button class="filter-btn" data-bs-toggle="dropdown">
+                          <i class="bi bi-funnel"></i>
+                          <span>Lọc</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#" data-status="ALL">Tất cả đơn hàng</a></li>
+                          <li><a class="dropdown-item" href="#" data-status="PENDING">Đang xử lý</a></li>
+                          <li><a class="dropdown-item" href="#" data-status="CONFIRMED">Đã xác nhận</a></li>
+                          <li><a class="dropdown-item" href="#" data-status="SHIPPED">Đang giao</a></li>
+                          <li><a class="dropdown-item" href="#" data-status="COMPLETED">Đã nhận</a></li>
+                          <li><a class="dropdown-item" href="#" data-status="CANCELLED">Đã hủy</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="orders-grid">
+                    <!-- Order Card -->
+                    <div class="order-card" data-aos="fade-up" data-aos-delay="100">
+                      <div class="order-header">
+                        <div class="order-id">
+                          <span class="label">Mã đơn hàng:</span>
+                          <span class="value">#ORD-2024-1278</span>
+                        </div>
+                        <div class="order-date">20/10/2025</div>
+                      </div>
+                      <div class="order-content">
+                        <div class="product-grid">
+                          <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
+                          <img src="assets/img/product/product-2.webp" alt="Product" loading="lazy">
+                          <img src="assets/img/product/product-3.webp" alt="Product" loading="lazy">
+                        </div>
+                        <div class="order-info">
+                          <div class="info-row">
+                            <span>Trạng thái</span>
+                            <span class="status processing">Đang xử lý</span>
+                          </div>
+                          <div class="info-row">
+                            <span>Tổng tiền</span>
+                            <span class="price">450.000đ</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="order-footer">
+                        <button type="button" class="btn-details" data-bs-toggle="collapse" data-bs-target="#details1"
+                          aria-expanded="false">Chi tiết đơn hàng</button>
+                      </div>
+
+                      <!-- Order Details -->
+                      <div class="collapse order-details" id="details1">
+                        <div class="details-content">
+                          <div class="detail-section">
+                            <h5>Thanh toán</h5>
+                            <div class="info-grid">
+                              <div class="info-item">
+                                <span class="label">Phương thức thanh toán</span>
+                                <span class="value">Chuyển khoản ngân hàng</span>
+                              </div>
+                              <div class="info-item">
+                                <span class="label">Trạng thái thanh toán</span>
+                                <span class="value">Chưa thanh toán</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="detail-section">
+                            <h5>Sản phẩm</h5>
+                            <div class="order-items">
+                              <div class="item">
+                                <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
+                                <div class="item-info">
+                                  <h6>iPhone 16</h6>
+                                  <div class="item-meta">
+                                    <span class="color">Màu: Trắng</span>
+                                    <span class="quantity">Số lượng: 2</span>
+                                    <span class="subprice">Đơn giá: 15.500.000đ</span>
+                                  </div>
+                                </div>
+                                <div class="item-price">31.000.000đ</div>
+                                <button type="button" class="btn-review">Đánh giá</button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="detail-section">
+                            <h5>Chi tiết giá</h5>
+                            <div class="price-breakdown">
+                              <div class="price-row">
+                                <span>Tổng tiền sản phẩm</span>
+                                <span>31.000.000đ</span>
+                              </div>
+                              <div class="price-row">
+                                <span>Phí vận chuyển</span>
+                                <span>Miễn phí</span>
+                              </div>
+                              <div class="price-row total">
+                                <span>Thành tiền</span>
+                                <span>31.000.000đ</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="detail-section">
+                            <h5>Địa chỉ nhận hàng</h5>
+                            <div class="address-info">
+                              <p class="mb-2">Người nhận: Hà Phạm</p>
+                              <p class="mb-2">SĐT: 0123456789</p>
+                              <p>Địa chỉ: Hà Nội, Bắc Từ Liêm, Nhổn, Ngõ 222</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Review Modal -->
+                      <div class="modal fade" id="reviewModal" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Đánh giá sản phẩm</h5>
+                              <button class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                              <!-- Thông tin sản phẩm -->
+                              <div class="d-flex align-items-center mb-3">
+                                <img id="reviewProductImage" src="" alt="Product" class="me-3"
+                                  style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
+                                <h6 id="reviewProductName" class="mb-0"></h6>
+                              </div>
+                              <!-- Rating Stars -->
+                              <div class="text-center fs-4 mb-3" id="starRating">
+                                <i class="bi bi-star" data-value="1"></i>
+                                <i class="bi bi-star" data-value="2"></i>
+                                <i class="bi bi-star" data-value="3"></i>
+                                <i class="bi bi-star" data-value="4"></i>
+                                <i class="bi bi-star" data-value="5"></i>
+                              </div>
+                              <!-- Comment -->
+                              <textarea id="reviewComment" class="form-control" rows="3"
+                                placeholder="Nhập bình luận..."></textarea>
+                            </div>
+
+                            <div class="modal-footer">
+                              <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                              <button class="btn btn-primary" id="submitReviewBtn">Gửi đánh giá</button>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+                  <!-- Pagination -->
+                  <div class="pagination-wrapper" data-aos="fade-up">
+                    <button type="button" class="btn-prev" disabled="">
+                      <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <div class="page-numbers">
+                      <button type="button" class="active">1</button>
+                      <button type="button">2</button>
+                      <button type="button">3</button>
+                      <span>...</span>
+                      <button type="button">12</button>
+                    </div>
+                    <button type="button" class="btn-next">
+                      <i class="bi bi-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Reviews Tab -->
+                <div class="tab-pane fade" id="reviews">
+                  <div class="section-header" data-aos="fade-up">
+                    <h2>Đánh giá</h2>
+                  </div>
+
+                  <div class="reviews-grid">
+                    <!-- Review Card -->
+                    <div class="review-card" data-aos="fade-up" data-aos-delay="200">
+                      <div class="review-header">
+                        <img src="assets/img/product/product-2.webp" alt="Product" class="product-image" loading="lazy">
+                        <div class="review-meta">
+                          <h4>iPhone 16 Pro Max</h4>
+                          <div class="rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <span>(4.0)</span>
+                          </div>
+                          <div class="review-date">Đánh giá lúc 15:37:58 01/12/2025</div>
+                        </div>
+                      </div>
+                      <div class="review-content">
+                        <p>Sản phẩm tốt, giá hợp lý.</p>
+                      </div>
+                      <div class="review-footer">
+                        <button type="button" class="btn-edit">Sửa</button>
+                        <button type="button" class="btn-delete">Xóa</button>
+                      </div>
+                    </div>
+
+                    <!-- Edit Review Modal -->
+                    <div class="modal fade" id="editReviewModal" tabindex="-1" aria-labelledby="editReviewModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="editReviewModalLabel">Sửa đánh giá</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="d-flex align-items-center mb-3">
+                              <img id="editReviewProductImage" src="" alt="Product"
+                                style="width:60px;height:60px;object-fit:cover;border-radius:5px;margin-right:10px;">
+                              <h6 id="editReviewProductName" class="mb-0"></h6>
+                            </div>
+                            <div id="editStarRating" class="mb-3">
+                              <i class="bi bi-star" data-value="1" style="cursor:pointer;"></i>
+                              <i class="bi bi-star" data-value="2" style="cursor:pointer;"></i>
+                              <i class="bi bi-star" data-value="3" style="cursor:pointer;"></i>
+                              <i class="bi bi-star" data-value="4" style="cursor:pointer;"></i>
+                              <i class="bi bi-star" data-value="5" style="cursor:pointer;"></i>
+                            </div>
+                            <textarea id="editReviewComment" class="form-control" rows="3"
+                              placeholder="Viết bình luận..."></textarea>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" id="submitEditReviewBtn">Lưu</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteReviewModal" tabindex="-1"
+                      aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="deleteReviewModalLabel">Xác nhận xóa</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                          </div>
+                          <div class="modal-body">
+                            Bạn có chắc chắn muốn xóa đánh giá này?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-danger" id="confirmDeleteReviewBtn">Xóa</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+
+                <!-- Addresses Tab -->
+                <div class="tab-pane fade" id="addresses">
+                  <div class="section-header" data-aos="fade-up">
+                    <h2>Địa chỉ</h2>
+                    <div class="header-actions">
+                      <button type="button" class="btn-add-new" data-bs-toggle="modal"
+                        data-bs-target="#addAddressModal">
+                        <i class="bi bi-plus-lg"></i>
+                        Thêm
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Modal Thêm địa chỉ -->
+                  <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form id="addAddressForm">
+                            <div class="row mb-3 mb-3">
+                              <div class="col-6">
+                                <label for="recipientName" class="form-label">Tên người nhận</label>
+                                <input type="text" class="form-control" id="recipientName" required>
+                              </div>
+                              <div class="col-6">
+                                <label for="recipientPhone" class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" id="recipientPhone" required>
+                              </div>
+                            </div>
+
+                            <div class="row mb-3">
+                              <div class="col-6">
+                                <label for="addressType" class="form-label">Loại địa chỉ</label>
+                                <select class="form-select" id="addressType">
+                                  <option value="HOME">Nhà</option>
+                                  <option value="OFFICE">Văn phòng</option>
+                                  <option value="STORE">Cửa hàng</option>
+                                  <option value="OTHER">Khác</option>
+                                </select>
+                              </div>
+                              <div class="col-6">
+                                <label for="city" class="form-label">Tỉnh/Thành phố</label>
+                                <input type="text" class="form-control" id="city" required>
+                              </div>
+                            </div>
+
+                            <div class="row mb-3">
+
+                              <div class="mb-3">
+                                <label for="ward" class="form-label">Phường/Xã</label>
+                                <input type="text" class="form-control" id="ward" required>
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <label for="detailAddress" class="form-label">Địa chỉ chi tiết</label>
+                              <input type="text" class="form-control" id="detailAddress">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                          <button type="button" class="btn btn-success" id="btnAddAddress">Thêm địa chỉ</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Modal Sửa địa chỉ -->
+                  <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <form id="editAddressForm">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="editAddressModalLabel">Sửa địa chỉ</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                          </div>
+                          <div class="modal-body">
+                            <input type="hidden" id="editAddressId">
+                            <div class="row mb-3">
+                              <div class="col-6">
+                                <label for="editRecipientName" class="form-label">Tên người nhận</label>
+                                <input type="text" class="form-control" id="editRecipientName" required>
+                              </div>
+                              <div class="col-6">
+                                <label for="editRecipientPhone" class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" id="editRecipientPhone" required>
+                              </div>
+                            </div>
+
+                            <div class="row mb-3">
+                              <div class="col-6">
+                                <label for="editAddressType" class="form-label">Loại địa chỉ</label>
+                                <select class="form-select" id="editAddressType" required>
+                                  <option value="HOME">Nhà</option>
+                                  <option value="OFFICE">Văn phòng</option>
+                                  <option value="STORE">Cửa hàng</option>
+                                  <option value="OTHER">Khác</option>
+                                </select>
+                              </div>
+                              <div class="col-6">
+                                <label for="editCity" class="form-label">Tỉnh/Thành phố</label>
+                                <input type="text" class="form-control" id="editCity" required>
+                              </div>
+                            </div>
+
+                            <div class="row mb-3">
+
+                              <div class="mb-3">
+                                <label for="editWard" class="form-label">Phường/Xã</label>
+                                <input type="text" class="form-control" id="editWard" required>
+                              </div>
+                            </div>
+
+                            <div class="mb-3">
+                              <label for="editDetailAddress" class="form-label">Địa chỉ chi tiết</label>
+                              <input type="text" class="form-control" id="editDetailAddress">
+                            </div>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="addresses-grid">
+                    <!-- Address Card 1 -->
+                    <div class="address-card default" data-aos="fade-up" data-aos-delay="100">
+                      <div class="card-header">
+                        <h4 class="address-type">Nhà</h4>
+                        <span class="default-badge">Mặc định</span>
+                      </div>
+                      <div class="card-body">
+                        <p class="address-text">Tuyên Quang<br>Tuyên Quang<br>Nông Tiến<br>Xóm ABC</p>
+                        <div class="contact-info">
+                          <div><i class="bi bi-person"></i> Sarah Anderson</div>
+                          <div><i class="bi bi-telephone"></i> +1 (555) 123-4567</div>
+                        </div>
+                      </div>
+                      <div class="card-actions">
+                        <button type="button" class="btn-edit">
+                          <i class="bi bi-pencil"></i>
+                          Sửa
+                        </button>
+                        <button type="button" class="btn-remove">
+                          <i class="bi bi-trash"></i>
+                          Xóa
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Address Card 2 -->
+                    <div class="address-card" data-aos="fade-up" data-aos-delay="200">
+                      <div class="card-header">
+                        <h4>Văn phòng</h4>
+                      </div>
+                      <div class="card-body">
+                        <p class="address-text">456 Business Ave<br>Suite 200<br>San Francisco, CA 94107<br>United
+                          States</p>
+                        <div class="contact-info">
+                          <div><i class="bi bi-person"></i> Sarah Anderson</div>
+                          <div><i class="bi bi-telephone"></i> +1 (555) 987-6543</div>
+                        </div>
+                      </div>
+                      <div class="card-actions">
+                        <button type="button" class="btn-edit">
+                          <i class="bi bi-pencil"></i>
+                          Sửa
+                        </button>
+                        <button type="button" class="btn-remove">
+                          <i class="bi bi-trash"></i>
+                          Xóa
+                        </button>
+                        <button type="button" class="btn-make-default">Đặt làm mặc định</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="tab-pane fade" id="settings">
+                  <div class="section-header" data-aos="fade-up">
+                    <h2>Cài đặt tài khoản</h2>
+                  </div>
+
+                  <div class="settings-content">
+                    <!-- Personal Information -->
+                    <div class="settings-section" data-aos="fade-up">
+                      <h3>Thông tin cá nhân</h3>
+                      <form class="php-email-form settings-form">
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <label for="lastname" class="form-label">Họ</label>
+                            <input type="text" class="form-control" id="lastname" value="Phạm" required>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="firstname" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="firstname" value="Long" required>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="dob" class="form-label">Ngày sinh</label>
+                            <input type="date" class="form-control" id="dob" value="2004-04-15" required>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="gender" class="form-label">Giới tính</label>
+                            <select class="form-select form-control" id="gender" required>
+                              <option value="MALE">Nam</option>
+                              <option value="FEMALE">Nữ</option>
+                              <option value="OTHER" selected>Không tiết lộ</option>
+                            </select>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" value="pvl@gmail.com" required>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="phoneNumber" class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" id="phoneNumber" value="0376333111">
+                          </div>
+                        </div>
+
+                        <div class="form-buttons">
+                          <button type="submit" class="btn-save">Lưu thay đổi</button>
+                        </div>
+                      </form>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div class="settings-section" data-aos="fade-up" data-aos-delay="200">
+                      <h3>Bảo mật</h3>
+                      <form class="php-email-form settings-form">
+                        <div class="row g-3">
+                          <div class="col-md-12">
+                            <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                            <input type="password" class="form-control" id="currentPassword" required>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="newPassword" required minlength="8"
+                              maxlength="20" autocomplete="new-password" pattern="^.{8,20}$"
+                              title="Mật khẩu phải có từ 8 đến 20 ký tự.">
+                          </div>
+                          <div class="col-md-6">
+                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                            <input type="password" class="form-control" id="confirmPassword" required minlength="8"
+                              maxlength="20" autocomplete="new-password" pattern="^.{8,20}$"
+                              title="Mật khẩu phải có từ 8 đến 20 ký tự.">
+                          </div>
+                        </div>
+
+                        <div class="form-buttons">
+                          <button type="submit" class="btn-save">Cập nhật mật khẩu</button>
+                        </div>
+                      </form>
+                    </div>
+
+                    <!-- Delete Account -->
+                    <!-- <div class="settings-section danger-zone" data-aos="fade-up" data-aos-delay="300">
+                      <h3>Xóa tài khoản</h3>
+                      <div class="danger-zone-content">
+                        <p>Tài khoản sẽ bị xóa vĩnh viễn. Vui lòng xác nhận!</p>
+                        <button type="button" class="btn-danger">Xóa tài khoản</button>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Account Section -->
+
+  </main>
+
+  <footer id="footer" class="footer dark-background">
+    <div class="footer-main">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget footer-about">
+              <a href="index.html" class="logo">
+                <span class="sitename">Minh Thành Computer</span>
+              </a>
+              <p>
+                Minh Thành Computer - Chuyên bán laptop, điện thoại và phụ kiện công nghệ chất lượng.
+              </p>
+
+              <div class="social-links mt-4">
+                <h5>Liên hệ với chúng tôi</h5>
+                <div class="social-icons">
+                  <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                  <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                  <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                  <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                  <a href="#" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+                  <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Sản phẩm</h4>
+              <ul class="footer-links">
+                <li><a href="product-overview-by-category.html?category=phones">Điện thoại</a></li>
+                <li><a href="product-overview-by-category.html?category=laptops">Laptop</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-adapters">Củ sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-cables">Cáp sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=mouses">Chuột</a></li>
+                <li><a href="product-overview-by-category.html?category=keyboards">Bàn phím</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Hỗ trợ</h4>
+              <ul class="footer-links">
+                <li><a href="support.html">Trung tâm trợ giúp</a></li>
+                <li><a href="account.html">Tình trạng đơn hàng</a></li>
+                <li><a href="shiping-info.html">Thông tin vận chuyển</a></li>
+                <li><a href="return-policy.html">Đổi trả</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget">
+              <h4>Thông tin liên hệ</h4>
+              <div class="footer-contact">
+                <div class="contact-item">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>Ngã 3 Hưng Lộc cũ, xã Vạn Lộc, tỉnh Thanh Hóa</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-telephone"></i>
+                  <span>0963 703 556</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-envelope"></i>
+                  <span>minhthanhcomputer@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-clock"></i>
+                  <span>Thứ 2 - Thứ 7: 8 giờ - 18 giờ<br>Chủ nhật: Đóng cửa</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Modal yêu cầu đăng nhập -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Vui lòng đăng nhập vào tài khoản</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Bạn cần đăng nhập để xem giỏ hàng.
+        </div>
+        <div class="modal-footer">
+          <a href="register.html" class="btn btn-dark">Đăng ký</a>
+          <a href="login.html" class="btn btn-outline-dark">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal thông báo thành công -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title text-success">Thêm vào giỏ hàng thành công</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          Sản phẩm đã được thêm vào giỏ hàng của bạn.
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal xác nhận -->
+  <div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Xác nhận</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body"></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Hủy
+          </button>
+          <button type="button" class="btn btn-danger" id="confirmOkBtn">
+            Xác nhận
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/drift-zoom/Drift.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  <!-- Custom JS -->
+  <script src="assets/js/account-account-setting.js"></script>
+  <script src="assets/js/account-address.js"></script>
+  <script src="assets/js/account-order.js"></script>
+  <script src="assets/js/account-order-review.js"></script>
+  <script src="assets/js/account-review.js"></script>
+
+  <!-- Custom JS -->
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/logout.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+package com.techstore.service;
+
+import com.techstore.dto.request.UserRequest;
+import com.techstore.dto.request.UserUpdatePasswordRequest;
+import com.techstore.dto.response.UserResponse;
+import com.techstore.entity.Role;
+import com.techstore.entity.User;
+import com.techstore.enums.RoleName;
+import com.techstore.enums.UserStatus;
+import com.techstore.exception.AppException;
+import com.techstore.exception.ErrorCode;
+import com.techstore.mapper.UserMapper;
+import com.techstore.repository.RoleRepository;
+import com.techstore.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
+
+    public UserResponse register(UserRequest request) {
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new AppException(ErrorCode.USERNAME_EXISTED);
+        }
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
+        }
+        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+            throw new AppException(ErrorCode.PHONE_NUMBER_EXISTED);
+        }
+
+        User user = userMapper.toUser(request);
+
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Role role = roleRepository.findByRoleName(RoleName.CUSTOMER.name())
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+
+        user.setRoles(roles);
+
+        user = userRepository.save(user);
+        return userMapper.toUserResponse(user);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')") // Check trước khi thực hiện method
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(user -> userMapper.toUserResponse(user))
+                .toList();
+    }
+
+    public UserResponse getUser(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        return userMapper.toUserResponse(user);
+    }
+
+    public List<UserResponse> getAllCustomers() {
+        return userRepository.findAllByRoles_RoleName(RoleName.CUSTOMER.name())
+                .stream()
+                .map(user -> userMapper.toUserResponse(user))
+                .toList();
+    }
+
+    public void deleteUser(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        boolean isAdmin = user.getRoles()
+                .stream()
+                .anyMatch(role -> role.getRoleName().equals(RoleName.ADMIN.name()));
+
+        if (isAdmin)
+            throw new AppException(ErrorCode.CANNOT_DELETE_ADMIN);
+
+        userRepository.deleteById(userId);
+    }
+
+    public UserResponse getMyInfo() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        return userMapper.toUserResponse(user);
+    }
+
+    public UserResponse updateMyInfo(UserRequest userRequest) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        if (!user.getEmail().equals(userRequest.getEmail()) && userRepository.existsByEmail(userRequest.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
+        }
+        if (!user.getPhoneNumber().equals(userRequest.getPhoneNumber())
+                && userRepository.existsByPhoneNumber(userRequest.getPhoneNumber())) {
+            throw new AppException(ErrorCode.PHONE_NUMBER_EXISTED);
+        }
+
+        user.setFirstname(userRequest.getFirstname());
+        user.setLastname(userRequest.getLastname());
+        user.setDateOfBirth(userRequest.getDateOfBirth());
+        user.setGender(userRequest.getGender());
+        user.setEmail(userRequest.getEmail());
+        user.setPhoneNumber(userRequest.getPhoneNumber());
+
+        user = userRepository.save(user);
+        return userMapper.toUserResponse(user);
+    }
+
+    public UserResponse updatePassword(UserUpdatePasswordRequest request) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new AppException(ErrorCode.PASSWORD_INCORRECT);
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        userRepository.save(user);
+        return userMapper.toUserResponse(user);
+    }
+
+    public UserResponse changeUserStatus(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        if (user.getUserStatus().equals(UserStatus.ACTIVE.name()))
+            user.setUserStatus(UserStatus.LOCKED.name());
+        else
+            user.setUserStatus(UserStatus.ACTIVE.name());
+
+        userRepository.save(user);
+
+        return userMapper.toUserResponse(user);
+    }
+
+    public void forgotPassword(String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
+
+        if (user == null)
+            return;
+
+        String token = java.util.UUID.randomUUID().toString();
+
+        user.setResetToken(token);
+        user.setTokenExpiry(java.time.LocalDateTime.now().plusMinutes(15));
+
+        userRepository.save(user);
+
+        String resetLink = "http://localhost:5500/FE_END_USER/reset-password.html?token=" + token;
+
+        try {
+            emailService.send(
+                    email,
+                    "Reset mật khẩu",
+                    "Click vào link để đặt lại mật khẩu: " + resetLink);
+        } catch (Exception e) {
+            log.error("Send mail failed", e);
+        }
+        System.out.println("RESET TOKEN: " + token);
+    }
+
+    public void resetPassword(String token, String newPassword) {
+        User user = userRepository.findByResetToken(token)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_TOKEN));
+
+        if (user.getTokenExpiry() == null ||
+                user.getTokenExpiry().isBefore(java.time.LocalDateTime.now())) {
+            throw new AppException(ErrorCode.TOKEN_EXPIRED);
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null);
+        user.setTokenExpiry(null);
+
+        userRepository.save(user);
+    }
+}

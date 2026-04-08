@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Giới thiệu - Minh Thành Computer</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/logo.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="about-page">
+
+  <header id="header" class="header sticky-top">
+    <!-- Top Bar -->
+    <div class="top-bar py-1">
+      <div class="container-fluid container-xl">
+        <div class="row align-items-center">
+          <div class="col-lg-4 d-none d-lg-flex">
+            <div class="top-bar-item">
+              <i class="bi bi-telephone-fill me-2"></i>
+              <span>Quý khách cần hỗ trợ? Vui lòng gọi: </span>
+              <a href="tel:+1234567890">0963 703 556</a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-12 text-center">
+            <div class="announcement-slider swiper init-swiper">
+              <script type="application/json" class="swiper-config">
+                {
+                  "loop": true,
+                  "speed": 600,
+                  "autoplay": {
+                    "delay": 3000
+                  },
+                  "slidesPerView": 1,
+                  "direction": "vertical",
+                  "effect": "slide"
+                }
+              </script>
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">🚚 Miễn phí vận chuyển</div>
+                <div class="swiper-slide">💰 Hoàn hàng miễn phí trong 30 ngày</div>
+                <div class="swiper-slide">👩‍💼 Nhân viên hỗ trợ 24/7</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header -->
+    <div class="main-header">
+      <div class="container-fluid container-xl">
+        <div class="d-flex py-3 align-items-center justify-content-between">
+
+          <!-- Logo -->
+          <a href="index.html" class="logo d-flex align-items-center">
+            <h1 class="sitename">MINH THANH COMPUTER</h1>
+          </a>
+
+          <!-- Search -->
+          <form class="search-form desktop-search-form">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" name="keyword">
+              <button class="btn" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <!-- Actions -->
+          <div class="header-actions d-flex align-items-center justify-content-end">
+
+            <!-- Mobile Search Toggle -->
+            <button class="header-action-btn mobile-search-toggle d-xl-none" type="button" data-bs-toggle="collapse"
+              data-bs-target="#mobileSearch" aria-expanded="false" aria-controls="mobileSearch">
+              <i class="bi bi-search"></i>
+            </button>
+
+            <!-- Account -->
+            <div class="dropdown account-dropdown">
+              <button class="header-action-btn" data-bs-toggle="dropdown">
+                <i class="bi bi-person"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-header">
+                  <h6>Chào mừng tới <span class="sitename">Minh Thành Computer</span></h6>
+                  <p class="mb-0">Truy cập tài khoản &amp; Quản lý đơn hàng</p>
+                </div>
+                <div class="dropdown-body pt-1 pb-1">
+                  <a class="dropdown-item d-flex align-items-center" href="account.html">
+                    <i class="bi bi-person-circle me-2"></i>
+                    <span>Tài khoản</span>
+                  </a>
+                </div>
+                <div class="dropdown-footer">
+                  <a href="register.html" class="btn btn-primary w-100 mb-2" id="btnRegister">Đăng ký</a>
+                  <a href="login.html" class="btn btn-outline-primary w-100" id="btnLogin">Đăng nhập</a>
+                  <a href="" class="btn btn-outline-primary w-100 logout-link" id="btnLogout">Đăng xuất</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cart -->
+            <a href="cart.html" class="header-action-btn cart-btn">
+              <i class="bi bi-cart3"></i>
+              <span class="badge">0</span>
+            </a>
+
+            <!-- Mobile Navigation Toggle -->
+            <i class="mobile-nav-toggle d-xl-none bi bi-list me-0"></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="header-nav">
+      <div class="container-fluid container-xl position-relative">
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="product-overview-by-category.html?category=phones">Điện thoại</a></li>
+            <li><a href="product-overview-by-category.html?category=laptops">Laptop</a></li>
+            <li class="dropdown"><a href="#"><span>Phụ kiện</span> <i
+                  class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="product-overview-by-category.html?category=charging-adapters">Củ sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-cables">Cáp sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=mouses">Chuột</a></li>
+                <li><a href="product-overview-by-category.html?category=keyboards">Bàn phím</a></li>
+              </ul>
+            </li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="about.html" class="active">Giới thiệu</a></li>
+            <li><a href="support.html">Hỗ trợ</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Mobile Search Form -->
+    <div class="collapse" id="mobileSearch">
+      <div class="container">
+        <form class="search-form">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for products">
+            <button class="btn" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Giới thiệu</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li class="current">Giới thiệu</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- About 2 Section -->
+    <section id="about-2" class="about-2 section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <span class="section-badge"><i class="bi bi-info-circle"></i>Giới thiệu</span>
+        <div class="row">
+          <div class="col-lg-6">
+            <h2 class="about-title">Minh Thành Computer - Nơi công nghệ hội tụ</h2>
+            <p class="about-description">Chúng tôi cung cấp các sản phẩm công nghệ chất lượng: điện thoại, laptop, phụ
+              kiện và các thiết bị thông minh, cam kết chính hãng và dịch vụ tận tâm.</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="about-text">Với nhiều năm kinh nghiệm, Minh Thành Computer luôn cập nhật xu hướng công nghệ mới
+              nhất và
+              mang đến cho khách hàng trải nghiệm mua sắm an toàn, tiện lợi.</p>
+            <p class="about-text">Đội ngũ nhân viên chuyên nghiệp sẵn sàng tư vấn và hỗ trợ khách hàng, từ việc chọn sản
+              phẩm phù hợp đến hậu mãi sau khi mua hàng.</p>
+          </div>
+        </div>
+
+        <div class="row features-boxes gy-4 mt-3">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-box">
+              <div class="icon-box">
+                <i class="bi bi-bullseye"></i>
+              </div>
+              <h3><a href="#" class="stretched-link">Chất lượng sản phẩm</a></h3>
+              <p>Tất cả sản phẩm đều chính hãng, có tem bảo hành và được kiểm tra kỹ lưỡng trước khi đến tay khách hàng.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-box">
+              <div class="icon-box">
+                <i class="bi bi-person-check"></i>
+              </div>
+              <h3><a href="#" class="stretched-link">Hỗ trợ tận tâm</a></h3>
+              <p>Đội ngũ nhân viên nhiệt tình, sẵn sàng tư vấn mọi thắc mắc về sản phẩm, bảo hành, đổi trả và mua hàng
+                trả góp.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
+            <div class="feature-box">
+              <div class="icon-box">
+                <i class="bi bi-clipboard-data"></i>
+              </div>
+              <h3><a href="#" class="stretched-link">Dịch vụ nhanh chóng</a></h3>
+              <p>Giao hàng toàn quốc, thanh toán linh hoạt và quy trình bảo hành, đổi trả nhanh gọn, tiện lợi.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-lg-12" data-aos="zoom-in" data-aos-delay="200">
+            <div class="video-box">
+              <img src="assets/img/about/about-wide-1.webp" class="img-fluid"
+                alt="Video giới thiệu Minh Thành Computer">
+              <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /About 2 Section -->
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats section light-background">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item">
+              <i class="bi bi-emoji-smile"></i>
+              <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
+                class="purecounter"></span>
+              <p><strong>Khách hàng hài lòng</strong> <span>đã trải nghiệm dịch vụ</span></p>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item">
+              <i class="bi bi-journal-richtext"></i>
+              <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
+                class="purecounter"></span>
+              <p><strong>Dự án giao hàng</strong> <span>với đúng hạn</span></p>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item">
+              <i class="bi bi-headset"></i>
+              <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1"
+                class="purecounter"></span>
+              <p><strong>Giờ hỗ trợ</strong> <span>tư vấn khách hàng</span></p>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item">
+              <i class="bi bi-people"></i>
+              <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1"
+                class="purecounter"></span>
+              <p><strong>Nhân viên</strong> <span>chuyên nghiệp và tận tâm</span></p>
+            </div>
+          </div><!-- End Stats Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Stats Section -->
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials section">
+
+      <div class="container">
+
+        <div class="testimonial-masonry">
+
+          <div class="testimonial-item" data-aos="fade-up">
+            <div class="testimonial-content">
+              <div class="quote-pattern">
+                <i class="bi bi-quote"></i>
+              </div>
+              <p>Sản phẩm chất lượng, giao hàng nhanh và nhân viên rất nhiệt tình hỗ trợ.</p>
+              <div class="client-info">
+                <div class="client-image">
+                  <img src="assets/img/person/avt-profile.jpg" alt="Client">
+                </div>
+                <div class="client-details">
+                  <h3>Nguyễn Thảo Linh</h3>
+                  <span class="position">Khách hàng</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-item highlight" data-aos="fade-up" data-aos-delay="100">
+            <div class="testimonial-content">
+              <div class="quote-pattern">
+                <i class="bi bi-quote"></i>
+              </div>
+              <p>Minh Thành Computer tư vấn rất tận tình, giúp tôi chọn được laptop phù hợp với công việc.</p>
+              <div class="client-info">
+                <div class="client-image">
+                  <img src="assets/img/person/avt-profile.jpg" alt="Client">
+                </div>
+                <div class="client-details">
+                  <h3>Phạm Việt Long</h3>
+                  <span class="position">Khách hàng</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-item" data-aos="fade-up" data-aos-delay="200">
+            <div class="testimonial-content">
+              <div class="quote-pattern">
+                <i class="bi bi-quote"></i>
+              </div>
+              <p>Phụ kiện chất lượng tốt, đúng như mô tả, giá cả hợp lý.</p>
+              <div class="client-info">
+                <div class="client-image">
+                  <img src="assets/img/person/avt-profile.jpg" alt="Client">
+                </div>
+                <div class="client-details">
+                  <h3>Trần Bảo Linh</h3>
+                  <span class="position">Khách hàng</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-item" data-aos="fade-up" data-aos-delay="300">
+            <div class="testimonial-content">
+              <div class="quote-pattern">
+                <i class="bi bi-quote"></i>
+              </div>
+              <p>Chất lượng dịch vụ tuyệt vời, tôi sẽ tiếp tục mua sắm tại Minh Thành Computer.</p>
+              <div class="client-info">
+                <div class="client-image">
+                  <img src="assets/img/person/avt-profile.jpg" alt="Client">
+                </div>
+                <div class="client-details">
+                  <h3>Phạm Việt Hà</h3>
+                  <span class="position">Khách hàng</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-item highlight" data-aos="fade-up" data-aos-delay="400">
+            <div class="testimonial-content">
+              <div class="quote-pattern">
+                <i class="bi bi-quote"></i>
+              </div>
+              <p>Nhân viên tư vấn nhiệt tình, giao hàng nhanh chóng, rất hài lòng với sản phẩm.</p>
+              <div class="client-info">
+                <div class="client-image">
+                  <img src="assets/img/person/avt-profile.jpg" alt="Client">
+                </div>
+                <div class="client-details">
+                  <h3>Dương Văn Minh</h3>
+                  <span class="position">Khách hàng</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-item" data-aos="fade-up" data-aos-delay="500">
+            <div class="testimonial-content">
+              <div class="quote-pattern">
+                <i class="bi bi-quote"></i>
+              </div>
+              <p>Tôi rất ấn tượng với chất lượng sản phẩm và dịch vụ chăm sóc khách hàng của Minh Thành Computer.</p>
+              <div class="client-info">
+                <div class="client-image">
+                  <img src="assets/img/person/avt-profile.jpg" alt="Client">
+                </div>
+                <div class="client-details">
+                  <h3>Nguyễn Anh Tuấn</h3>
+                  <span class="position">Khách hàng</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Testimonials Section -->
+
+  </main>
+
+  <footer id="footer" class="footer dark-background">
+    <div class="footer-main">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget footer-about">
+              <a href="index.html" class="logo">
+                <span class="sitename">Minh Thành Computer</span>
+              </a>
+              <p>
+                Minh Thành Computer - Chuyên bán laptop, điện thoại và phụ kiện công nghệ chất lượng.
+              </p>
+
+              <div class="social-links mt-4">
+                <h5>Liên hệ với chúng tôi</h5>
+                <div class="social-icons">
+                  <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                  <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                  <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                  <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                  <a href="#" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+                  <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Sản phẩm</h4>
+              <ul class="footer-links">
+                <li><a href="product-overview-by-category.html?category=phones">Điện thoại</a></li>
+                <li><a href="product-overview-by-category.html?category=laptops">Laptop</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-adapters">Củ sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-cables">Cáp sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=mouses">Chuột</a></li>
+                <li><a href="product-overview-by-category.html?category=keyboards">Bàn phím</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Hỗ trợ</h4>
+              <ul class="footer-links">
+                <li><a href="support.html">Trung tâm trợ giúp</a></li>
+                <li><a href="account.html">Tình trạng đơn hàng</a></li>
+                <li><a href="shiping-info.html">Thông tin vận chuyển</a></li>
+                <li><a href="return-policy.html">Đổi trả</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget">
+              <h4>Thông tin liên hệ</h4>
+              <div class="footer-contact">
+                <div class="contact-item">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>Ngã 3 Hưng Lộc cũ, xã Vạn Lộc, tỉnh Thanh Hóa</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-telephone"></i>
+                  <span>0963 703 556</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-envelope"></i>
+                  <span>minhthanhcomputer@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-clock"></i>
+                  <span>Thứ 2 - Thứ 7: 8 giờ - 18 giờ<br>Chủ nhật: Đóng cửa</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Modal yêu cầu đăng nhập -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Vui lòng đăng nhập vào tài khoản</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Bạn cần đăng nhập để xem giỏ hàng.
+        </div>
+        <div class="modal-footer">
+          <a href="register.html" class="btn btn-dark">Đăng ký</a>
+          <a href="login.html" class="btn btn-outline-dark">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/drift-zoom/Drift.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  <!-- Custom JS -->
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/logout.js"></script>
+
+</body>
+
+</html>

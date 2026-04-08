@@ -1,0 +1,38 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /tech-store
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  #Kết nối tới database
+  datasource:
+    url: "jdbc:mysql://localhost:3306/tech_store_db_test"
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+    username: root
+    password: abc123!@#
+  jpa:
+    hibernate:
+      # ddl-auto: update #Tự tạo hoặc cập nhật db khi run
+    show-sql: true
+  ai:
+    openai:
+      api-key: AIzaSyDgV0h61q36gf7C850dRC5Nl97lzBHQfmI
+      chat:
+        base-url: https://generativelanguage.googleapis.com
+        completions-path: /v1beta/openai/chat/completions
+        options:
+          model: gemini-2.5-flash
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+
+jwt:
+  signerKey: "a193e5f9c15cd8ce16e881b591e21f1a91bda4ea6a41313d4b24d07e5c466821"
+  valid-duration: 36000 #Thời hạn token (giây)
+  refreshable-duration: 36000 #Khoảng thời gian có thể refresh token (giây)

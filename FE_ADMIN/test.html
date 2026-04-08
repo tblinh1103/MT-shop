@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Image</title>
+    <style>
+        .custom-select {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer; 
+
+            /* bỏ style mặc định */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            /* custom icon */
+            background: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 20 20'><path d='M5 7l5 5 5-5z'/></svg>") no-repeat right 10px center;
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <select id="orderStatus" class="custom-select"></select>
+    <h3>Upload Image</h3>
+
+    <!-- Không dùng form submit -->
+    <input type="file" id="file" />
+    <button type="button" id="uploadBtn">Upload</button>
+
+    <h4>Trạng thái:</h4>
+    <p id="status"></p>
+
+    <h4>Kết quả trả về:</h4>
+    <pre id="result"></pre>
+
+    <script>
+        const orderStatuses = [
+            { value: "PENDING", label: "Đang xử lý", color: "orange" },
+            { value: "CONFIRMED", label: "Đã xác nhận", color: "blue" },
+            { value: "SHIPPED", label: "Đã vận chuyển", color: "purple" },
+            { value: "CANCELLED", label: "Đã hủy", color: "red" },
+            { value: "COMPLETED", label: "Đã hoàn thành", color: "green" },
+        ];
+        const select = document.getElementById("orderStatus");
+
+        // render option
+        orderStatuses.forEach(status => {
+            const option = document.createElement("option");
+            option.value = status.value;
+            option.textContent = status.label;
+            option.style.color = status.color; // màu trong dropdown (có thể bị hạn chế)
+            select.appendChild(option);
+        });
+
+        function updateSelectColor() {
+            const selected = orderStatuses.find(
+                s => s.value === select.value
+            );
+            select.style.color = selected.color;
+        }
+
+        // chạy lần đầu
+        updateSelectColor();
+
+        // khi thay đổi
+        select.addEventListener("change", updateSelectColor);
+        // Flag upload
+        let uploading = false;
+
+        // Ngăn reload / unload khi đang upload
+        window.addEventListener("beforeunload", (e) => {
+            if (uploading) {
+                e.preventDefault();
+                e.returnValue = ""; // trình duyệt hiện thông báo
+            }
+        });
+
+        const uploadBtn = document.getElementById("uploadBtn");
+        uploadBtn.addEventListener("click", upload);
+
+        async function upload() {
+            const fileInput = document.getElementById("file");
+            const statusEl = document.getElementById("status");
+            const resultEl = document.getElementById("result");
+
+            if (!fileInput.files.length) {
+                statusEl.innerText = "⚠️ Vui lòng chọn file!";
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            uploading = true; // bắt đầu upload
+            statusEl.innerText = "🚀 Đang upload...";
+            resultEl.innerText = "";
+
+            try {
+                // Tùy chỉnh timeout (30s)
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+                const res = await fetch("http://localhost:8080/tech-store/api/upload/image", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ0ZWNoc3RvcmUuY29tIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3NzU0MzIyODksImlhdCI6MTc3NTM5NjI4OSwianRpIjoiNzFkZmVkYWItMzVjYS00YWIyLWE4ZWItMzI1YmYwNWRhOGJlIiwic2NvcGUiOiJBRE1JTiJ9.AN3YYhZFWQCzd0hFuDt4_U2R0rmjSs2Zv1ZwPSN89Y0enuw2oVtf7yoqFykH_lj5WhI2_zSLOfJOM4R4s0tgZA"
+                    },
+                    body: formData,
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                let data;
+                try {
+                    data = await res.json();
+                } catch (e) {
+                    data = await res.text();
+                }
+
+                if (res.ok) {
+                    statusEl.innerText = `✅ Thành công (Status: ${res.status})`;
+                } else {
+                    statusEl.innerText = `❌ Thất bại (Status: ${res.status})`;
+                }
+                resultEl.innerText = JSON.stringify(data, null, 2);
+
+            } catch (err) {
+                if (err.name === "AbortError") {
+                    statusEl.innerText = "❌ Upload quá lâu, đã hủy";
+                } else {
+                    statusEl.innerText = "❌ Lỗi kết nối hoặc code";
+                }
+                resultEl.innerText = err.message;
+                console.error(err);
+            } finally {
+                uploading = false;
+            }
+        }
+    </script>
+</body>
+
+</html>

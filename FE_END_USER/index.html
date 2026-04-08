@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Trang chủ - Minh Thành Computer</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/logo.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/chatbot.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header sticky-top">
+    <!-- Top Bar -->
+    <div class="top-bar py-1">
+      <div class="container-fluid container-xl">
+        <div class="row align-items-center">
+          <div class="col-lg-4 d-none d-lg-flex">
+            <div class="top-bar-item">
+              <i class="bi bi-telephone-fill me-2"></i>
+              <span>Quý khách cần hỗ trợ? Vui lòng gọi: </span>
+              <a href="tel:+1234567890">0963 703 556</a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-12 text-center">
+            <div class="announcement-slider swiper init-swiper">
+              <script type="application/json" class="swiper-config">
+                {
+                  "loop": true,
+                  "speed": 600,
+                  "autoplay": {
+                    "delay": 3000
+                  },
+                  "slidesPerView": 1,
+                  "direction": "vertical",
+                  "effect": "slide"
+                }
+              </script>
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">🚚 Miễn phí vận chuyển</div>
+                <div class="swiper-slide">💰 Hoàn hàng miễn phí trong 30 ngày</div>
+                <div class="swiper-slide">👩‍💼 Nhân viên hỗ trợ 24/7</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header -->
+    <div class="main-header">
+      <div class="container-fluid container-xl">
+        <div class="d-flex py-3 align-items-center justify-content-between">
+
+          <!-- Logo -->
+          <a href="index.html" class="logo d-flex align-items-center">
+            <h1 class="sitename">MINH THANH COMPUTER</h1>
+          </a>
+
+          <!-- Search -->
+          <form class="search-form desktop-search-form">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" name="keyword">
+              <button class="btn" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <!-- Actions -->
+          <div class="header-actions d-flex align-items-center justify-content-end">
+
+            <!-- Mobile Search Toggle -->
+            <button class="header-action-btn mobile-search-toggle d-xl-none" type="button" data-bs-toggle="collapse"
+              data-bs-target="#mobileSearch" aria-expanded="false" aria-controls="mobileSearch">
+              <i class="bi bi-search"></i>
+            </button>
+
+            <!-- Account -->
+            <div class="dropdown account-dropdown">
+              <button class="header-action-btn" data-bs-toggle="dropdown">
+                <i class="bi bi-person"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-header">
+                  <h6>Chào mừng tới <span class="sitename">Minh Thành Computer</span></h6>
+                  <p class="mb-0">Truy cập tài khoản &amp; Quản lý đơn hàng</p>
+                </div>
+                <div class="dropdown-body pt-1 pb-1">
+                  <a class="dropdown-item d-flex align-items-center" href="account.html">
+                    <i class="bi bi-person-circle me-2"></i>
+                    <span>Tài khoản</span>
+                  </a>
+                </div>
+                <div class="dropdown-footer">
+                  <a href="register.html" class="btn btn-primary w-100 mb-2" id="btnRegister">Đăng ký</a>
+                  <a href="login.html" class="btn btn-outline-primary w-100" id="btnLogin">Đăng nhập</a>
+                  <a href="" class="btn btn-outline-primary w-100 logout-link" id="btnLogout">Đăng xuất</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cart -->
+            <a href="cart.html" class="header-action-btn cart-btn">
+              <i class="bi bi-cart3"></i>
+              <span class="badge">0</span>
+            </a>
+
+            <!-- Mobile Navigation Toggle -->
+            <i class="mobile-nav-toggle d-xl-none bi bi-list me-0"></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="header-nav">
+      <div class="container-fluid container-xl position-relative">
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="index.html" class="active">Trang chủ</a></li>
+            <li><a href="product-overview-by-category.html?category=phones">Điện thoại</a></li>
+            <li><a href="product-overview-by-category.html?category=laptops">Laptop</a></li>
+            <li class="dropdown"><a href="#"><span>Phụ kiện</span> <i
+                  class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="product-overview-by-category.html?category=charging-adapters">Củ sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-cables">Cáp sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=mouses">Chuột</a></li>
+                <li><a href="product-overview-by-category.html?category=keyboards">Bàn phím</a></li>
+              </ul>
+            </li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="support.html">Hỗ trợ</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Mobile Search Form -->
+    <div class="collapse" id="mobileSearch">
+      <div class="container">
+        <form class="search-form">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for products">
+            <button class="btn" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </header>
+
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section">
+
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="content-wrapper" data-aos="fade-up" data-aos-delay="100">
+            <h1 class="hero-title">Khám phá các sản phẩm nổi bật</h1>
+            <p class="hero-description">
+              Khám phá thế giới công nghệ đỉnh cao - Laptop, điện thoại và phụ kiện chính hãng, ưu đãi hấp dẫn, giao
+              hàng siêu tốc.
+            </p>
+            <div class="features-list" data-aos="fade-up" data-aos-delay="300">
+              <div class="feature-item">
+                <i class="bi bi-truck"></i>
+                <span>Miễn phí vận chuyển</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-award"></i>
+                <span>Cam kết chất lượng</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-headset"></i>
+                <span>Hỗ trợ 24/7</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visuals">
+          <div class="product-showcase" data-aos="fade-left" data-aos-delay="200">
+            <div class="product-card featured">
+              <!-- <img src="assets/img/product/product-2.webp" alt="Featured Product" class="img-fluid"> -->
+              <img src="assets/img/product/iphone17.png" alt="Featured Product" class="img-fluid">
+              <div class="product-badge">Chất lượng</div>
+              <div class="product-info">
+                <!-- <h4>Sản phẩm cao cấp và chất lượng</h4> -->
+                <!-- <div class="price">
+                  <span class="sale-price">249.000đ</span>
+                  <span class="original-price">350.000đ</span>
+                </div> -->
+              </div>
+            </div>
+
+            <div class="product-grid">
+              <div class="product-mini" data-aos="zoom-in" data-aos-delay="400">
+                <img src="assets/img/product/laptop.png" alt="Product" class="img-fluid">
+                <span class="mini-price">Laptop</span>
+              </div>
+              <div class="product-mini" data-aos="zoom-in" data-aos-delay="500">
+                <img src="assets/img/product/charging-adapter.png" alt="Product" class="img-fluid">
+                <span class="mini-price">Phụ kiện</span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+    </section><!-- /Hero Section -->
+
+    <!-- Promo Cards Section -->
+    <section id="promo-cards" class="promo-cards section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+
+          <div class="col-lg-3">
+            <div class="category-featured" data-aos="fade-right" data-aos-delay="200">
+              <!-- <div class="category-image">
+                <img src="assets/img/product/product-f-2.webp" alt="Women's Collection" class="img-fluid">
+              </div> -->
+              <div class="category-content">
+                <span class="category-tag text-center">Xu hướng công nghệ</span>
+                <h2 class="fs-2">Đầy đủ các siêu phẩm công nghệ mới nhất</h2>
+                <p class="m-0">
+                  Khám phá những sản phẩm công nghệ mới nhất với thiết kế bền bỉ, thông minh và đầy phong cách, đáp ứng
+                  hoàn hảo mọi nhu cầu trong cuộc sống năng động của bạn.
+                </p>
+                <!-- <a href="#" class="btn-shop">Xem bộ sản phẩm<i class="bi bi-arrow-right"></i></a> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-9">
+
+            <div class="row gy-4">
+
+              <div class="col-xl-4">
+                <div class="category-card cat-men" data-aos="fade-up" data-aos-delay="300">
+                  <div class="category-image">
+                    <img src="assets/img/product/phone-category.png" alt="Điện thoại" class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>Điện thoại</h4>
+                    <!-- <p>242 sản phẩm</p> -->
+                    <a href="product-overview-by-category.html?category=phones" class="card-link">Mua ngay<i
+                        class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-4">
+                <div class="category-card cat-kids" data-aos="fade-up" data-aos-delay="400">
+                  <div class="category-image">
+                    <img src="assets/img/product/charging-adapter-category.png" alt="Củ sạc" class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>Củ sạc</h4>
+                    <!-- <p>185 sản phẩm</p> -->
+                    <a href="product-overview-by-category.html?category=charging-adapters" class="card-link">Mua ngay<i
+                        class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-4">
+                <div class="category-card cat-cosmetics" data-aos="fade-up" data-aos-delay="500">
+                  <div class="category-image">
+                    <img src="assets/img/product/charging-cable-category.png" alt="Cáp sạc" class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>Cáp sạc</h4>
+                    <!-- <p>127 sản phẩm</p> -->
+                    <a href="product-overview-by-category.html?category=charging-cables" class="card-link">Mua ngay<i
+                        class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-4">
+                <div class="category-card cat-accessories" data-aos="fade-up" data-aos-delay="600">
+                  <div class="category-image">
+                    <img src="assets/img/product/laptop-category.png" alt="Laptop" class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>Laptop</h4>
+                    <!-- <p>308 sản phẩm</p> -->
+                    <a href="product-overview-by-category.html?category=laptops" class="card-link">Mua ngay<i
+                        class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-4">
+                <div class="category-card cat-cosmetics" data-aos="fade-up" data-aos-delay="700">
+                  <div class="category-image">
+                    <img src="assets/img/product/mouse-category.png" alt="Chuột" class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>Chuột</h4>
+                    <!-- <p>127 sản phẩm</p> -->
+                    <a href="product-overview-by-category.html?category=mouses" class="card-link">Mua ngay<i
+                        class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-4">
+                <div class="category-card cat-men" data-aos="fade-up" data-aos-delay="800">
+                  <div class="category-image">
+                    <img src="assets/img/product/keyboard-category.png" alt="Bàn phím" class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>Bàn phím</h4>
+                    <!-- <p>308 sản phẩm</p> -->
+                    <a href="product-overview-by-category.html?category=keyboards" class="card-link">Mua ngay<i
+                        class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- /Promo Cards Section -->
+
+    <!-- Best Sellers Section -->
+    <section id="best-sellers" class="best-sellers section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Sản phẩm mới</h2>
+        <p>Khám phá ngay các sản phẩm công nghệ mới nhất</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row g-5" id="latest-products">
+          <!-- Product -->
+          <div class="col-lg-3 col-md-6">
+            <div class="product-item">
+              <div class="product-image">
+                <div class="product-badge sale-badge bg-warning">Mới</div>
+                <img src="assets/img/product/product-1.webp" alt="Product Image" class="img-fluid" loading="lazy">
+              </div>
+              <div class="product-info">
+                <div class="product-category fw-light mb-1">Điện thoại</div>
+                <h4 class="product-name"><a href="product-details.html">iPhone 16 Pro Max</a></h4>
+                <div class="product-price mb-2">
+                  <span class="product-promotional-price text-danger fw-bold">24.000.000đ</span>
+                  <span class="product-original-price text-muted text-decoration-line-through small">30.000.000đ</span>
+                </div>
+                <div class="product-rating">
+                  <div class="stars">
+                    <i class="bi bi-star-fill"></i>
+                    5
+                  </div>
+                  <span class="rating-count">(24)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Product -->
+        </div>
+
+      </div>
+
+    </section><!-- /Best Sellers Section -->
+
+
+    <!-- Call To Action Section -->
+    <section id="call-to-action" class="call-to-action section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <div class="main-content text-center" data-aos="zoom-in" data-aos-delay="200">
+              <div class="offer-badge" data-aos="fade-down" data-aos-delay="250">
+                <span class="limited-time">Ưu đãi có thời hạn</span>
+                <span class="offer-text">GIẢM 50%</span>
+              </div>
+
+              <h2 data-aos="fade-up" data-aos-delay="300">Flash Sale độc quyền</h2>
+
+              <p class="subtitle" data-aos="fade-up" data-aos-delay="350">
+                Sale lớn nhất năm - Chỉ 24 giờ! Sản phẩm cao cấp, giá không thể tốt hơn.
+              </p>
+
+              <div class="countdown-wrapper" data-aos="fade-up" data-aos-delay="400">
+                <div class="countdown d-flex justify-content-center" data-count="2025/12/31">
+                  <div>
+                    <h3 class="count-days"></h3>
+                    <h4>Ngày</h4>
+                  </div>
+                  <div>
+                    <h3 class="count-hours"></h3>
+                    <h4>Giờ</h4>
+                  </div>
+                  <div>
+                    <h3 class="count-minutes"></h3>
+                    <h4>Phút</h4>
+                  </div>
+                  <div>
+                    <h3 class="count-seconds"></h3>
+                    <h4>Giây</h4>
+                  </div>
+                </div>
+              </div>
+
+              <div class="action-buttons" data-aos="fade-up" data-aos-delay="450">
+                <a href="#" class="btn-shop-now">Mua ngay</a>
+                <a href="#" class="btn-view-deals">Xem tất cả ưu đãi</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row featured-products-row" id="discount-list" data-aos="fade-up" data-aos-delay="500">
+          <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+            <div class="product-showcase">
+              <div class="discount-code fw-bold text-danger">SALE2025</div>
+              <div>Giảm <span class="discount-percent fw-medium">20%</span> tối đa <span
+                  class="max-discount-amount fw-medium">500.000đ</span></div>
+              <div>Điều kiện: Đơn hàng từ <span class="min-order-amount fw-medium">1.000.000đ</span></div>
+              <div>Thời gian: <span class="start-date fw-medium">01/06/2025</span> - <span
+                  class="end-date fw-medium">10/06/2025</span></div>
+              <div>(Số lượng: <span class="quantity fw-medium">50</span>)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Call To Action Section -->
+
+
+    <!-- Chatbot Floating Button -->
+    <button id="chatbotToggle" class="btn btn-primary rounded-circle shadow chatbot-btn">
+      <i class="bi bi-chat-dots fs-3"></i>
+    </button>
+
+    <!-- Chatbot Window -->
+    <div id="chatbotWindow" class="card shadow chatbot-window">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        Chatbot Minh Thành Computer
+        <button id="chatbotClose" class="btn-close btn-close-white" type="button" aria-label="Close"></button>
+      </div>
+      <div class="card-body d-flex flex-column p-2">
+        <div id="chatMessages" class="chat-messages flex-grow-1 overflow-auto mb-2 p-2 border rounded">
+          <div class="text-muted text-center small">Chatbot Minh Thành Computer đã sẵn sàng hỗ trợ bạn!</div>
+        </div>
+        <div class="input-group">
+          <input id="chatInput" type="text" class="form-control" placeholder="Nhập tin nhắn...">
+          <button id="sendMsg" class="btn btn-primary">
+            <i class="bi bi-send"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer id="footer" class="footer dark-background">
+    <div class="footer-main">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget footer-about">
+              <a href="index.html" class="logo">
+                <span class="sitename">Minh Thành Computer</span>
+              </a>
+              <p>
+                Minh Thành Computer - Chuyên bán laptop, điện thoại và phụ kiện công nghệ chất lượng.
+              </p>
+
+              <div class="social-links mt-4">
+                <h5>Liên hệ với chúng tôi</h5>
+                <div class="social-icons">
+                  <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                  <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                  <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                  <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                  <a href="#" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+                  <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Sản phẩm</h4>
+              <ul class="footer-links">
+                <li><a href="product-overview-by-category.html?category=phones">Điện thoại</a></li>
+                <li><a href="product-overview-by-category.html?category=laptops">Laptop</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-adapters">Củ sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-cables">Cáp sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=mouses">Chuột</a></li>
+                <li><a href="product-overview-by-category.html?category=keyboards">Bàn phím</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Hỗ trợ</h4>
+              <ul class="footer-links">
+                <li><a href="support.html">Trung tâm trợ giúp</a></li>
+                <li><a href="account.html">Tình trạng đơn hàng</a></li>
+                <li><a href="shiping-info.html">Thông tin vận chuyển</a></li>
+                <li><a href="return-policy.html">Đổi trả</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget">
+              <h4>Thông tin liên hệ</h4>
+              <div class="footer-contact">
+                <div class="contact-item">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>Ngã 3 Hưng Lộc cũ, xã Vạn Lộc, tỉnh Thanh Hóa</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-telephone"></i>
+                  <span>0963 703 556</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-envelope"></i>
+                  <span>minhthanhcomputer@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-clock"></i>
+                  <span>Thứ 2 - Thứ 7: 8 giờ - 18 giờ<br>Chủ nhật: Đóng cửa</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Modal yêu cầu đăng nhập -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Vui lòng đăng nhập vào tài khoản</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Bạn cần đăng nhập để xem giỏ hàng.
+        </div>
+        <div class="modal-footer">
+          <a href="register.html" class="btn btn-dark">Đăng ký</a>
+          <a href="login.html" class="btn btn-outline-dark">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/drift-zoom/Drift.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  <!-- Custom JS -->
+  <script src="assets/js/home.js"></script>
+  <script src="assets/js/chatbot.js"></script>
+
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/logout.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Đặt hàng - Minh Thành Computer</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/logo.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="checkout-page">
+
+  <header id="header" class="header sticky-top">
+    <!-- Top Bar -->
+    <div class="top-bar py-1">
+      <div class="container-fluid container-xl">
+        <div class="row align-items-center">
+          <div class="col-lg-4 d-none d-lg-flex">
+            <div class="top-bar-item">
+              <i class="bi bi-telephone-fill me-2"></i>
+              <span>Quý khách cần hỗ trợ? Vui lòng gọi: </span>
+              <a href="tel:+1234567890">0963 703 556</a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-12 text-center">
+            <div class="announcement-slider swiper init-swiper">
+              <script type="application/json" class="swiper-config">
+                {
+                  "loop": true,
+                  "speed": 600,
+                  "autoplay": {
+                    "delay": 3000
+                  },
+                  "slidesPerView": 1,
+                  "direction": "vertical",
+                  "effect": "slide"
+                }
+              </script>
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">🚚 Miễn phí vận chuyển</div>
+                <div class="swiper-slide">💰 Hoàn hàng miễn phí trong 30 ngày</div>
+                <div class="swiper-slide">👩‍💼 Nhân viên hỗ trợ 24/7</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header -->
+    <div class="main-header">
+      <div class="container-fluid container-xl">
+        <div class="d-flex py-3 align-items-center justify-content-between">
+
+          <!-- Logo -->
+          <a href="index.html" class="logo d-flex align-items-center">
+            <h1 class="sitename">MINH THANH COMPUTER</h1>
+          </a>
+
+          <!-- Search -->
+          <form class="search-form desktop-search-form">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" name="keyword">
+              <button class="btn" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <!-- Actions -->
+          <div class="header-actions d-flex align-items-center justify-content-end">
+
+            <!-- Mobile Search Toggle -->
+            <button class="header-action-btn mobile-search-toggle d-xl-none" type="button" data-bs-toggle="collapse"
+              data-bs-target="#mobileSearch" aria-expanded="false" aria-controls="mobileSearch">
+              <i class="bi bi-search"></i>
+            </button>
+
+            <!-- Account -->
+            <div class="dropdown account-dropdown">
+              <button class="header-action-btn" data-bs-toggle="dropdown">
+                <i class="bi bi-person"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-header">
+                  <h6>Chào mừng tới <span class="sitename">Minh Thành COMPUTER</span></h6>
+                  <p class="mb-0">Truy cập tài khoản &amp; Quản lý đơn hàng</p>
+                </div>
+                <div class="dropdown-body pt-1 pb-1">
+                  <a class="dropdown-item d-flex align-items-center" href="account.html">
+                    <i class="bi bi-person-circle me-2"></i>
+                    <span>Tài khoản</span>
+                  </a>
+                </div>
+                <div class="dropdown-footer">
+                  <a href="register.html" class="btn btn-primary w-100 mb-2" id="btnRegister">Đăng ký</a>
+                  <a href="login.html" class="btn btn-outline-primary w-100" id="btnLogin">Đăng nhập</a>
+                  <a href="" class="btn btn-outline-primary w-100 logout-link" id="btnLogout">Đăng xuất</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cart -->
+            <a href="cart.html" class="header-action-btn cart-btn">
+              <i class="bi bi-cart3"></i>
+              <span class="badge">0</span>
+            </a>
+
+            <!-- Mobile Navigation Toggle -->
+            <i class="mobile-nav-toggle d-xl-none bi bi-list me-0"></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="header-nav">
+      <div class="container-fluid container-xl position-relative">
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="index.html" class="active">Trang chủ</a></li>
+            <li><a href="product-overview-by-category.html?category=phones">Điện thoại</a></li>
+            <li><a href="product-overview-by-category.html?category=laptops">Laptop</a></li>
+            <li class="dropdown"><a href="#"><span>Phụ kiện</span> <i
+                  class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="product-overview-by-category.html?category=charging-adapters">Củ sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-cables">Cáp sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=mouses">Chuột</a></li>
+                <li><a href="product-overview-by-category.html?category=keyboards">Bàn phím</a></li>
+              </ul>
+            </li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="support.html">Hỗ trợ</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Mobile Search Form -->
+    <div class="collapse" id="mobileSearch">
+      <div class="container">
+        <form class="search-form">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for products">
+            <button class="btn" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Thanh toán</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li class="current">Thanh toán</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Checkout Section -->
+    <section id="checkout" class="checkout section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+          <div class="col-lg-7">
+            <!-- Checkout Form -->
+            <div class="checkout-container" data-aos="fade-up">
+              <form class="checkout-form">
+                <!-- Customer Information -->
+                <div class="checkout-section" id="customer-info">
+                  <div class="section-header">
+                    <div class="section-number">1</div>
+                    <h3>Thông tin người nhận</h3>
+                  </div>
+                  <div class="section-content">
+                    <div class="form-group">
+                      <label for="recipientName">Họ và tên</label>
+                      <input type="text" name="recipientName" class="form-control" id="recipientName"
+                        placeholder="Họ và tên" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="recipientPhone">Số điện thoại</label>
+                      <input type="tel" class="form-control" name="recipientPhone" id="recipientPhone"
+                        placeholder="Số điện thoại" required>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="checkout-section" id="shipping-address">
+                  <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h3>Địa chỉ nhận hàng</h3>
+                  </div>
+                  <div class="section-content">
+                    <div class="form-group">
+                      <label for="city">Tỉnh/Thành phố</label>
+                      <input type="text" class="form-control" name="city" id="city" placeholder="Tỉnh/Thành phố"
+                        required>
+                    </div>
+                    <!-- <div class="form-group">
+                      <label for="district">Quận/Huyện</label>
+                      <input type="text" class="form-control" name="district" id="district" placeholder="Quận/Huyện">
+                    </div> -->
+                    <div class="form-group">
+                      <label for="ward">Phường/Xã</label>
+                      <input type="text" class="form-control" name="ward" id="ward" placeholder="Phường/Xã">
+                    </div>
+                    <div class="form-group">
+                      <label for="detailAddress">Địa chỉ chi tiết</label>
+                      <input type="text" class="form-control" name="detailAddress" id="detailAddress"
+                        placeholder="Địa chỉ chi tiết">
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="save-address" name="save-address">
+                      <label class="form-check-label" for="save-address">
+                        Lưu lại địa chỉ
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="checkout-section" id="payment-method">
+                  <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h3>Phương thức thanh toán</h3>
+                  </div>
+                  <div class="section-content">
+                    <div class="payment-options">
+                      <div class="payment-option active">
+                        <input type="radio" name="payment-method" id="bank-transfer" checked="">
+                        <label for="bank-transfer">
+                          <span class="payment-icon"><i class="bi bi-bank"></i></span>
+                          <span class="payment-label">Chuyển khoản ngân hàng</span>
+                        </label>
+                      </div>
+                      <div class="payment-option">
+                        <input type="radio" name="payment-method" id="cod">
+                        <label for="cod">
+                          <span class="payment-icon"><i class="bi bi-cash-stack"></i></span>
+                          <span class="payment-label">Thanh toán khi nhận hàng</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="payment-details" id="bank-transfer-details">
+                      <p class="payment-info">Đơn hàng của bạn sẽ được kiểm tra và xác nhận ít phút sau khi chuyển
+                        khoản.</p>
+                    </div>
+
+                    <div class="payment-details d-none" id="cod-details">
+                      <p class="payment-info">Chúng tôi sẽ giao hàng tận nơi, bạn chỉ cần kiểm tra và thanh toán khi
+                        nhận hàng thôi nhé.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Order Review -->
+                <div class="checkout-section" id="order-review">
+                  <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h3>Kiểm tra &amp; Hoàn tất đơn hàng</h3>
+                  </div>
+                  <div class="section-content">
+                    <div class="form-group">
+                      <label for="note">Ghi chú</label>
+                      <input type="text" class="form-control" name="note" id="note" placeholder="Ghi chú">
+                    </div>
+                    <div class="form-check terms-check">
+                      <input class="form-check-input" type="checkbox" id="terms" name="terms" required="">
+                      <label class="form-check-label" for="terms">
+                        Tôi đồng ý với các <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Điều
+                          khoản</a> and <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Chính sách bảo
+                          mật</a>
+                      </label>
+                    </div>
+                    <div class="success-message d-none">Đơn hàng của bạn đã được đặt thành công! Cảm ơn bạn đã mua hàng.
+                    </div>
+                    <div class="place-order-container">
+                      <button type="submit" class="btn btn-primary place-order-btn">
+                        <span class="btn-text">Đặt hàng</span>
+                        <span class="btn-price">$240.96</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <!-- Order Summary -->
+            <div class="order-summary" data-aos="fade-left" data-aos-delay="200">
+              <div class="order-summary-header">
+                <h3>Tóm tắt đơn hàng</h3>
+                <span class="item-count">2 Items</span>
+              </div>
+
+              <div class="order-summary-content">
+                <div class="order-items">
+                  <div class="order-item">
+                    <div class="order-item-image">
+                      <img src="assets/img/product/product-1.webp" alt="Product" class="img-fluid">
+                    </div>
+                    <div class="order-item-details">
+                      <h4>Lorem Ipsum Dolor</h4>
+                      <p class="order-item-variant">Color: Black | Size: M</p>
+                      <div class="order-item-price">
+                        <span class="quantity">1 ×</span>
+                        <span class="price">$89.99</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="order-item">
+                    <div class="order-item-image">
+                      <img src="assets/img/product/product-2.webp" alt="Product" class="img-fluid">
+                    </div>
+                    <div class="order-item-details">
+                      <h4>Sit Amet Consectetur</h4>
+                      <p class="order-item-variant">Color: White | Size: L</p>
+                      <div class="order-item-price">
+                        <span class="quantity">2 ×</span>
+                        <span class="price">$59.99</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="promo-code">
+                  <div class="input-group">
+                    <input type="text" class="form-control discount-input" placeholder="Mã giảm giá"
+                      aria-label="Mã giảm giá">
+                    <button class="btn btn-outline-primary apply-discount-btn" type="button">Áp dụng</button>
+                  </div>
+                </div>
+
+                <div class="order-totals">
+                  <div class="order-subtotal d-flex justify-content-between">
+                    <span>Tổng tiền sản phẩm</span>
+                    <span class="total-product">1.500.000đ</span>
+                  </div>
+                  <div class="order-shipping d-flex justify-content-between">
+                    <span>Phí vận chuyển</span>
+                    <span>Miễn phí</span>
+                  </div>
+                  <div class="discount-amount d-flex justify-content-between">
+                    <span>Tổng tiền giảm</span>
+                    <span class="total-discount">0đ</span>
+                  </div>
+                  <div class="order-total d-flex justify-content-between">
+                    <span>Thành tiền</span>
+                    <span class="total-cart">1.500.000đ</span>
+                  </div>
+                </div>
+
+                <div class="secure-checkout">
+                  <div class="secure-checkout-header">
+                    <i class="bi bi-shield-lock"></i>
+                    <span>Thanh toán an toàn</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terms and Privacy Modals -->
+        <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Điều khoản sử dụng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p><strong>1. Chấp nhận điều khoản</strong></p>
+                <p>Khi sử dụng website, bạn đồng ý tuân thủ các điều khoản và quy định của chúng tôi.</p>
+
+                <p><strong>2. Tài khoản người dùng</strong></p>
+                <p>Bạn có trách nhiệm bảo mật thông tin tài khoản và mật khẩu của mình.</p>
+
+                <p><strong>3. Đặt hàng và thanh toán</strong></p>
+                <p>Tất cả đơn hàng phải được xác nhận và thanh toán hợp lệ trước khi xử lý.</p>
+
+                <p><strong>4. Chính sách đổi trả</strong></p>
+                <p>Sản phẩm có thể được đổi trả trong vòng 7 ngày nếu có lỗi từ nhà sản xuất.</p>
+
+                <p><strong>5. Quyền và trách nhiệm</strong></p>
+                <p>Chúng tôi có quyền từ chối phục vụ nếu phát hiện hành vi gian lận hoặc vi phạm.</p>
+
+                <p><strong>6. Thay đổi điều khoản</strong></p>
+                <p>Chúng tôi có quyền cập nhật điều khoản bất kỳ lúc nào mà không cần thông báo trước.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tôi đã hiểu</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="privacyModalLabel">Chính sách bảo mật</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p><strong>1. Thu thập thông tin</strong></p>
+                <p>Chúng tôi thu thập thông tin như tên, email, số điện thoại để phục vụ việc xử lý đơn hàng.</p>
+
+                <p><strong>2. Sử dụng thông tin</strong></p>
+                <p>Thông tin được sử dụng để xác nhận đơn hàng, hỗ trợ khách hàng và cải thiện dịch vụ.</p>
+
+                <p><strong>3. Bảo mật dữ liệu</strong></p>
+                <p>Chúng tôi cam kết bảo vệ thông tin cá nhân bằng các biện pháp bảo mật phù hợp.</p>
+
+                <p><strong>4. Chia sẻ thông tin</strong></p>
+                <p>Chúng tôi không chia sẻ thông tin cá nhân cho bên thứ ba, trừ khi có yêu cầu pháp lý.</p>
+
+                <p><strong>5. Quyền của người dùng</strong></p>
+                <p>Bạn có quyền yêu cầu chỉnh sửa hoặc xóa thông tin cá nhân của mình.</p>
+
+                <p><strong>6. Cookie</strong></p>
+                <p>Website có thể sử dụng cookie để cải thiện trải nghiệm người dùng.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tôi đã hiểu</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Checkout Section -->
+
+  </main>
+
+  <footer id="footer" class="footer dark-background">
+    <div class="footer-main">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget footer-about">
+              <a href="index.html" class="logo">
+                <span class="sitename">Minh Thành Computer</span>
+              </a>
+              <p>
+                Minh Thành Computer - Chuyên bán laptop, điện thoại và phụ kiện công nghệ chất lượng.
+              </p>
+
+              <div class="social-links mt-4">
+                <h5>Liên hệ với chúng tôi</h5>
+                <div class="social-icons">
+                  <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                  <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                  <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                  <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                  <a href="#" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+                  <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Sản phẩm</h4>
+              <ul class="footer-links">
+                <li><a href="product-overview-by-category.html?category=phones">Điện thoại</a></li>
+                <li><a href="product-overview-by-category.html?category=laptops">Laptop</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-adapters">Củ sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=charging-cables">Cáp sạc</a></li>
+                <li><a href="product-overview-by-category.html?category=mouses">Chuột</a></li>
+                <li><a href="product-overview-by-category.html?category=keyboards">Bàn phím</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Hỗ trợ</h4>
+              <ul class="footer-links">
+                <li><a href="support.html">Trung tâm trợ giúp</a></li>
+                <li><a href="account.html">Tình trạng đơn hàng</a></li>
+                <li><a href="shiping-info.html">Thông tin vận chuyển</a></li>
+                <li><a href="return-policy.html">Đổi trả</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget">
+              <h4>Thông tin liên hệ</h4>
+              <div class="footer-contact">
+                <div class="contact-item">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>Ngã 3 Hưng Lộc cũ, xã Vạn Lộc, tỉnh Thanh Hóa</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-telephone"></i>
+                  <span>0963 703 556</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-envelope"></i>
+                  <span>minhthanhcomputer@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-clock"></i>
+                  <span>Thứ 2 - Thứ 7: 8 giờ - 18 giờ<br>Chủ nhật: Đóng cửa</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Modal yêu cầu đăng nhập -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Vui lòng đăng nhập vào tài khoản</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Bạn cần đăng nhập để xem giỏ hàng.
+        </div>
+        <div class="modal-footer">
+          <a href="register.html" class="btn btn-dark">Đăng ký</a>
+          <a href="login.html" class="btn btn-outline-dark">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-success">Thêm vào giỏ hàng thành công</h5> <button type="button" class="btn-close"
+            data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body"> Sản phẩm đã được thêm vào giỏ hàng của bạn. </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="successModal-btn"> Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/drift-zoom/Drift.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  <!-- Custom JS -->
+  <script src="assets/js/checkout.js"></script>
+
+  <!-- Custom JS -->
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/logout.js"></script>
+
+</body>
+
+</html>
