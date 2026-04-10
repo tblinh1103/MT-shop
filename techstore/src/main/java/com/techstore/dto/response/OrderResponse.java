@@ -10,6 +10,9 @@ import java.util.List;
 public class OrderResponse {
     private String orderId;
     private String orderCode;
+    private BigDecimal subtotal;
+    private BigDecimal shippingFee;
+    private BigDecimal discountAmount;
     private BigDecimal totalAmount;
     private String orderStatus;
     private String note;

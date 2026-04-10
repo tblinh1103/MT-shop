@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Payment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String paymentId;
@@ -30,4 +31,9 @@ public class Payment {
     private String paymentStatus = PaymentStatus.PENDING.name();
 
     private LocalDateTime paidAt;
+
+    @Column(unique = true)
+    private String txnRef;
+
+    private String vnpResponseCode;
 }

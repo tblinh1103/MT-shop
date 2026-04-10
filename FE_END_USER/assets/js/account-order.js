@@ -191,11 +191,15 @@ function renderOrders(orders) {
                             <div class="price-breakdown">
                                 <div class="price-row">
                                     <span>Tổng tiền sản phẩm</span>
-                                    <span>${formatMoney(order.totalAmount)}</span>
+                                    <span>${formatMoney(order.subtotal)}</span>
                                 </div>
                                 <div class="price-row">
                                     <span>Phí vận chuyển</span>
-                                    <span>Miễn phí</span>
+                                    <span>${formatMoney(order.shippingFee)}</span>
+                                </div>
+                                <div class="price-row">
+                                    <span>Tổng tiền giảm</span>
+                                    <span>${formatMoney(order.discountAmount)}</span>
                                 </div>
                                 <div class="price-row total">
                                     <span>Thành tiền</span>

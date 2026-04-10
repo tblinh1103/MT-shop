@@ -116,6 +116,7 @@ public class SecurityConfig {
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(request -> request
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                                .requestMatchers("/api/payments/**").permitAll()
 
                                                 // ✅ STATIC + HOME
                                                 .requestMatchers(

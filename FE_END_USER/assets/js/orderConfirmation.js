@@ -64,7 +64,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   // --- Cập nhật tóm tắt tiền ---
-  document.querySelector(".total-order").textContent = `${order.totalAmount.toLocaleString("vi-VN")}đ`;
+  document.querySelector(".total-order").textContent = `${order.subtotal.toLocaleString("vi-VN")}đ`;
+  document.querySelector(".shipping-fee").textContent = `${order.shippingFee.toLocaleString("vi-VN")}đ`;
+  document.querySelector(".total-discount").textContent = `${order.discountAmount.toLocaleString("vi-VN")}đ`;
   document.querySelector(".final-amount").textContent = `${order.totalAmount.toLocaleString("vi-VN")}đ`;
 
   // --- Cập nhật thông tin giao hàng ---

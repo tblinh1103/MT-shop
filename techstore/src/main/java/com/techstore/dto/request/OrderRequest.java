@@ -7,6 +7,9 @@ import java.util.List;
 
 @Data
 public class OrderRequest {
+    private BigDecimal subtotal;
+    private BigDecimal shippingFee;
+    private BigDecimal discountAmount;
     private BigDecimal totalAmount;
     private String note;
     private String recipientName;

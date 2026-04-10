@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   let cartItems = []; // Chi tiết giỏ hàng
   let appliedDiscountCode = null;
   let originalTotal = 0;
+  let discountAmount = 0;
+  let shippingFee = 0;
 
   // -----------------------
   // Lấy giỏ hàng
@@ -65,16 +67,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       itemCount += cartItem.quantity;
     });
 
-    const totalCartEl = document.querySelector(".total-cart");
-    if (totalCartEl) totalCartEl.textContent = cart.total.toLocaleString() + "đ";
-
-    const totalProductEl = document.querySelector(".total-product");
-    if (totalProductEl) totalProductEl.textContent = cart.total.toLocaleString() + "đ";
-
-    const itemCountEl = document.querySelector(".item-count");
-    if (itemCountEl) itemCountEl.textContent = itemCount + " sản phẩm";
-
-    document.querySelector(".btn-price").textContent = cart.total.toLocaleString() + "đ";
+    updateCartTotalUI();
   }
 
   // -----------------------
@@ -96,6 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.error("Lỗi fetchDefaultAddress:", error);
       return null;
     }
+
   }
 
   function fillAddressForm(address) {
@@ -116,83 +110,58 @@ document.addEventListener("DOMContentLoaded", async function () {
         el.value = fields[id] || "";
       }
     });
+
+    if (address.city) {
+      updateShippingFee(address.city);
+      updateCartTotalUI();
+    }
   }
 
-  // -----------------------
-  // Áp mã giảm giá
-  // -----------------------
-  /*
-  document.querySelector(".apply-discount-btn")?.addEventListener("click", async () => {
-    const code = document.querySelector(".discount-input")?.value.trim();
-    if (!code) {
-      showModal({
-        title: "Cảnh báo",
-        message: `Vui lòng nhập mã giảm giá!`,
-        type: "warning",
-        autoClose: true
-      });
+  const cityInput = document.querySelector("#city");
+
+  cityInput.addEventListener("change", () => {
+    updateShippingFee(cityInput.value);
+    updateCartTotalUI();
+  });
+
+  function updateShippingFee(city) {
+    // Demo: điện thoại/laptop
+    if (!city) {
+      shippingFee = 0;
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:8080/tech-store/api/discounts/apply", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          discountCode: code,
-          cartTotal: cartTotal
-        })
-      });
-      const result = await response.json();
-      console.log("Áp mã response:", result);
+    // Có thể map tĩnh một số tỉnh để minh họa
+    const shippingRates = {
+      "Hà Nội": 20000,
+      "Hồ Chí Minh": 25000,
+      "Đà Nẵng": 22000
+    };
 
-      if (result.code !== 1000) {
-        showModal({
-          title: "Cảnh báo",
-          message: `Mã giảm giá không hợp lệ!`,
-          type: "warning",
-          autoClose: true
-        });
-        return;
-      }
+    shippingFee = shippingRates[city] || 30000; // mặc định 30k
+  }
 
-      appliedDiscountCode = code;
+  function updateCartTotalUI() {
+    // cartTotal = subtotal + shippingFee - discountAmount
+    let totalPrice = originalTotal + shippingFee - discountAmount;
 
-      const data = result.result;
+    if (totalPrice < 0) totalPrice = 0;
+    cartTotal = totalPrice;
 
-      // Hiển thị giảm giá và tổng tiền mới
-      const discountEl = document.querySelector(".total-discount");
-      if (discountEl) discountEl.textContent = "- " + data.discountAmount.toLocaleString() + "đ";
+    const totalProductEl = document.querySelector(".total-product");
+    const totalCartEl = document.querySelector(".total-cart");
+    const shippingFeeEl = document.querySelector(".shipping-fee");
+    const totalDiscountEl = document.querySelector(".total-discount");
 
-      const totalEl = document.querySelector(".total-cart");
-      if (totalEl) totalEl.textContent = data.finalAmount.toLocaleString() + "đ";
+    if (totalProductEl) totalProductEl.textContent = originalTotal.toLocaleString() + "đ";
+    if (totalCartEl) totalCartEl.textContent = totalPrice.toLocaleString() + "đ";
+    if (shippingFeeEl) shippingFeeEl.textContent = shippingFee ? shippingFee.toLocaleString() + "đ" : "Miễn phí";
+    if (totalDiscountEl) totalDiscountEl.textContent = discountAmount ? "- " + discountAmount.toLocaleString() + "đ" : "0đ";
 
-      document.querySelector(".btn-price").textContent = data.finalAmount.toLocaleString() + "đ";
-
-      // **Cập nhật cartTotal bằng tổng tiền sau giảm**
-      cartTotal = data.finalAmount;
-
-      showModal({
-        title: "Thành công",
-        message: `Áp mã giảm giá thành công!`,
-        type: "success",
-        autoClose: true
-      });
-
-    } catch (error) {
-      console.error(error);
-      showModal({
-        title: "Lỗi",
-        message: `Có lỗi xảy ra khi áp mã!`,
-        type: "danger",
-        autoClose: true
-      });
-    }
-  });
-  */
+    // Cập nhật nút đặt hàng
+    const btnPriceEl = document.querySelector(".btn-price");
+    if (btnPriceEl) btnPriceEl.textContent = totalPrice.toLocaleString() + "đ";
+  }
 
   const applyBtn = document.querySelector(".apply-discount-btn");
 
@@ -211,14 +180,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Nếu đổi mã khác → reset
     if (appliedDiscountCode && appliedDiscountCode !== code) {
-      cartTotal = originalTotal;
-      alert(originalTotal + " " + cartTotal);
-      document.querySelector(".total-discount").textContent = "0đ";
-      document.querySelector(".total-cart").textContent =
-        originalTotal.toLocaleString() + "đ";
+      appliedDiscountCode = null;
+      discountAmount = 0;
+
+      updateCartTotalUI();
     }
 
     try {
+      if (applyBtn.disabled) return;
       applyBtn.disabled = true;
       const response = await fetch("http://localhost:8080/tech-store/api/discounts/apply", {
         method: "POST",
@@ -235,6 +204,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       const result = await response.json();
 
       if (result.code !== 1000) {
+        appliedDiscountCode = null;
+        discountAmount = 0;
+        updateCartTotalUI();
+
         showModal({
           title: "Cảnh báo",
           message: `Mã giảm giá không hợp lệ!`,
@@ -247,16 +220,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       const data = result.result;
 
       appliedDiscountCode = code;
-      cartTotal = data.finalAmount;
-
-      document.querySelector(".total-discount").textContent =
-        "- " + data.discountAmount.toLocaleString() + "đ";
-
-      document.querySelector(".total-cart").textContent =
-        data.finalAmount.toLocaleString() + "đ";
-
-      document.querySelector(".btn-price").textContent =
-        data.finalAmount.toLocaleString() + "đ";
+      discountAmount = data.discountAmount;
+      updateCartTotalUI();
 
       showModal({
         title: "Thành công",
@@ -335,6 +300,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     const orderPayload = {
+      subtotal: originalTotal,
+      shippingFee: shippingFee,
+      discountAmount: discountAmount,
       totalAmount: cartTotal, // luôn dùng tổng tiền cuối cùng
       note: note,
       recipientName,
@@ -381,16 +349,47 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
 
       const order = result.result;
-      showModal({
-        title: "Tạo đơn hàng thành công",
-        message: `Mã đơn hàng: ${order.orderCode}<br>
-                  Tổng tiền: ${order.totalAmount.toLocaleString()}VND`,
-        type: "success",
-        autoClose: false
-      });
-      document.getElementById("successModal-btn").onclick = () => {
+
+      // =========================
+      // 🟢 COD → đi luôn
+      // =========================
+      if (paymentMethod === "CASH") {
         window.location.href = `order-confirmation.html?orderId=${order.orderId}`;
-      };
+        return;
+      }
+
+      // =========================
+      // 🔵 BANK → gọi VNPAY
+      // =========================
+      if (paymentMethod === "BANK") {
+
+        // 🔥 gọi API lấy link VNPAY
+        const vnpayRes = await fetch(
+          `http://localhost:8080/tech-store/api/payments/${order.payment.paymentId}/vnpay`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            }
+          }
+        );
+
+        const vnpayResult = await vnpayRes.json();
+
+        if (vnpayResult.code !== 1000) {
+          showModal({
+            title: "Lỗi",
+            message: `Không tạo được link thanh toán!`,
+            type: "danger",
+            autoClose: true
+          });
+          return;
+        }
+
+        // 🔥 redirect sang VNPAY
+        window.location.href = vnpayResult.result;
+      }
 
     } catch (error) {
       console.error("Lỗi khi tạo đơn hàng:", error);
@@ -409,7 +408,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   // -----------------------
   // Thực hiện khi load
   // -----------------------
+  await renderCart(); // phải load cart trước
+
   const defaultAddress = await fetchDefaultAddress();
   fillAddressForm(defaultAddress);
-  await renderCart();
+
+  updateCartTotalUI();
 });
