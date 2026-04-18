@@ -98,6 +98,55 @@
       </section>
 
     </div>
+
+    <!-- Modal thông báo thành công -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title text-success">Thêm vào giỏ hàng thành công</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            Sản phẩm đã được thêm vào giỏ hàng của bạn.
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal xác nhận -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title">Xác nhận</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body"></div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button type="button" class="btn btn-success" id="confirmOkBtn">
+              Xác nhận
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </main><!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i

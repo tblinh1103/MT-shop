@@ -30,38 +30,8 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-  <style>
-    .payment-status-select,
-    .order-status-select {
-      padding: 5px 14px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      outline: none;
-      cursor: pointer;
-
-      /* bỏ style mặc định */
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-
-      /* custom icon */
-      background: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 20 20'><path d='M5 7l5 5 5-5z'/></svg>") no-repeat right 10px center;
-      background-color: white;
-    }
-
-    .payment-status-select option,
-    .order-status-select option {
-      background-color: white !important;
-      color: black !important;
-    }
-
-    .payment-status-select option:checked,
-    .order-status-select option:hover {
-      background-color: #eee;
-      color: black;
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
@@ -72,7 +42,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <!-- <img src="assets/img/logo.png" alt=""> -->
-        <span class="d-none d-lg-block">MINH THANH COMPUTER</span>
+        <span class="d-none d-lg-block">MINH THANH</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
@@ -172,100 +142,245 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-          <li class="breadcrumb-item active">Đơn hàng</li>
+          <li class="breadcrumb-item active"><a href="order-management.html">Đơn hàng</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
-      <div class="row">
+    <!-- 🔎 FILTER -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
 
-        <div class="col-lg-12">
+      <!-- LEFT -->
+      <div class="bg-white p-3 rounded-xl shadow">
+        <h2 class="font-medium mb-2 text-sm">📦 Trạng thái</h2>
 
-          <div class="card">
-            <div class="card-body">
+        <div class="grid grid-cols-2 gap-2">
+          <select name="filter-order-status" id="filter-order-status" class="p-2 border rounded text-sm">
+            <option value="">Trạng thái đơn hàng</option>
+            <option value="PENDING">Đang xử lý</option>
+            <option value="CONFIRMED">Đã xác nhận</option>
+            <option value="SHIPPED">Đang giao</option>
+            <option value="COMPLETED">Hoàn thành</option>
+            <option value="CANCELLED">Đã hủy</option>
+          </select>
+          <select name="filter-payment-status" id="filter-payment-status" class="p-2 border rounded text-sm">
+            <option value="">Trạng thái thanh toán</option>
+            <option value="PENDING">Chưa thanh toán</option>
+            <option value="PAID">Đã thanh toán</option>
+          </select>
+        </div>
+      </div>
 
-              <div class="mt-4 mb-3 d-flex justify-content-between">
-                <div class="filter-order-status-container me-3">
-                  <span>Trạng thái đơn hàng: </span>
-                  <select name="filter-order-status" id="filter-order-status">
-                    <option value="">Tất cả</option>
-                    <option value="PENDING">Đang xử lý</option>
-                    <option value="CONFIRMED">Đã xác nhận</option>
-                    <option value="SHIPPED">Đã vận chuyển</option>
-                    <option value="CANCELLED">Đã hủy</option>
-                    <option value="COMPLETED">Đã hoàn thành</option>
-                  </select>
-                </div>
-              </div>
+      <!-- RIGHT -->
+      <div class="bg-white p-3 rounded-xl shadow">
+        <h2 class="font-medium mb-2 text-sm">📅 Thời gian</h2>
 
-              <table class="table table-hover small" id="orders-table">
-                <thead>
-                  <tr>
-                    <th>Mã đơn hàng</th>
-                    <th>Thời gian đặt</th>
-                    <th>Tổng tiền</th>
-                    <th>Người nhận</th>
-                    <th>SĐT</th>
-                    <th>Phương thức TT</th>
-                    <th>Trạng thái TT</th>
-                    <th>Trạng thái ĐH</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="align-middle">ORD-29112025161013283</td>
-                    <td class="align-middle">15/04/2025</td>
-                    <td class="align-middle">15.000.000đ</td>
-                    <td class="align-middle">Phạm Việt Long</td>
-                    <td class="align-middle">0123456789</td>
-                    <td class="align-middle">Thanh toán khi nhận hàng</td>
-                    <td class="align-middle">
-                      <select name="payment-status" id="payment-status">
-                        <option value="PENDING">Đang xử lý</option>
-                        <option value="PAID">Đã thanh toán</option>
-                      </select>
-                    </td>
-                    <td class="align-middle">
-                      <select name="order-status" id="order-status">
-                        <option value="PENDING">Đang xử lý</option>
-                        <option value="CONFIRMED">Đã xác nhận</option>
-                        <option value="SHIPPED">Đã vận chuyển</option>
-                        <option value="CANCELLED">Đã hủy</option>
-                        <option value="COMPLETED">Đã hoàn thành</option>
-                      </select>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
+        <div class="flex space-x-2 mb-2">
+          <input type="date" id="filter-from-date" class="p-2 border rounded w-full text-sm">
+          <input type="date" id="filter-to-date" class="p-2 border rounded w-full text-sm">
+        </div>
 
-              <!-- Order Detail Popup Modal -->
-              <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Chi tiết đơn hàng</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                      <div id="order-detail-content"></div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <select name="filter-payment-method" id="filter-payment-method" class="w-full p-2 border rounded text-sm">
+          <option value="">Phương thức thanh toán</option>
+          <option value="CASH">Thanh toán khi nhận hàng</option>
+          <option value="BANK">Chuyển khoản ngân hàng</option>
+        </select>
+      </div>
 
-            </div>
+      <div class="bg-white p-3 rounded-xl shadow space-y-2">
+
+        <!-- ITEM -->
+        <div class="flex items-center gap-2">
+          <span class="w-28 text-sm">🟡 Đang xử lý</span>
+          <div class="flex-1 bg-gray-200 rounded h-3 relative">
+            <div id="bar-PENDING" class="bg-yellow-400 h-3 rounded"></div>
           </div>
+          <span id="count-PENDING" class="w-10 text-right text-sm font-bold"></span>
+        </div>
 
+        <div class="flex items-center gap-2">
+          <span class="w-28 text-sm">🔵 Đã xác nhận</span>
+          <div class="flex-1 bg-gray-200 rounded h-3">
+            <div id="bar-CONFIRMED" class="bg-blue-400 h-3 rounded"></div>
+          </div>
+          <span id="count-CONFIRMED" class="w-10 text-right text-sm font-bold"></span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="w-28 text-sm">🚚 Đang giao</span>
+          <div class="flex-1 bg-gray-200 rounded h-3">
+            <div id="bar-SHIPPED" class="bg-indigo-400 h-3 rounded"></div>
+          </div>
+          <span id="count-SHIPPED" class="w-10 text-right text-sm font-bold"></span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="w-28 text-sm">✅ Hoàn thành</span>
+          <div class="flex-1 bg-gray-200 rounded h-3">
+            <div id="bar-COMPLETED" class="bg-green-400 h-3 rounded"></div>
+          </div>
+          <span id="count-COMPLETED" class="w-10 text-right text-sm font-bold"></span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="w-28 text-sm">❌ Đã hủy</span>
+          <div class="flex-1 bg-gray-200 rounded h-3">
+            <div id="bar-CANCELLED" class="bg-red-400 h-3 rounded"></div>
+          </div>
+          <span id="count-CANCELLED" class="w-10 text-right text-sm font-bold"></span>
         </div>
 
       </div>
-    </section>
+
+    </div>
+
+    <!-- 🟢 ROW 1: PAGE SIZE + SEARCH -->
+    <div class="flex flex-wrap justify-between items-center p-2 gap-3" id="action-bar">
+
+      <!-- LEFT -->
+      <div class="flex items-center space-x-2">
+        <h2 class="px-2">Hiển thị</h2>
+        <select id="page-size" class="p-2 border rounded">
+          <option value="10" selected>10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+        <span>đơn / trang</span>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="w-full md:w-1/2 relative">
+
+        <!-- Icon -->
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          🔍
+        </span>
+
+        <!-- Input -->
+        <input type="text" id="search-order" placeholder="Mã đơn / SĐT / tên người nhận"
+          class="w-full pl-9 pr-2 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+      </div>
+    </div>
+
+
+    <div class="bg-white rounded-2xl shadow overflow-hidden">
+
+      <table class="table table-hover small" id="orders-table">
+        <thead>
+          <tr>
+            <th class="p-3">Mã đơn hàng</th>
+            <th class="p-3">Thời gian đặt</th>
+            <th class="p-3">Tổng tiền</th>
+            <th class="p-3">Người nhận</th>
+            <th class="p-3">SĐT</th>
+            <th class="p-3">Phương thức TT</th>
+            <th class="p-3">Trạng thái TT</th>
+            <th class="p-3">Trạng thái ĐH</th>
+            <th class="p-3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="align-middle">ORD-29112025161013283</td>
+            <td class="align-middle">15/04/2025</td>
+            <td class="align-middle">15.000.000đ</td>
+            <td class="align-middle">Phạm Việt Long</td>
+            <td class="align-middle">0123456789</td>
+            <td class="align-middle">Thanh toán khi nhận hàng</td>
+            <td class="align-middle">
+              <select name="payment-status" id="payment-status">
+                <option value="PENDING">Đang xử lý</option>
+                <option value="PAID">Đã thanh toán</option>
+              </select>
+            </td>
+            <td class="align-middle">
+              <select name="order-status" id="order-status">
+                <option value="PENDING">Đang xử lý</option>
+                <option value="CONFIRMED">Đã xác nhận</option>
+                <option value="SHIPPED">Đã vận chuyển</option>
+                <option value="CANCELLED">Đã hủy</option>
+                <option value="COMPLETED">Đã hoàn thành</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- End Table with stripped rows -->
+
+      <div class="section mt-3 p-3">
+        <ul class="pagination center" id="pagination">
+
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Order Detail Popup Modal -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Chi tiết đơn hàng</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div id="order-detail-content"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal thông báo thành công -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title text-success">Thêm vào giỏ hàng thành công</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            Sản phẩm đã được thêm vào giỏ hàng của bạn.
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal xác nhận -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title">Xác nhận</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body"></div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button type="button" class="btn btn-success" id="confirmOkBtn">
+              Xác nhận
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
 
   </main><!-- End #main -->
 

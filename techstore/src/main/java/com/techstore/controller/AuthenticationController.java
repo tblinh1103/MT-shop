@@ -17,7 +17,7 @@ import java.text.ParseException;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") //Cho phép frontend gọi từ mọi domain
+@CrossOrigin(origins = "*") // Cho phép frontend gọi từ mọi domain
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -30,7 +30,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/introspect")
-    public ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
+    public ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request)
+            throws ParseException, JOSEException {
         return ApiResponse.<IntrospectResponse>builder()
                 .result(authenticationService.introspect(request))
                 .build();
@@ -43,7 +44,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh")
-    public ApiResponse<AuthenticationResponse> refresh(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+    public ApiResponse<AuthenticationResponse> refresh(@RequestBody RefreshRequest request)
+            throws ParseException, JOSEException {
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(authenticationService.refreshToken(request))
                 .build();

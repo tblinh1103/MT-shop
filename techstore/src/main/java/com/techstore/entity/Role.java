@@ -12,7 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String roleId;
 
     @Column(nullable = false, unique = true)
@@ -23,8 +24,10 @@ public class Role {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Role)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Role))
+            return false;
         Role role = (Role) o;
         return roleName != null && roleName.equals(role.roleName);
     }

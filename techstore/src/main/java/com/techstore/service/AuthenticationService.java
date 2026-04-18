@@ -13,6 +13,7 @@ import com.techstore.dto.response.AuthenticationResponse;
 import com.techstore.dto.response.IntrospectResponse;
 import com.techstore.entity.InvalidatedToken;
 import com.techstore.entity.User;
+import com.techstore.enums.UserStatus;
 import com.techstore.exception.AppException;
 import com.techstore.exception.ErrorCode;
 import com.techstore.repository.InvalidatedRepository;
@@ -76,6 +77,11 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        // 🔥 CHECK STATUS
+        if (!UserStatus.ACTIVE.name().equals(user.getUserStatus())) {
+            throw new AppException(ErrorCode.USER_DISABLED);
+        }
 
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 

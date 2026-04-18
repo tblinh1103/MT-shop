@@ -11,18 +11,36 @@ document.addEventListener("DOMContentLoaded", function () {
     const renewPassword = document.getElementById("renewPassword").value.trim();
 
     if (!currentPassword || !newPassword || !renewPassword) {
-      alert("Vui lòng nhập đầy đủ thông tin.");
+      showModal({
+        title: "Thông báo",
+        message: "Vui lòng nhập đầy đủ thông tin.",
+        type: "danger",
+        autoClose: true,
+        duration: 3000
+      });
       return;
     }
 
     if (newPassword !== renewPassword) {
-      alert("Mật khẩu mới nhập lại không trùng khớp!");
+      showModal({
+        title: "Thông báo",
+        message: "Mật khẩu mới nhập lại không trùng khớp!",
+        type: "danger",
+        autoClose: true,
+        duration: 3000
+      });
       return;
     }
 
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Bạn chưa đăng nhập!");
+      showModal({
+        title: "Thông báo",
+        message: "Bạn chưa đăng nhập!",
+        type: "danger",
+        autoClose: true,
+        duration: 3000
+      });
       return;
     }
 
@@ -47,7 +65,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
 
       if (response.ok && data.code === 1000) {
-        alert("Đổi mật khẩu thành công! Vui lòng đăng nhập lại.");
+        showModal({
+          title: "Thông báo",
+          message: "Đổi mật khẩu thành công! Vui lòng đăng nhập lại.",
+          type: "success",
+          autoClose: true,
+          duration: 3000
+        });
 
         // Xóa token
         localStorage.removeItem("token");
@@ -55,11 +79,23 @@ document.addEventListener("DOMContentLoaded", function () {
         // Chuyển về trang login
         window.location.href = "/login.html"; // đổi theo đường dẫn thực tế của bạn
       } else {
-        alert(data.message || "Đổi mật khẩu thất bại!");
+        showModal({
+          title: "Thông báo",
+          message: data.message || "Đổi mật khẩu thất bại!",
+          type: "danger",
+          autoClose: true,
+          duration: 3000
+        });
       }
     } catch (error) {
       console.error("Lỗi khi đổi mật khẩu:", error);
-      alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
+      showModal({
+        title: "Thông báo",
+        message: "Có lỗi xảy ra. Vui lòng thử lại sau.",
+        type: "danger",
+        autoClose: true,
+        duration: 3000
+      });
     }
   });
 });

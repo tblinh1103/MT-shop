@@ -73,7 +73,12 @@ document.addEventListener("DOMContentLoaded", function () {
               if (result.code === 1000) {
                 loadAddresses();
               } else {
-                alert(result.message || "Đặt mặc định thất bại!");
+                showModal({
+                  title: "Thông báo",
+                  message: result.message || "Đặt mặc định thất bại!",
+                  type: "danger",
+                  autoClose: false
+                });
               }
             } catch (error) {
               console.error("Lỗi khi đặt địa chỉ mặc định:", error);
@@ -99,7 +104,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (result.code === 1000) {
               loadAddresses();
             } else {
-              alert(result.message || "Xóa thất bại!");
+              showModal({
+                title: "Thông báo",
+                message: result.message || "Đã xảy ra lỗi!",
+                type: "danger",
+                autoClose: false
+              });
             }
           } catch (error) {
             console.error("Lỗi khi xóa địa chỉ:", error);
@@ -173,7 +183,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     } catch (error) {
       console.error("Lỗi khi thêm địa chỉ:", error);
-      alert("Không thể kết nối server!");
+      showModal({
+        title: "Thông báo",
+        message: "Không thể kết nối server!",
+        type: "danger",
+        autoClose: false
+      });
     }
   });
 

@@ -55,6 +55,7 @@ public class SecurityConfig {
         private final String[] ADMIN_ENDPOINTS = {
                         "/api/brands",
                         "/api/users/customers/**",
+                        "/api/users/search",
                         "/api/categories",
                         "/api/upload/**",
                         "/api/product-variants/**",
@@ -182,7 +183,7 @@ public class SecurityConfig {
                 CorsConfiguration configuration = new CorsConfiguration();
                 configuration.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500",
                                 "http://127.0.0.1:5501", "http://localhost:5501"));
-                configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                 configuration.setAllowedHeaders(List.of("*"));
                 configuration.setAllowCredentials(true); // Cho phép gửi cookie/token nếu cần
 

@@ -4,6 +4,7 @@ import com.techstore.dto.request.OrderItemRequest;
 import com.techstore.dto.request.OrderRequest;
 import com.techstore.dto.response.OrderItemResponse;
 import com.techstore.dto.response.OrderResponse;
+import com.techstore.dto.response.OrderStatisticsResponse;
 import com.techstore.entity.*;
 import com.techstore.enums.OrderStatus;
 import com.techstore.enums.PaymentStatus;
@@ -13,10 +14,19 @@ import com.techstore.mapper.OrderItemMapper;
 import com.techstore.mapper.OrderMapper;
 import com.techstore.mapper.PaymentMapper;
 import com.techstore.repository.*;
+import com.techstore.specification.OrderSpecification;
+
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -211,5 +221,49 @@ public class OrderService {
         }
 
         return orderResponses;
+    }
+
+    public Page<OrderResponse> searchOrders(
+            String orderCode,
+            String recipientName,
+            String recipientPhone,
+            String orderStatus,
+            String paymentStatus,
+            String paymentMethod,
+            LocalDateTime fromDate,
+            LocalDateTime toDate,
+            int page,
+            int size) {
+
+        Specification<Order> spec = OrderSpecification.filter(
+                orderCode,
+                recipientName,
+                recipientPhone,
+                orderStatus,
+                paymentStatus,
+                paymentMethod,
+                fromDate,
+                toDate);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Page<Order> orderPage = orderRepository.findAll(spec, pageable);
+
+        return orderPage.map(order -> {
+            OrderResponse res = orderMapper.toOrderResponse(order);
+
+            List<OrderItemResponse> items = order.getOrderItems().stream()
+                    .map(orderItemMapper::toOrderItemResponse)
+                    .toList();
+
+            res.setOrderItems(items);
+            res.setPayment(paymentMapper.toPaymentResponse(order.getPayment()));
+
+            return res;
+        });
+    }
+
+    public OrderStatisticsResponse getOrderStatistics() {
+        return orderRepository.getOrderStatistics();
     }
 }

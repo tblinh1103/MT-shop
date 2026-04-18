@@ -1,13 +1,15 @@
 package com.techstore.repository;
 
+import com.techstore.dto.response.OrderStatisticsResponse;
 import com.techstore.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface OrderRepository extends JpaRepository<Order, String> {
+public interface OrderRepository extends JpaRepository<Order, String>, JpaSpecificationExecutor<Order> {
 
     List<Order> findAllByOrderByCreatedAtDesc();
 
@@ -56,5 +58,16 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "GROUP BY YEAR(o.created_at) " +
             "ORDER BY y", nativeQuery = true)
     List<Object[]> getYearlyOrderCounts();
+
+    @Query(value = """
+                SELECT
+                  COUNT(CASE WHEN o.order_status = 'PENDING' THEN 1 END) AS pending,
+                  COUNT(CASE WHEN o.order_status = 'CONFIRMED' THEN 1 END) AS confirmed,
+                  COUNT(CASE WHEN o.order_status = 'SHIPPED' THEN 1 END) AS shipping,
+                  COUNT(CASE WHEN o.order_status = 'COMPLETED' THEN 1 END) AS completed,
+                  COUNT(CASE WHEN o.order_status = 'CANCELLED' THEN 1 END) AS cancelled
+                FROM orders o
+            """, nativeQuery = true)
+    OrderStatisticsResponse getOrderStatistics();
 
 }

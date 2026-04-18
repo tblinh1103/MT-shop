@@ -194,36 +194,32 @@ async function saveProduct() {
     return;
   }
 
-  const imageObjects = [];
+  try {
+    const uploadPromises = selectedFiles.map((file, index) => {
+      const formData = new FormData();
+      formData.append("file", file);
 
-  for (let i = 0; i < selectedFiles.length; i++) {
-    const file = selectedFiles[i];
-    const formData = new FormData();
-    formData.append("file", file);
+      return fetch("http://localhost:8080/tech-store/api/upload/image", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        body: formData,
+      })
+        .then(res => res.json())
+        .then(data => ({
+          imageUrl: data.result,
+          isMain: index === 0,
+        }));
+    });
 
-    try {
-      const uploadRes = await fetch(
-        "http://localhost:8080/tech-store/api/upload/image",
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-          body: formData,
-        }
-      );
+    const imageObjects = await Promise.all(uploadPromises);
 
-      const uploadData = await uploadRes.json();
+    console.log(imageObjects);
 
-      imageObjects.push({
-        imageUrl: uploadData.result,
-        isMain: i === 0,
-      });
-    } catch (err) {
-      console.error("Upload ảnh lỗi:", err);
-      alert("Upload ảnh thất bại!");
-      return;
-    }
+  } catch (err) {
+    console.error("Upload ảnh lỗi:", err);
+    alert("Upload ảnh thất bại!");
   }
 
   const product = {

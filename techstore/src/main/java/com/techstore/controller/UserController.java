@@ -6,6 +6,7 @@ import com.techstore.dto.request.UserRequest;
 import com.techstore.dto.request.UserUpdatePasswordRequest;
 import com.techstore.dto.response.ApiResponse;
 import com.techstore.dto.response.UserResponse;
+import com.techstore.enums.RoleName;
 import com.techstore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -110,6 +111,21 @@ public class UserController {
         return ApiResponse.<UserResponse>builder()
                 .message("Cập nhật trạng thái thành công")
                 .result(userService.changeUserStatus(userId))
+                .build();
+    }
+
+    @GetMapping("/search")
+    public ApiResponse<List<UserResponse>> searchUsers(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) RoleName role // 👈 thêm dòng này
+    ) {
+
+        List<UserResponse> users = userService.searchUsers(status, keyword, role);
+
+        return ApiResponse.<List<UserResponse>>builder()
+                .message("Lấy danh sách user thành công")
+                .result(users)
                 .build();
     }
 }

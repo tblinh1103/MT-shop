@@ -27,9 +27,51 @@
   <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    .variant-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .variant-modal-overlay.active {
+      display: flex;
+    }
+
+    .variant-modal-box {
+      width: 90%;
+      max-width: 1000px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .variant-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .variant-modal-box table td:first-child {
+      font-weight: 600;
+    }
+  </style>
 </head>
 
 <body>
@@ -40,7 +82,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <!-- <img src="assets/img/logo.png" alt=""> -->
-        <span class="d-none d-lg-block">MINH THANH COMPUTER</span>
+        <span class="d-none d-lg-block">MINH THANH</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
@@ -141,7 +183,7 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
           <li class="breadcrumb-item"><a href="product-management.html">Sản phẩm</a></li>
-          <li class="breadcrumb-item active">Thêm sản phẩm</li>
+          <li class="breadcrumb-item active"><a href="product-update.html">Cập nhật sản phẩm</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -175,7 +217,7 @@
                   </div>
                   <div class="col-2">
                     <label for="warrantyMonths" class="form-label">Bảo hành (tháng)</label>
-                    <input type="number" class="form-control" id="warrantyMonths">
+                    <input type="number" class="form-control" id="warrantyMonths" min="0" step="1">
                   </div>
                   <div class="col-2">
                     <label for="productStatus" class="form-label">Trạng thái</label>
@@ -192,7 +234,7 @@
                 </form>
 
                 <div class="mt-2 d-flex justify-content-center">
-                  <button class="btn btn-sm btn-success btn-update-product">Cập nhật</button>
+                  <button id="btn-update-product" class="btn btn-sm btn-success btn-update-product">Cập nhật</button>
                 </div>
               </div>
             </div>
@@ -201,7 +243,7 @@
           <p class="card-title m-0 p-0 mb-4">Thông tin biến thể</p>
 
           <!-- Phone Variant -->
-          <div class="card card-phone-variant">
+          <div class="card variant-card card-phone-variant">
             <div class="card-body">
               <div class="mt-3 mb-0">
                 <div class="product-variant-infor row g-3 mb-3">
@@ -310,13 +352,13 @@
               </div>
 
               <div class="mt-4 d-flex justify-content-center">
-                <button class="btn btn-sm btn-success btn-update-product-variant">Cập nhật</button>
+                <button class="btn btn-sm btn-success btn-save-product-variant">Lưu sản phẩm</button>
               </div>
             </div>
           </div>
 
           <!-- Laptop Variant -->
-          <div class="card card-laptop-variant">
+          <div class="card variant-card card-laptop-variant">
             <div class="card-body">
               <div class="mt-3 mb-0">
                 <div class="product-variant-infor row g-3 mb-3">
@@ -429,13 +471,13 @@
               </div>
 
               <div class="mt-4 d-flex justify-content-center">
-                <button class="btn btn-sm btn-success btn-update-product-variant">Cập nhật</button>
+                <button class="btn btn-sm btn-success btn-save-product-variant">Lưu sản phẩm</button>
               </div>
             </div>
           </div>
 
           <!-- Mouse Variant -->
-          <div class="card card-mouse-variant">
+          <div class="card variant-card card-mouse-variant">
             <div class="card-body">
               <div class="mt-3 mb-0">
                 <div class="product-variant-infor row g-3 mb-3">
@@ -512,13 +554,13 @@
               </div>
 
               <div class="mt-4 d-flex justify-content-center">
-                <button class="btn btn-sm btn-success btn-update-product-variant">Cập nhật</button>
+                <button class="btn btn-sm btn-success btn-save-product-variant">Lưu sản phẩm</button>
               </div>
             </div>
           </div>
 
           <!-- Keyboard Variant -->
-          <div class="card card-keyboard-variant">
+          <div class="card variant-card card-keyboard-variant">
             <div class="card-body">
               <div class="mt-3 mb-0">
                 <div class="product-variant-infor row g-3 mb-3">
@@ -595,13 +637,13 @@
               </div>
 
               <div class="mt-4 d-flex justify-content-center">
-                <button class="btn btn-sm btn-success btn-update-product-variant">Cập nhật</button>
+                <button class="btn btn-sm btn-success btn-save-product-variant">Lưu sản phẩm</button>
               </div>
             </div>
           </div>
 
           <!-- Charging Adapter Variant -->
-          <div class="card card-charging-adapter-variant">
+          <div class="card variant-card card-charging-adapter-variant">
             <div class="card-body">
               <div class="mt-3 mb-0">
                 <div class="product-variant-infor row g-3 mb-3">
@@ -670,13 +712,13 @@
               </div>
 
               <div class="mt-4 d-flex justify-content-center">
-                <button class="btn btn-sm btn-success btn-update-product-variant">Cập nhật</button>
+                <button class="btn btn-sm btn-success btn-save-product-variant">Lưu sản phẩm</button>
               </div>
             </div>
           </div>
 
           <!-- Charging Cable Variant -->
-          <div class="card card-charging-cable-variant">
+          <div class="card variant-card card-charging-cable-variant">
             <div class="card-body">
               <div class="mt-3 mb-0">
                 <div class="product-variant-infor row g-3 mb-3">
@@ -745,7 +787,7 @@
               </div>
 
               <div class="mt-4 d-flex justify-content-center">
-                <button class="btn btn-sm btn-success btn-update-product-variant">Cập nhật</button>
+                <button class="btn btn-sm btn-success btn-save-product-variant">Lưu sản phẩm</button>
               </div>
             </div>
           </div>
@@ -768,12 +810,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Ti tan sa mạc</td>
-                    <td>30.500.000đ</td>
-                    <td>27.500.000đ</td>
-                    <td>150</td>
-                    <td>TRUE</td>
-                    <td></td>
+                    <td colspan="6" class="text-center text-muted">Chưa có biến thể - Vui lòng thêm biến thể!</td>
                   </tr>
                 </tbody>
               </table>
@@ -784,6 +821,1005 @@
 
       </div>
     </section>
+
+    <!-- Phone Variant Info -->
+    <div class="variant-modal-overlay" id="phone-modal">
+
+      <div class="card variant-card card-phone-variant-info variant-modal-box">
+        <div class="card-body">
+
+          <span class="variant-modal-close" id="close-phone-modal">
+            <i class="bi bi-x-lg"></i>
+          </span>
+
+          <div class="mt-3 mb-0">
+
+            <!-- BASIC INFO TABLE -->
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thuộc tính</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Màu</td>
+                    <td><input type="text" class="form-control" id="phone-color-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá gốc</td>
+                    <td><input type="number" class="form-control" id="phone-originalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá khuyến mãi</td>
+                    <td><input type="number" class="form-control" id="phone-promotionalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Số lượng</td>
+                    <td><input type="number" class="form-control" id="phone-stock-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Mặc định</td>
+                    <td>
+                      <select id="phone-isDefault-info" class="form-select">
+                        <option value="true">TRUE</option>
+                        <option value="false" selected>FALSE</option>
+                      </select>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- SPEC TABLE -->
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thông số</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Kích thước màn hình</td>
+                    <td><input type="text" class="form-control" id="phone-screenSize-info"
+                        data-spec-key="Kích thước màn hình"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Công nghệ màn hình</td>
+                    <td><input type="text" class="form-control" id="phone-screenTechnology-info"
+                        data-spec-key="Công nghệ màn hình"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Độ phân giải màn hình</td>
+                    <td><input type="text" class="form-control" id="phone-screenResolution-info"
+                        data-spec-key="Độ phân giải màn hình"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Tần số quét</td>
+                    <td><input type="text" class="form-control" id="phone-refreshRate-info" data-spec-key="Tần số quét">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Kiểu màn hình</td>
+                    <td><input type="text" class="form-control" id="phone-screenType-info"
+                        data-spec-key="Kiểu màn hình"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Camera trước</td>
+                    <td><input type="text" class="form-control" id="phone-frontCamera-info"
+                        data-spec-key="Camera trước"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Camera sau</td>
+                    <td><input type="text" class="form-control" id="phone-rearCamera-info" data-spec-key="Camera sau">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Chip</td>
+                    <td><input type="text" class="form-control" id="phone-chipset-info" data-spec-key="Chip"></td>
+                  </tr>
+
+                  <tr>
+                    <td>GPU</td>
+                    <td><input type="text" class="form-control" id="phone-gpu-info" data-spec-key="GPU"></td>
+                  </tr>
+
+                  <tr>
+                    <td>SIM</td>
+                    <td><input type="text" class="form-control" id="phone-sim-info" data-spec-key="SIM"></td>
+                  </tr>
+
+                  <tr>
+                    <td>RAM</td>
+                    <td><input type="text" class="form-control" id="phone-ram-info" data-spec-key="RAM"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Bộ nhớ</td>
+                    <td><input type="text" class="form-control" id="phone-storage-info" data-spec-key="Bộ nhớ"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Hệ điều hành</td>
+                    <td><input type="text" class="form-control" id="phone-os-info" data-spec-key="Hệ điều hành"></td>
+                  </tr>
+
+                  <tr>
+                    <td>CPU</td>
+                    <td><input type="text" class="form-control" id="phone-cpu-info" data-spec-key="CPU"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Kích thước</td>
+                    <td><input type="text" class="form-control" id="phone-dimensions-info" data-spec-key="Kích thước">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Trọng lượng</td>
+                    <td><input type="text" class="form-control" id="phone-weight-info" data-spec-key="Trọng lượng"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Pin</td>
+                    <td><input type="text" class="form-control" id="phone-battery-info" data-spec-key="Pin"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Cổng sạc</td>
+                    <td><input type="text" class="form-control" id="phone-chargingPort-info" data-spec-key="Cổng sạc">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Tính năng đặc biệt</td>
+                    <td><input type="text" class="form-control" id="phone-specialFeatures-info"
+                        data-spec-key="Tính năng đặc biệt"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <div class="mt-4 d-flex justify-content-center">
+            <button class="btn btn-sm btn-success btn-save-product-variant-info" id="btn-save-product-variant-info">
+              Lưu sản phẩm
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Laptop Variant Info -->
+    <div class="variant-modal-overlay" id="laptop-modal">
+
+      <div class="card variant-card card-laptop-variant-info variant-modal-box">
+        <div class="card-body">
+
+          <span class="variant-modal-close" id="close-laptop-modal">
+            <i class="bi bi-x-lg"></i>
+          </span>
+
+          <div class="mt-3 mb-0">
+
+            <!-- BASIC INFO TABLE -->
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thuộc tính</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Màu</td>
+                    <td><input type="text" class="form-control" id="laptop-color-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá gốc</td>
+                    <td><input type="number" class="form-control" id="laptop-originalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá khuyến mãi</td>
+                    <td><input type="number" class="form-control" id="laptop-promotionalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Số lượng</td>
+                    <td><input type="number" class="form-control" id="laptop-stock-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Mặc định</td>
+                    <td>
+                      <select id="laptop-isDefault-info" class="form-select">
+                        <option value="true">TRUE</option>
+                        <option value="false" selected>FALSE</option>
+                      </select>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- SPEC INFO TABLE -->
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thông số</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Loại GPU</td>
+                    <td><input type="text" class="form-control" id="laptop-gpuType-info" data-spec-key="Loại GPU"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Loại CPU</td>
+                    <td><input type="text" class="form-control" id="laptop-cpuType-info" data-spec-key="Loại CPU"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Dung lượng RAM</td>
+                    <td><input type="text" class="form-control" id="laptop-ramCapacity-info"
+                        data-spec-key="Dung lượng RAM"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Loại RAM</td>
+                    <td><input type="text" class="form-control" id="laptop-ramType-info" data-spec-key="Loại RAM"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Ổ cứng</td>
+                    <td><input type="text" class="form-control" id="laptop-storage-info" data-spec-key="Ổ cứng"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Tần số quét</td>
+                    <td><input type="text" class="form-control" id="laptop-refreshRate-info"
+                        data-spec-key="Tần số quét"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Chất liệu tấm nền</td>
+                    <td><input type="text" class="form-control" id="laptop-panelMaterial-info"
+                        data-spec-key="Chất liệu tấm nền"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Kích thước màn hình</td>
+                    <td><input type="text" class="form-control" id="laptop-screenSize-info"
+                        data-spec-key="Kích thước màn hình"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Công nghệ màn hình</td>
+                    <td><input type="text" class="form-control" id="laptop-screenTechnology"
+                        data-spec-key="Công nghệ màn hình"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Độ phân giải</td>
+                    <td><input type="text" class="form-control" id="laptop-screenResolution-info"
+                        data-spec-key="Độ phân giải"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Kích thước</td>
+                    <td><input type="text" class="form-control" id="laptop-dimensions-info" data-spec-key="Kích thước">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Trọng lượng</td>
+                    <td><input type="text" class="form-control" id="laptop-weight-info" data-spec-key="Trọng lượng">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Chất liệu</td>
+                    <td><input type="text" class="form-control" id="laptop-material-info" data-spec-key="Chất liệu">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bảo mật</td>
+                    <td><input type="text" class="form-control" id="laptop-security-info" data-spec-key="Bảo mật"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Webcam</td>
+                    <td><input type="text" class="form-control" id="laptop-webcam-info" data-spec-key="Webcam"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Hệ điều hành</td>
+                    <td><input type="text" class="form-control" id="laptop-os-info" data-spec-key="Hệ điều hành"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Pin</td>
+                    <td><input type="text" class="form-control" id="laptop-battery-info" data-spec-key="Pin"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Wifi</td>
+                    <td><input type="text" class="form-control" id="laptop-wifi-info" data-spec-key="Wifi"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Bluetooth</td>
+                    <td><input type="text" class="form-control" id="laptop-bluetooth-info" data-spec-key="Bluetooth">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Tính năng đặc biệt</td>
+                    <td><input type="text" class="form-control" id="laptop-specialFeatures-info"
+                        data-spec-key="Tính năng đặc biệt"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <div class="mt-4 d-flex justify-content-center">
+            <button class="btn btn-sm btn-success btn-save-product-variant-info" id="btn-save-product-variant-info">
+              Lưu sản phẩm
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Mouse Variant Info -->
+    <div class="variant-modal-overlay" id="mouse-modal">
+
+      <div class="card variant-card card-mouse-variant-info variant-modal-box">
+        <div class="card-body">
+
+          <span class="variant-modal-close" id="close-mouse-modal">
+            <i class="bi bi-x-lg"></i>
+          </span>
+
+          <div class="mt-3 mb-0">
+
+            <!-- BASIC INFO TABLE -->
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thuộc tính</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Màu</td>
+                    <td><input type="text" class="form-control" id="mouse-color-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá gốc</td>
+                    <td><input type="number" class="form-control" id="mouse-originalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá khuyến mãi</td>
+                    <td><input type="number" class="form-control" id="mouse-promotionalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Số lượng</td>
+                    <td><input type="number" class="form-control" id="mouse-stock-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Mặc định</td>
+                    <td>
+                      <select id="mouse-isDefault-info" class="form-select">
+                        <option value="true">TRUE</option>
+                        <option value="false" selected>FALSE</option>
+                      </select>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- SPEC INFO TABLE -->
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thông số</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Tương thích</td>
+                    <td><input type="text" class="form-control" id="mouse-compatibility-info"
+                        data-spec-key="Tương thích"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Độ phân giải</td>
+                    <td><input type="text" class="form-control" id="mouse-resolution-info" data-spec-key="Độ phân giải">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Cảm biến</td>
+                    <td><input type="text" class="form-control" id="mouse-sensor-info" data-spec-key="Cảm biến"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Nút nhấn</td>
+                    <td><input type="text" class="form-control" id="mouse-buttons-info" data-spec-key="Nút nhấn"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Kết nối</td>
+                    <td><input type="text" class="form-control" id="mouse-connectivity-info" data-spec-key="Kết nối">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Khoảng cách kết nối</td>
+                    <td><input type="text" class="form-control" id="mouse-connectionRange-info"
+                        data-spec-key="Khoảng cách kết nối"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Đèn LED</td>
+                    <td><input type="text" class="form-control" id="mouse-led-info" data-spec-key="Đèn LED"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Pin</td>
+                    <td><input type="text" class="form-control" id="mouse-battery-info" data-spec-key="Pin"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Kích thước</td>
+                    <td><input type="text" class="form-control" id="mouse-dimensions-info" data-spec-key="Kích thước">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Trọng lượng</td>
+                    <td><input type="text" class="form-control" id="mouse-weight-info" data-spec-key="Trọng lượng"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Tiện ích</td>
+                    <td><input type="text" class="form-control" id="mouse-utilities-info" data-spec-key="Tiện ích"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <div class="mt-4 d-flex justify-content-center">
+            <button class="btn btn-sm btn-success btn-save-product-variant-info" id="btn-save-product-variant-info">
+              Lưu sản phẩm
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Keyboard Variant Info -->
+    <div class="variant-modal-overlay" id="keyboard-modal">
+
+      <div class="card variant-card card-keyboard-variant-info variant-modal-box">
+        <div class="card-body">
+
+          <span class="variant-modal-close" id="close-keyboard-modal">
+            <i class="bi bi-x-lg"></i>
+          </span>
+
+          <div class="mt-3 mb-0">
+
+            <!-- BASIC INFO TABLE -->
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thuộc tính</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Màu</td>
+                    <td><input type="text" class="form-control" id="keyboard-color-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá gốc</td>
+                    <td><input type="number" class="form-control" id="keyboard-originalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá khuyến mãi</td>
+                    <td><input type="number" class="form-control" id="keyboard-promotionalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Số lượng</td>
+                    <td><input type="number" class="form-control" id="keyboard-stock-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Mặc định</td>
+                    <td>
+                      <select id="keyboard-isDefault-info" class="form-select">
+                        <option value="true">TRUE</option>
+                        <option value="false" selected>FALSE</option>
+                      </select>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- SPEC INFO TABLE -->
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thông số</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Loại bàn phím</td>
+                    <td><input type="text" class="form-control" id="keyboard-keyboardType-info"
+                        data-spec-key="Loại bàn phím"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Số phím</td>
+                    <td><input type="text" class="form-control" id="keyboard-keyCount-info" data-spec-key="Số phím">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Tương thích</td>
+                    <td><input type="text" class="form-control" id="keyboard-compatibility-info"
+                        data-spec-key="Tương thích"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Kết nối</td>
+                    <td><input type="text" class="form-control" id="keyboard-connection-info" data-spec-key="Kết nối">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Khoảng cách kết nối</td>
+                    <td><input type="text" class="form-control" id="keyboard-connectionDistance-info"
+                        data-spec-key="Khoảng cách kết nối"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Đèn LED</td>
+                    <td><input type="text" class="form-control" id="keyboard-led-info" data-spec-key="Đèn LED"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Pin</td>
+                    <td><input type="text" class="form-control" id="keyboard-battery-info" data-spec-key="Pin"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Cổng sạc</td>
+                    <td><input type="text" class="form-control" id="keyboard-chargingPort-info"
+                        data-spec-key="Cổng sạc"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Kích thước</td>
+                    <td><input type="text" class="form-control" id="keyboard-dimensions-info"
+                        data-spec-key="Kích thước"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Trọng lượng</td>
+                    <td><input type="text" class="form-control" id="keyboard-weight-info" data-spec-key="Trọng lượng">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Tiện ích</td>
+                    <td><input type="text" class="form-control" id="keyboard-utilities-info" data-spec-key="Tiện ích">
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <div class="mt-4 d-flex justify-content-center">
+            <button class="btn btn-sm btn-success btn-save-product-variant-info" id="btn-save-product-variant-info">
+              Lưu sản phẩm
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Charging Adapter Variant Info -->
+    <div class="variant-modal-overlay" id="charging-adapter-modal">
+
+      <div class="card variant-card card-charging-adapter-variant-info variant-modal-box">
+        <div class="card-body">
+
+          <span class="variant-modal-close" id="close-charging-adapter-modal">
+            <i class="bi bi-x-lg"></i>
+          </span>
+
+          <div class="mt-3 mb-0">
+
+            <!-- BASIC INFO TABLE -->
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thuộc tính</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Màu</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-color-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá gốc</td>
+                    <td><input type="number" class="form-control" id="charging-adapter-originalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá khuyến mãi</td>
+                    <td><input type="number" class="form-control" id="charging-adapter-promotionalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Số lượng</td>
+                    <td><input type="number" class="form-control" id="charging-adapter-stock-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Mặc định</td>
+                    <td>
+                      <select id="charging-adapter-isDefault-info" class="form-select">
+                        <option value="true">TRUE</option>
+                        <option value="false" selected>FALSE</option>
+                      </select>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- SPEC INFO TABLE -->
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thông số</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Công suất sạc</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-chargingPower-info"
+                        data-spec-key="Công suất sạc"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Sử dụng tối đa</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-maxUsage-info"
+                        data-spec-key="Sử dụng tối đa"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Đầu ra</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-outputPort-info"
+                        data-spec-key="Đầu ra"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Nguồn vào</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-inputPower-info"
+                        data-spec-key="Nguồn vào"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Nguồn ra</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-outputPower-info"
+                        data-spec-key="Nguồn ra"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Tiện ích</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-utilities-info"
+                        data-spec-key="Tiện ích"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Công nghệ / Chứng nhận</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-technology-info"
+                        data-spec-key="Công nghệ / Chứng nhận"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Kích thước</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-dimensions-info"
+                        data-spec-key="Kích thước"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Trọng lượng</td>
+                    <td><input type="text" class="form-control" id="charging-adapter-weight-info"
+                        data-spec-key="Trọng lượng"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <div class="mt-4 d-flex justify-content-center">
+            <button class="btn btn-sm btn-success btn-save-product-variant-info" id="btn-save-product-variant-info">
+              Lưu sản phẩm
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Charging Cable Variant Info -->
+    <div class="variant-modal-overlay" id="charging-cable-modal">
+
+      <div class="card variant-card card-charging-cable-variant-info variant-modal-box">
+        <div class="card-body">
+
+          <span class="variant-modal-close" id="close-charging-cable-modal">
+            <i class="bi bi-x-lg"></i>
+          </span>
+
+          <div class="mt-3 mb-0">
+
+            <!-- BASIC INFO TABLE -->
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thuộc tính</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Màu</td>
+                    <td><input type="text" class="form-control" id="charging-cable-color-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá gốc</td>
+                    <td><input type="number" class="form-control" id="charging-cable-originalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Giá khuyến mãi</td>
+                    <td><input type="number" class="form-control" id="charging-cable-promotionalPrice-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Số lượng</td>
+                    <td><input type="number" class="form-control" id="charging-cable-stock-info"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Mặc định</td>
+                    <td>
+                      <select id="charging-cable-isDefault-info" class="form-select">
+                        <option value="true">TRUE</option>
+                        <option value="false" selected>FALSE</option>
+                      </select>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- SPEC INFO TABLE -->
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Thông số</th>
+                    <th>Giá trị</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Công suất sạc</td>
+                    <td><input type="text" class="form-control" id="charging-cable-chargingPower-info"
+                        data-spec-key="Công suất sạc"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Đầu vào</td>
+                    <td><input type="text" class="form-control" id="charging-cable-inputPort-info"
+                        data-spec-key="Đầu vào"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Đầu ra</td>
+                    <td><input type="text" class="form-control" id="charging-cable-outputPort-info"
+                        data-spec-key="Đầu ra"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Nguồn ra</td>
+                    <td><input type="text" class="form-control" id="charging-cable-outputPower-info"
+                        data-spec-key="Nguồn ra"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Chiều dài dây</td>
+                    <td><input type="text" class="form-control" id="charging-cable-cableLength-info"
+                        data-spec-key="Chiều dài dây"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Chất liệu</td>
+                    <td><input type="text" class="form-control" id="charging-cable-material-info"
+                        data-spec-key="Chất liệu"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Trọng lượng</td>
+                    <td><input type="text" class="form-control" id="charging-cable-weight-info"
+                        data-spec-key="Trọng lượng"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Tiện ích</td>
+                    <td><input type="text" class="form-control" id="charging-cable-utilities-info"
+                        data-spec-key="Tiện ích"></td>
+                  </tr>
+
+                  <tr>
+                    <td>Công nghệ / Chứng nhận</td>
+                    <td><input type="text" class="form-control" id="charging-cable-technology-info"
+                        data-spec-key="Công nghệ / Chứng nhận"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <div class="mt-4 d-flex justify-content-center">
+            <button class="btn btn-sm btn-success btn-save-product-variant-info" id="btn-save-product-variant-info">
+              Lưu sản phẩm
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal xác nhận -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title">Xác nhận</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body"></div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button type="button" class="btn btn-success" id="confirmOkBtn">
+              Xác nhận
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-success"></h5> <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="successModal-btn"> Xác
+              nhận</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </main><!-- End #main -->
 

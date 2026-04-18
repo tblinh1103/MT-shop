@@ -28,12 +28,15 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Builder.Default
     @Column(name = "subtotal", nullable = false)
     private BigDecimal subtotal = BigDecimal.ZERO;
 
+    @Builder.Default
     @Column(name = "shipping_fee", nullable = false)
     private BigDecimal shippingFee = BigDecimal.ZERO;
 
+    @Builder.Default
     @Column(name = "discount_amount", nullable = false)
     private BigDecimal discountAmount = BigDecimal.ZERO;
 

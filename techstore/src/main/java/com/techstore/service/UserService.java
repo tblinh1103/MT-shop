@@ -198,4 +198,14 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    public List<UserResponse> searchUsers(String status, String keyword, RoleName role) {
+
+        String roleName = (role != null) ? role.name() : null;
+
+        return userRepository.searchUsers(status, keyword, roleName)
+                .stream()
+                .map(userMapper::toUserResponse)
+                .toList();
+    }
 }

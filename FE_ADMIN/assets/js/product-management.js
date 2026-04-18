@@ -8,6 +8,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const categorySelect = document.getElementById("filter-category");
   const brandSelect = document.getElementById("filter-brand");
+  const stockSelect = document.getElementById("filter-stock");
+  const statusSelect = document.getElementById("filter-status");
+  const searchProduct = document.getElementById("search-product");
+  const priceMinSelect = document.getElementById("filter-price-min");
+  const pageSize = document.getElementById("page-size");
+  let currentPage = 0;
+
 
   // ============================================
   //  LOAD DANH MỤC
@@ -64,11 +71,15 @@ document.addEventListener("DOMContentLoaded", function () {
   window.loadProducts = function () {
     const categoryId = categorySelect.value;
     const brandId = brandSelect.value;
-
-    let url = "http://localhost:8080/tech-store/api/products/filter";
+    let url = "http://localhost:8080/tech-store/api/products/advanced-filter";
     const params = [];
+    params.push(`page=${currentPage}`);
+    params.push(`size=${pageSize.value}`);
     if (categoryId) params.push(`categoryId=${categoryId}`);
     if (brandId) params.push(`brandId=${brandId}`);
+    if (statusSelect.value) params.push(`status=${statusSelect.value}`);
+    if (searchProduct.value) params.push(`keyword=${searchProduct.value}`);
+    if (priceMinSelect.value) params.push(`minPrice=${priceMinSelect.value}`);
     if (params.length > 0) url += "?" + params.join("&");
 
     fetch(url, {
@@ -91,28 +102,30 @@ document.addEventListener("DOMContentLoaded", function () {
         const tbody = document.querySelector("#products-table tbody");
         tbody.innerHTML = "";
 
-        data.result.reverse().forEach((product) => {
+        data.result.content.forEach((product) => {
           const mainImage =
             product.images.find((img) => img.isMain)?.imageUrl || "";
 
           const tr = document.createElement("tr");
           tr.dataset.productId = product.productId;
+          tr.dataset.status = product.productStatus;
           tr.innerHTML = `
+            <td class="p-3 text-center align-middle"><input type="checkbox"></td>
             <td><img src="${mainImage}" alt="${product.productName
             }" style="max-height: 70px;"></td>
-            <td class="align-middle">${product.productName}</td>
+            <td class="align-middle text-truncate">${product.productName}</td>
             <td class="align-middle">${product.category?.categoryName || ""
             }</td>
             <td class="align-middle">${product.brand?.brandName || ""}</td>
             <td class="align-middle">${product.warrantyMonths || 0} tháng</td>
-            <td class="align-middle status-cell">${product.productStatus === "ACTIVE" ? "Hoạt động" : "Khóa"
+            <td class="align-middle status-cell">${product.productStatus === "ACTIVE" ? "Hoạt động" : product.productStatus === "LOCKED" ? "Khóa" : "Đã xóa"
             }</td>
             <td class="align-middle">
               <button class="btn btn-sm btn-warning text-white toggle-status" title="Đổi trạng thái">
-                <i class="bx ${product.productStatus === "ACTIVE"
-              ? "bxs-lock-open"
-              : "bxs-lock"
-            }"></i>
+                <i class="bx ${product.productStatus === "ACTIVE" ? "bxs-lock-open"
+              : product.productStatus === "LOCKED" ? "bxs-lock" :
+                product.productStatus === "DELETED" ? "bxs-trash" :
+                  ""}"></i>
               </button>
               <button class="btn btn-sm btn-primary text-white" onclick="editProduct('${product.productId
             }')">
@@ -126,64 +139,166 @@ document.addEventListener("DOMContentLoaded", function () {
           `;
           tbody.appendChild(tr);
         });
+        renderPagination(data.result.totalPages, data.result.pageable.pageNumber);
       })
       .catch((err) => console.error("Error loading products:", err));
   };
 
-  categorySelect.addEventListener("change", loadProducts);
-  brandSelect.addEventListener("change", loadProducts);
+  function buildPagination(totalPages, currentPage = 1) {
+    const last = totalPages;
+
+    const rawPages = [
+      1,
+      currentPage - 1,
+      currentPage,
+      currentPage + 1,
+      last
+    ];
+
+    // 1. lọc số hợp lệ + unique
+    const pages = [...new Set(rawPages)]
+      .filter(p => p >= 1 && p <= last)
+      .sort((a, b) => a - b);
+
+    // 2. chèn "..."
+    const result = [];
+
+    for (let i = 0; i < pages.length; i++) {
+      const current = pages[i];
+      const prev = pages[i - 1];
+
+      if (i > 0) {
+        // nếu khoảng cách > 1 thì thêm "..."
+        if (current - prev > 1) {
+          result.push("...");
+        }
+      }
+
+      result.push(current);
+    }
+
+    return result;
+  }
+
+  function renderPagination(totalPages, currentPage0) {
+    const container = document.getElementById("pagination");
+    container.innerHTML = "";
+
+    currentPage = currentPage0 + 1; // convert sang 1-based cho UI
+
+    const pages = buildPagination(totalPages, currentPage);
+
+    pages.forEach(p => {
+      const li = document.createElement("li");
+
+      if (p === "...") {
+        const span = document.createElement("span");
+        span.textContent = "...";
+        span.classList.add("dots");
+        li.appendChild(span);
+      } else {
+        const btn = document.createElement("button");
+        btn.textContent = p;
+        btn.dataset.page = p;
+
+        if (p === currentPage) btn.classList.add("active");
+
+        btn.onclick = () => {
+          currentPage = p - 1; // quay về 0-based
+          loadProducts();
+          const table = document.getElementById("action-bar");
+
+          if (table) {
+            table.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+          }
+        };
+
+        li.appendChild(btn);
+      }
+
+      container.appendChild(li);
+    });
+  }
+
+  categorySelect.addEventListener("change", () => {
+    currentPage = 0;   // reset về trang đầu
+    loadProducts();
+  });
+  brandSelect.addEventListener("change", () => {
+    currentPage = 0;   // reset về trang đầu
+    loadProducts();
+  });
+  statusSelect.addEventListener("change", () => {
+    currentPage = 0;   // reset về trang đầu
+    loadProducts();
+  });
+  searchProduct.addEventListener("input", () => {
+    currentPage = 0;   // reset về trang đầu
+    loadProducts();
+  });
+  priceMinSelect.addEventListener("change", () => {
+    currentPage = 0;   // reset về trang đầu
+    loadProducts();
+  });
+  pageSize.addEventListener("change", () => {
+    currentPage = 0;   // reset về trang đầu
+    loadProducts();
+  });
 
   // ============================================
   //  XÓA SẢN PHẨM (GLOBAL)
   // ============================================
   let selectedProductId = null;
 
-  window.deleteProduct = function (productId) {
-    selectedProductId = productId;
-    const modal = new bootstrap.Modal(
-      document.getElementById("deleteProductModal")
-    );
-    modal.show();
-  };
+  window.deleteProduct = async function (productId) {
+    const confirmed = await showConfirmModal("Bạn có chắc muốn xóa sản phẩm này?");
 
-  document
-    .getElementById("confirmDeleteBtn")
-    .addEventListener("click", function () {
-      if (!selectedProductId) return;
+    if (!confirmed) return;
 
-      fetch(
-        `http://localhost:8080/tech-store/api/products/${selectedProductId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((res) => {
-          if (res.ok) {
-            alert("Xóa sản phẩm thành công");
-            loadProducts();
-          } else {
-            return res.json().then((err) => {
-              alert("Lỗi: " + (err.message || "Không thể xóa sản phẩm"));
-            });
-          }
-        })
-        .catch((err) => {
-          console.error("Lỗi khi xóa sản phẩm:", err);
-          alert("Không thể kết nối đến server");
-        })
-        .finally(() => {
-          selectedProductId = null;
-          const modal = bootstrap.Modal.getInstance(
-            document.getElementById("deleteProductModal")
-          );
-          if (modal) modal.hide();
+    try {
+      const res = await fetch(`http://localhost:8080/tech-store/api/products/${productId}/status?status=DELETED`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (res.ok) {
+        showModal({
+          title: "Thành công",
+          message: "Xóa sản phẩm thành công!",
+          type: "success",
+          autoClose: true,
+          duration: 3000,
         });
-    });
 
+        loadProducts();
+      } else {
+        const err = await res.json();
+
+        showModal({
+          title: "Thông báo",
+          message: "Sản phẩm đã có trong đơn hàng, không thể xóa!",
+          type: "danger",
+          autoClose: false,
+        });
+      }
+    } catch (error) {
+      console.error("Lỗi khi xóa sản phẩm:", error);
+
+      showModal({
+        title: "Lỗi",
+        message: "Không thể kết nối đến server",
+        type: "danger",
+        autoClose: true,
+        duration: 3000,
+      });
+    }
+  };
   // ============================================
   //  TOGGLE STATUS (EVENT DELEGATION)
   // ============================================
@@ -195,12 +310,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const tr = btn.closest("tr");
     if (!tr) return;
     const productId = tr.dataset.productId;
+
     if (!productId) return;
 
     // Disable button tạm thời để tránh double click
     btn.disabled = true;
 
-    fetch(`http://localhost:8080/tech-store/api/products/${productId}/status`, {
+    const currentStatus = tr.dataset.status;
+
+    const newStatus = currentStatus === "ACTIVE" ? "LOCKED" : "ACTIVE";
+
+    fetch(`http://localhost:8080/tech-store/api/products/${productId}/status?status=${newStatus}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -226,7 +346,13 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((err) => {
         console.error("Lỗi cập nhật trạng thái:", err);
-        alert(err.message || "Không thể cập nhật trạng thái sản phẩm");
+        showModal({
+          title: "Lỗi",
+          message: "Không thể cập nhật trạng thái sản phẩm",
+          type: "danger",
+          autoClose: true,
+          duration: 3000,
+        });
       })
       .finally(() => {
         btn.disabled = false;

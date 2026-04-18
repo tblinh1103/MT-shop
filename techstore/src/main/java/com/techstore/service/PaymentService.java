@@ -54,7 +54,7 @@ public class PaymentService {
 
         if (paymentStatus.equals(PaymentStatus.PAID.name())) {
             payment.setPaidAt(LocalDateTime.now());
-            payment.getOrder().setOrderStatus("CONFIRMED");
+            payment.getOrder().setOrderStatus("COMPLETED");
         }
 
         payment = paymentRepository.save(payment);
@@ -166,6 +166,10 @@ public class PaymentService {
             payment.setPaymentStatus(PaymentStatus.PAID.name());
             payment.setPaidAt(LocalDateTime.now());
             payment.getOrder().setOrderStatus("CONFIRMED");
+        } else {
+            payment.setPaymentStatus(PaymentStatus.PENDING.name());
+            payment.setPaidAt(LocalDateTime.now());
+            payment.getOrder().setOrderStatus("CANCELLED");
         }
 
         paymentRepository.save(payment);

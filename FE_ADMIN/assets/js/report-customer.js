@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    loadCustomerStats("day"); // mặc định filter theo ngày
+    loadCustomerStats("month"); // mặc định filter theo ngày
 
     document.querySelectorAll(".filter-customer").forEach(item => {
         item.addEventListener("click", function () {

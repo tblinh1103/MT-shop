@@ -90,10 +90,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           <div class="card-type payment-method">Chuyển khoản ngân hàng</div>
         </div>
       </div>
-      <div class="qr-container d-flex justify-content-center">
-        <img src="https://img.vietqr.io/image/MB-0963703556-print.png?amount=${order.totalAmount}&addInfo=${order.orderCode}&accountName=TRAN BAO LINH" alt="QR" class="qr-code-img" style="max-height: 600px;">
-      </div>
-      <span>Đơn hàng sẽ được xác nhận sau ít phút khi bạn hoàn tất thanh toán.</span>
+      <span>Đơn hàng đã được xác nhận.</span>
     `;
   } else if (order.payment.paymentMethod === "CASH") {
     paymentCard.querySelector(".card-body").innerHTML = `

@@ -1,0 +1,31 @@
+.form-row-custom {
+    display: flex;
+    align-items: left;
+    margin-bottom: 12px;
+}
+
+.form-row-custom label {
+    width: 160px;
+    margin-bottom: 0;
+    font-weight: 500;
+    text-align: left;
+}
+
+.form-row-custom input {
+    flex: 1;
+    min-width: 250px;
+
+    border: 1px solid #c4c4c4;
+    /* viền xám rõ hơn */
+    border-radius: 8px;
+    /* bo góc cho đẹp hơn */
+    padding: 8px 10px;
+    outline: none;
+    background: #fff;
+}
+
+.form-check-inline-custom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

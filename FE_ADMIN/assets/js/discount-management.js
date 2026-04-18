@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    window.location.href = "login.html"; 
+    window.location.href = "login.html";
     return;
   }
 
@@ -13,9 +13,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const createModal = new bootstrap.Modal(document.getElementById("createDiscountModal"));
   addBtn.addEventListener("click", () => createModal.show());
 
-  // Submit form tạo mới
+  // ============================================
+  //  Xác nhận tạo mã giảm giá
+  // ============================================
   const createForm = document.getElementById("createDiscountForm");
-  createForm.addEventListener("submit", function(e) {
+  createForm.addEventListener("submit", function (e) {
     e.preventDefault();
     if (!this.checkValidity()) {
       this.reportValidity();
@@ -24,9 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
     createDiscount(token, createModal);
   });
 
-  // Submit form edit
+  // ============================================
+  //  Xác nhận sửa mã giảm giá
+  // ============================================
   const editForm = document.getElementById("editDiscountForm");
-  editForm.addEventListener("submit", function(e) {
+  editForm.addEventListener("submit", function (e) {
     e.preventDefault();
     if (!this.checkValidity()) {
       this.reportValidity();
@@ -35,14 +39,18 @@ document.addEventListener("DOMContentLoaded", function () {
     updateDiscount(token);
   });
 
-  // Lọc theo trạng thái
+  // ============================================
+  //  Lọc theo trạng thái
+  // ============================================
   const filterSelect = document.getElementById("filter-discount");
-  filterSelect.addEventListener("change", function() {
+  filterSelect.addEventListener("change", function () {
     filterDiscountByStatus(this.value);
   });
 });
 
-// Load danh sách discount
+// ============================================
+//  Load danh sách discount
+// ============================================
 function loadDiscounts(token) {
   fetch("http://localhost:8080/tech-store/api/discounts", {
     method: "GET",
@@ -51,13 +59,15 @@ function loadDiscounts(token) {
       "Content-Type": "application/json"
     }
   })
-  .then(res => res.json())
-  .then(data => renderDiscountTable(data.result))
-  .catch(err => console.error("Lỗi load discounts:", err));
+    .then(res => res.json())
+    .then(data => renderDiscountTable(token, data.result))
+    .catch(err => console.error("Lỗi load discounts:", err));
 }
 
-// Render bảng discount
-function renderDiscountTable(discounts) {
+// ============================================
+//  Render bảng discount
+// ============================================
+function renderDiscountTable(token, discounts) {
   const tbody = document.querySelector("#discount-table tbody");
   tbody.innerHTML = "";
 
@@ -70,8 +80,27 @@ function renderDiscountTable(discounts) {
     const minAmount = discount.minOrderAmount.toLocaleString("vi-VN") + "đ";
     const maxAmount = discount.maxDiscountAmount.toLocaleString("vi-VN") + "đ";
 
+    // Kiểm tra ngày hết hạn
+    const endDateCheck = new Date(discount.endDate);
+    const now = new Date();
+
+    // reset giờ về 00:00:00
+    endDateCheck.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
+
+    if (endDateCheck < now && discount.isActive) {
+      fetch(`http://localhost:8080/tech-store/api/discounts/${discount.discountId}/status`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+    }
+
+    // Render table
     tr.innerHTML = `
-      <td class="align-middle">${discount.code}</td>
+      <td class="align-middle p-3">${discount.code}</td>
       <td class="align-middle">${discount.description}</td>
       <td class="align-middle">${discount.discountPercent}%</td>
       <td class="align-middle">${minAmount}</td>
@@ -81,11 +110,10 @@ function renderDiscountTable(discounts) {
       <td class="align-middle">${endDate}</td>
       <td class="align-middle">${discount.isActive ? "Hoạt động" : "Không hoạt động"}</td>
       <td class="align-middle">
-        ${
-          discount.isActive
-            ? `<button class="btn btn-sm btn-warning text-white btn-update-status"><i class="bx bxs-lock"></i></button>`
-            : `<button class="btn btn-sm btn-warning text-white btn-update-status"><i class="bx bxs-lock-open"></i></button>`
-        }
+        ${discount.isActive
+        ? `<button class="btn btn-sm btn-warning text-white btn-update-status"><i class="bx bxs-lock"></i></button>`
+        : `<button class="btn btn-sm btn-warning text-white btn-update-status"><i class="bx bxs-lock-open"></i></button>`
+      }
         <button class="btn btn-sm btn-primary text-white btn-update-discount"><i class="bi bi-pencil-square"></i></button>
         <button class="btn btn-sm btn-danger text-white btn-delete-discount"><i class="bx bx-trash"></i></button>
       </td>
@@ -94,25 +122,27 @@ function renderDiscountTable(discounts) {
     tbody.appendChild(tr);
 
     // Toggle trạng thái
-    tr.querySelector(".btn-update-status").addEventListener("click", function() {
+    tr.querySelector(".btn-update-status").addEventListener("click", function () {
       toggleDiscountStatus(tr.getAttribute("data-id"), this);
     });
 
     // Edit discount
-    tr.querySelector(".btn-update-discount").addEventListener("click", function() {
+    tr.querySelector(".btn-update-discount").addEventListener("click", function () {
       openEditModal(discount);
     });
 
     // Delete discount
-    tr.querySelector(".btn-delete-discount").addEventListener("click", function() {
-      openDeleteModal(discount.discountId);
+    tr.querySelector(".btn-delete-discount").addEventListener("click", function () {
+      deleteDiscount(discount.discountId);
     });
   });
 
   filterDiscountByStatus(document.getElementById("filter-discount").value);
 }
 
-// Tạo mới
+// ============================================
+//  Tạo mã giảm giá
+// ============================================
 function createDiscount(token, modalInstance) {
   const data = {
     code: document.getElementById("code").value,
@@ -127,8 +157,25 @@ function createDiscount(token, modalInstance) {
   };
 
   if (new Date(data.startDate) > new Date(data.endDate)) {
-    alert("Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc");
+    showModal({
+      title: "Thông báo",
+      message: "Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc",
+      type: "danger",
+      autoClose: true,
+      duration: 3000
+    });
     return;
+  }
+
+  // 🔥 Nếu hết hạn → ép về false
+  const now = new Date();
+  const endDate = new Date(data.endDate);
+  // reset giờ về 00:00:00
+  endDate.setHours(0, 0, 0, 0);
+  now.setHours(0, 0, 0, 0);
+
+  if (endDate < now) {
+    data.isActive = false;
   }
 
   fetch("http://localhost:8080/tech-store/api/discounts", {
@@ -139,21 +186,35 @@ function createDiscount(token, modalInstance) {
     },
     body: JSON.stringify(data)
   })
-  .then(res => res.json())
-  .then(response => {
-    if (response.code === 1000) {
-      alert("Tạo mã giảm giá thành công: " + response.result.code);
-      modalInstance.hide();
-      loadDiscounts(token);
-      document.getElementById("createDiscountForm").reset();
-    } else {
-      alert("Lỗi: " + response.message);
-    }
-  })
-  .catch(err => console.error("Lỗi create discount:", err));
+    .then(res => res.json())
+    .then(response => {
+      if (response.code === 1000) {
+        showModal({
+          title: "Thông báo",
+          message: "Tạo mã giảm giá thành công: " + response.result.code,
+          type: "success",
+          autoClose: true,
+          duration: 3000
+        });
+        modalInstance.hide();
+        loadDiscounts(token);
+        document.getElementById("createDiscountForm").reset();
+      } else {
+        showModal({
+          title: "Thông báo",
+          message: "Lỗi: " + response.message,
+          type: "danger",
+          autoClose: true,
+          duration: 3000
+        });
+      }
+    })
+    .catch(err => console.error("Lỗi create discount:", err));
 }
 
-// Mở modal sửa và điền dữ liệu
+// ============================================
+//  Mở modal sửa và điền dữ liệu
+// ============================================
 function openEditModal(discount) {
   document.getElementById("editDiscountId").value = discount.discountId;
   document.getElementById("editCode").value = discount.code;
@@ -170,7 +231,9 @@ function openEditModal(discount) {
   editModal.show();
 }
 
-// Update discount
+// ============================================
+//  Cập nhật mã giảm giá
+// ============================================
 function updateDiscount(token) {
   const discountId = document.getElementById("editDiscountId").value;
   const data = {
@@ -186,8 +249,23 @@ function updateDiscount(token) {
   };
 
   if (new Date(data.startDate) > new Date(data.endDate)) {
-    alert("Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc");
+    showModal({
+      title: "Thông báo",
+      message: "Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc",
+      type: "danger",
+      autoClose: true,
+      duration: 3000
+    });
     return;
+  }
+
+  // 🔥 Nếu hết hạn → ép về false
+  const now = new Date();
+  const endDate = new Date(data.endDate);
+  endDate.setHours(23, 59, 59, 999);
+
+  if (endDate < now) {
+    data.isActive = false;
   }
 
   fetch(`http://localhost:8080/tech-store/api/discounts/${discountId}`, {
@@ -198,44 +276,88 @@ function updateDiscount(token) {
     },
     body: JSON.stringify(data)
   })
-  .then(res => res.json())
-  .then(response => {
-    if (response.code === 1000) {
-      alert("Cập nhật mã giảm giá thành công");
-      bootstrap.Modal.getInstance(document.getElementById("editDiscountModal")).hide();
-      loadDiscounts(token);
-    } else {
-      alert("Cập nhật thất bại: " + response.message);
-    }
-  })
-  .catch(err => console.error("Lỗi cập nhật discount:", err));
+    .then(res => res.json())
+    .then(response => {
+      if (response.code === 1000) {
+        showModal({
+          title: "Thông báo",
+          message: "Cập nhật mã giảm giá thành công",
+          type: "success",
+          autoClose: true,
+          duration: 3000
+        });
+        bootstrap.Modal.getInstance(document.getElementById("editDiscountModal")).hide();
+        loadDiscounts(token);
+      } else {
+        showModal({
+          title: "Thông báo",
+          message: "Cập nhật thất bại: " + response.message,
+          type: "danger",
+          autoClose: true,
+          duration: 3000
+        });
+      }
+    })
+    .catch(err => console.error("Lỗi cập nhật discount:", err));
 }
 
-// Toggle trạng thái
+// ============================================
+//  THAY ĐỔI TRẠNG THÁI MÃ GIẢM GIÁ
+// ============================================
 function toggleDiscountStatus(discountId, btn) {
   const token = localStorage.getItem("token");
-  fetch(`http://localhost:8080/tech-store/api/discounts/${discountId}/status`, {
-    method: "PUT",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    }
-  })
-  .then(res => res.json())
-  .then(response => {
-    if (response.code === 1000 && response.result) {
-      const isActive = response.result.isActive;
-      btn.innerHTML = isActive ? '<i class="bx bxs-lock"></i>' : '<i class="bx bxs-lock-open"></i>';
-      btn.closest("tr").cells[8].textContent = isActive ? "Hoạt động" : "Không hoạt động";
-      filterDiscountByStatus(document.getElementById("filter-discount").value);
-    } else {
-      alert("Cập nhật trạng thái thất bại");
-    }
-  })
-  .catch(err => console.error("Lỗi đổi trạng thái:", err));
+
+  const row = btn.closest("tr");
+  const endDateText = row.cells[7].textContent;
+
+  // ⚠️ convert lại format dd/mm/yyyy
+  const parts = endDateText.split("/");
+  const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
+  const now = new Date();
+  endDate.setHours(0, 0, 0, 0);
+  now.setHours(0, 0, 0, 0);
+  if (endDate < now) {
+    showModal({
+      title: "Thông báo",
+      message: "Thời gian áp dụng mã giảm giá đã hết hạn, không thể thay đổi trạng thái!",
+      type: "danger",
+      autoClose: true,
+      duration: 3000
+    });
+    return;
+  }
+  showConfirmModal("Bạn có chắc chắn muốn thay đổi trạng thái mã giảm giá này?")
+    .then((confirmed) => {
+      if (!confirmed) return;
+
+      fetch(`http://localhost:8080/tech-store/api/discounts/${discountId}/status`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(response => {
+          if (response.code === 1000 && response.result) {
+            loadDiscounts(token);
+          } else {
+            showModal({
+              title: "Thông báo",
+              message: "Cập nhật trạng thái thất bại: " + response.message,
+              type: "danger",
+              autoClose: true,
+              duration: 3000
+            });
+          }
+        })
+        .catch(err => console.error("Lỗi đổi trạng thái:", err));
+    });
 }
 
-// Lọc bảng
+// ============================================
+//  LỌC MÃ GIẢM GIÁ
+// ============================================
 function filterDiscountByStatus(status) {
   const rows = document.querySelectorAll("#discount-table tbody tr");
   rows.forEach(row => {
@@ -244,32 +366,40 @@ function filterDiscountByStatus(status) {
   });
 }
 
-// Delete
-function openDeleteModal(discountId) {
-  const deleteBtn = document.getElementById("confirmDeleteBtn");
-  const deleteModal = new bootstrap.Modal(document.getElementById("deleteDiscountModal"));
-  deleteModal.show();
-
-  deleteBtn.onclick = function() {
-    deleteDiscount(discountId);
-    deleteModal.hide();
-  };
-}
-
+// ============================================
+//  XÓA MÃ GIẢM GIÁ
+// ============================================
 function deleteDiscount(discountId) {
   const token = localStorage.getItem("token");
-  fetch(`http://localhost:8080/tech-store/api/discounts/${discountId}`, {
-    method: "DELETE",
-    headers: { "Authorization": `Bearer ${token}` }
-  })
-  .then(res => res.json())
-  .then(response => {
-    if (response.code === 1000) {
-      alert("Xóa mã giảm giá thành công");
-      loadDiscounts(token);
-    } else {
-      alert("Xóa thất bại: " + response.message);
-    }
-  })
-  .catch(err => console.error("Lỗi xóa discount:", err));
+  showConfirmModal("Bạn có chắc chắn muốn xóa mã giảm giá này?")
+    .then((confirmed) => {
+      if (!confirmed) return;
+
+      fetch(`http://localhost:8080/tech-store/api/discounts/${discountId}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(response => {
+          if (response.code === 1000) {
+            showModal({
+              title: "Thông báo",
+              message: "Xóa mã giảm giá thành công",
+              type: "success",
+              autoClose: true,
+              duration: 3000
+            });
+            loadDiscounts(token);
+          } else {
+            showModal({
+              title: "Thông báo",
+              message: "Xóa thất bại: " + response.message,
+              type: "danger",
+              autoClose: true,
+              duration: 3000
+            });
+          }
+        })
+        .catch(err => console.error("Lỗi xóa discount:", err));
+    });
 }

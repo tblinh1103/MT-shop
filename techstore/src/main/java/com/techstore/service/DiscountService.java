@@ -24,12 +24,11 @@ public class DiscountService {
     private final DiscountMapper discountMapper;
 
     public DiscountResponse createDiscount(DiscountRequest discountRequest) {
-        if(discountRepository.existsByCode(discountRequest.getCode())) {
+        if (discountRepository.existsByCode(discountRequest.getCode())) {
             throw new AppException(ErrorCode.DISCOUNT_CODE_EXISTED);
         }
 
-        if (discountRequest.getStartDate().isAfter(discountRequest.getEndDate())
-                || discountRequest.getStartDate().isEqual(discountRequest.getEndDate())) {
+        if (discountRequest.getStartDate().isAfter(discountRequest.getEndDate())) {
             throw new AppException(ErrorCode.DISCOUNT_DATE_INVALID);
         }
 
@@ -62,14 +61,14 @@ public class DiscountService {
         Discount discount = discountRepository.findByCode(discountCode)
                 .orElseThrow(() -> new AppException(ErrorCode.DISCOUNT_NOT_EXISTED));
 
-        if(!isValid(discount, cartTotal))
+        if (!isValid(discount, cartTotal))
             throw new AppException(ErrorCode.DISCOUNT_INVALID);
 
         BigDecimal discountAmount = cartTotal
                 .multiply(BigDecimal.valueOf(discount.getDiscountPercent()))
                 .divide(BigDecimal.valueOf(100));
 
-        if(discountAmount.compareTo(discount.getMaxDiscountAmount()) > 0)
+        if (discountAmount.compareTo(discount.getMaxDiscountAmount()) > 0)
             discountAmount = discount.getMaxDiscountAmount();
 
         BigDecimal finalAmount = cartTotal.subtract(discountAmount);
@@ -81,17 +80,17 @@ public class DiscountService {
     }
 
     private boolean isValid(Discount discount, BigDecimal cartTotal) {
-        if(discount == null || !discount.getIsActive())
+        if (discount == null || !discount.getIsActive())
             return false;
 
         LocalDate today = LocalDate.now();
-        if(today.isBefore(discount.getStartDate()) || today.isAfter(discount.getEndDate()))
+        if (today.isBefore(discount.getStartDate()) || today.isAfter(discount.getEndDate()))
             return false;
 
-        if(discount.getQuantity() <= 0)
+        if (discount.getQuantity() <= 0)
             return false;
 
-        if(cartTotal.compareTo(discount.getMinOrderAmount()) < 0)
+        if (cartTotal.compareTo(discount.getMinOrderAmount()) < 0)
             return false;
 
         return true;

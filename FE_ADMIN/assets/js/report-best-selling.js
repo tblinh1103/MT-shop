@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // =============================
     // Load lần đầu (ngày)
     // =============================
-    loadBestSelling("daily", "Ngày");
+    loadBestSelling("month", "Tháng");
 
     // =============================
     // Bắt sự kiện click filter

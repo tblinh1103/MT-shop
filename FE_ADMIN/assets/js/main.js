@@ -6,7 +6,7 @@
 * License: https://bootstrapmade.com/license/
 */
 
-(function() {
+(function () {
   "use strict";
 
   /**
@@ -43,7 +43,7 @@
    * Sidebar toggle
    */
   if (select('.toggle-sidebar-btn')) {
-    on('click', '.toggle-sidebar-btn', function(e) {
+    on('click', '.toggle-sidebar-btn', function (e) {
       select('body').classList.toggle('toggle-sidebar')
     })
   }
@@ -52,7 +52,7 @@
    * Search bar toggle
    */
   if (select('.search-bar-toggle')) {
-    on('click', '.search-bar-toggle', function(e) {
+    on('click', '.search-bar-toggle', function (e) {
       select('.search-bar').classList.toggle('search-bar-show')
     })
   }
@@ -113,7 +113,7 @@
    * Initiate tooltips
    */
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
   })
 
@@ -143,31 +143,31 @@
           }],
           ["bold", "italic", "underline", "strike"],
           [{
-              color: []
-            },
-            {
-              background: []
-            }
+            color: []
+          },
+          {
+            background: []
+          }
           ],
           [{
-              script: "super"
-            },
-            {
-              script: "sub"
-            }
+            script: "super"
+          },
+          {
+            script: "sub"
+          }
           ],
           [{
-              list: "ordered"
-            },
-            {
-              list: "bullet"
-            },
-            {
-              indent: "-1"
-            },
-            {
-              indent: "+1"
-            }
+            list: "ordered"
+          },
+          {
+            list: "bullet"
+          },
+          {
+            indent: "-1"
+          },
+          {
+            indent: "+1"
+          }
           ],
           ["direction", {
             align: []
@@ -200,31 +200,31 @@
     autosave_retention: '2m',
     image_advtab: true,
     link_list: [{
-        title: 'My page 1',
-        value: 'https://www.tiny.cloud'
-      },
-      {
-        title: 'My page 2',
-        value: 'http://www.moxiecode.com'
-      }
+      title: 'My page 1',
+      value: 'https://www.tiny.cloud'
+    },
+    {
+      title: 'My page 2',
+      value: 'http://www.moxiecode.com'
+    }
     ],
     image_list: [{
-        title: 'My page 1',
-        value: 'https://www.tiny.cloud'
-      },
-      {
-        title: 'My page 2',
-        value: 'http://www.moxiecode.com'
-      }
+      title: 'My page 1',
+      value: 'https://www.tiny.cloud'
+    },
+    {
+      title: 'My page 2',
+      value: 'http://www.moxiecode.com'
+    }
     ],
     image_class_list: [{
-        title: 'None',
-        value: ''
-      },
-      {
-        title: 'Some class',
-        value: 'class-name'
-      }
+      title: 'None',
+      value: ''
+    },
+    {
+      title: 'Some class',
+      value: 'class-name'
+    }
     ],
     importcss_append: true,
     file_picker_callback: (callback, value, meta) => {
@@ -267,8 +267,8 @@
   var needsValidation = document.querySelectorAll('.needs-validation')
 
   Array.prototype.slice.call(needsValidation)
-    .forEach(function(form) {
-      form.addEventListener('submit', function(event) {
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
         if (!form.checkValidity()) {
           event.preventDefault()
           event.stopPropagation()
@@ -281,26 +281,7 @@
   /**
    * Initiate Datatables
    */
-  const datatables = select('.datatable', true)
-  datatables.forEach(datatable => {
-    new simpleDatatables.DataTable(datatable, {
-      perPageSelect: [5, 10, 15, ["All", -1]],
-      columns: [{
-          select: 2,
-          sortSequence: ["desc", "asc"]
-        },
-        {
-          select: 3,
-          sortSequence: ["desc"]
-        },
-        {
-          select: 4,
-          cellClass: "green",
-          headerClass: "red"
-        }
-      ]
-    });
-  })
+
 
   /**
    * Autoresize echart charts
@@ -308,7 +289,7 @@
   const mainContainer = select('#main');
   if (mainContainer) {
     setTimeout(() => {
-      new ResizeObserver(function() {
+      new ResizeObserver(function () {
         select('.echart', true).forEach(getEchart => {
           echarts.getInstanceByDom(getEchart).resize();
         })
@@ -317,3 +298,68 @@
   }
 
 })();
+
+function showModal({
+  title = "Thông báo",
+  message = "",
+  type = "success", // success | danger | warning | info
+  autoClose = true,
+  duration = 3000
+}) {
+  const modalEl = document.getElementById("successModal");
+
+  // Đổi nội dung
+  modalEl.querySelector(".modal-title").textContent = title;
+  modalEl.querySelector(".modal-body").innerHTML = message;
+
+  // Đổi màu tiêu đề + nút
+  const titleEl = modalEl.querySelector(".modal-title");
+  const btnEl = modalEl.querySelector(".modal-footer button");
+
+  titleEl.className = `modal-title text-body`;
+  btnEl.className = `btn btn-${type}`;
+
+  const modal = new bootstrap.Modal(modalEl);
+  modal.show();
+
+  // Tự động đóng
+  if (autoClose) {
+    setTimeout(() => {
+      modal.hide();
+    }, duration);
+  }
+}
+
+function showConfirmModal(message = "Bạn có chắc chắn?") {
+  return new Promise((resolve) => {
+    const modalEl = document.getElementById("confirmModal");
+    const bodyEl = modalEl.querySelector(".modal-body");
+    const okBtn = modalEl.querySelector("#confirmOkBtn");
+
+    bodyEl.textContent = message;
+
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+
+    // Khi bấm OK
+    const onOk = () => {
+      cleanup();
+      modal.hide();
+      resolve(true);
+    };
+
+    // Khi đóng modal (bấm X hoặc Hủy)
+    const onCancel = () => {
+      cleanup();
+      resolve(false);
+    };
+
+    function cleanup() {
+      okBtn.removeEventListener("click", onOk);
+      modalEl.removeEventListener("hidden.bs.modal", onCancel);
+    }
+
+    okBtn.addEventListener("click", onOk);
+    modalEl.addEventListener("hidden.bs.modal", onCancel);
+  });
+}

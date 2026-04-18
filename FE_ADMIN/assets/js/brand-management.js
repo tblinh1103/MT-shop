@@ -33,14 +33,14 @@ function loadBrands() {
       'Content-Type': 'application/json'
     }
   })
-  .then(response => response.json())
-  .then(data => {
-    container.innerHTML = ''; // Xóa brand cũ
+    .then(response => response.json())
+    .then(data => {
+      container.innerHTML = ''; // Xóa brand cũ
 
-    data.result.forEach(brand => {
-      const card = document.createElement('div');
-      card.className = 'col-lg-2';
-      card.innerHTML = `
+      data.result.forEach(brand => {
+        const card = document.createElement('div');
+        card.className = 'col-lg-2';
+        card.innerHTML = `
         <div class="card">
           <div class="card-body p-3 d-flex align-items-center">
             <span class="brand-name me-auto">${brand.brandName}</span>
@@ -55,12 +55,12 @@ function loadBrands() {
           </div>
         </div>
       `;
-      container.appendChild(card);
-    });
+        container.appendChild(card);
+      });
 
-    attachEventListeners();
-  })
-  .catch(error => console.error('Error fetching brands:', error));
+      attachEventListeners();
+    })
+    .catch(error => console.error('Error fetching brands:', error));
 }
 
 // Gắn sự kiện cho nút Update/Delete
@@ -99,18 +99,30 @@ addBrandForm.addEventListener('submit', (event) => {
     },
     body: JSON.stringify({ brandName })
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.code === 1000) {
-      alert('Tạo mới thương hiệu thành công!');
-      addBrandForm.reset();
-      addBrandModal.hide();
-      loadBrands();
-    } else {
-      alert('Thêm brand thất bại!');
-    }
-  })
-  .catch(err => console.error('Error adding brand:', err));
+    .then(res => res.json())
+    .then(data => {
+      if (data.code === 1000) {
+        showModal({
+          title: "Thành công",
+          message: "Tạo mới thương hiệu thành công!",
+          type: "success",
+          autoClose: true,
+          duration: 3000,
+        });
+        addBrandForm.reset();
+        addBrandModal.hide();
+        loadBrands();
+      } else {
+        showModal({
+          title: "Lỗi",
+          message: "Không thể tạo mới thương hiệu!",
+          type: "danger",
+          autoClose: true,
+          duration: 3000,
+        });
+      }
+    })
+    .catch(err => console.error('Error adding brand:', err));
 });
 
 // Xử lý submit form sửa brand
@@ -128,17 +140,29 @@ editBrandForm.addEventListener('submit', (event) => {
     },
     body: JSON.stringify({ brandName })
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.code === 1000) {
-      alert('Cập nhật thương hiệu thành công!');
-      editBrandModal.hide();
-      loadBrands();
-    } else {
-      alert('Cập nhật thất bại!');
-    }
-  })
-  .catch(err => console.error('Error updating brand:', err));
+    .then(res => res.json())
+    .then(data => {
+      if (data.code === 1000) {
+        showModal({
+          title: "Thành công",
+          message: "Cập nhật thương hiệu thành công!",
+          type: "success",
+          autoClose: true,
+          duration: 3000,
+        });
+        editBrandModal.hide();
+        loadBrands();
+      } else {
+        showModal({
+          title: "Lỗi",
+          message: "Không thể cập nhật thương hiệu!",
+          type: "danger",
+          autoClose: true,
+          duration: 3000,
+        });
+      }
+    })
+    .catch(err => console.error('Error updating brand:', err));
 });
 
 // Xử lý xác nhận xóa
@@ -152,17 +176,29 @@ document.getElementById('confirmDeleteBrandBtn').addEventListener('click', () =>
       'Content-Type': 'application/json'
     }
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.code === 1000) {
-      alert('Xóa thương hiệu thành công!');
-      deleteBrandModal.hide();
-      loadBrands();
-    } else {
-      alert('Xóa thất bại!');
-    }
-  })
-  .catch(err => console.error('Error deleting brand:', err));
+    .then(res => res.json())
+    .then(data => {
+      if (data.code === 1000) {
+        showModal({
+          title: "Thành công",
+          message: "Xóa thương hiệu thành công!",
+          type: "success",
+          autoClose: true,
+          duration: 3000,
+        });
+        deleteBrandModal.hide();
+        loadBrands();
+      } else {
+        showModal({
+          title: "Lỗi",
+          message: "Không thể xóa thương hiệu!",
+          type: "danger",
+          autoClose: true,
+          duration: 3000,
+        });
+      }
+    })
+    .catch(err => console.error('Error deleting brand:', err));
 });
 
 // Load brands khi trang được tải

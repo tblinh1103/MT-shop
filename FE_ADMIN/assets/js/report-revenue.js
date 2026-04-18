@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const revenue = data.result; // today, month, year
 
             // mặc định hiển thị ngày
-            updateRevenueCard("today", revenue.today);
+            updateRevenueCard("month", revenue.month);
 
             // bắt sự kiện lọc
             document.querySelectorAll(".revenue-filter").forEach(item => {

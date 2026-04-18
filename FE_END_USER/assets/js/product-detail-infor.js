@@ -218,7 +218,48 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedVariant.promotionalPrice.toLocaleString() + "đ";
     originalPriceEl.textContent =
       selectedVariant.originalPrice.toLocaleString() + "đ";
-    stockQuantityEl.textContent = `Chỉ còn ${selectedVariant.stock} sản phẩm`;
+    //stockQuantityEl.textContent = `Chỉ còn ${selectedVariant.stock} sản phẩm`;
+
+    const statusEl = document.getElementById("availability-status");
+    const iconEl = document.getElementById("stock-icon");
+    const textEl = document.getElementById("stock-text");
+    const quantityEl = document.getElementById("stock-quantity");
+
+    const stock = selectedVariant.stock;
+
+    // reset class + reset style luôn
+    statusEl.className = "availability-status";
+
+    if (stock <= 0) {
+      iconEl.className = "bi bi-x-circle-fill";
+      textEl.textContent = "Hết hàng";
+      quantityEl.textContent = "Sản phẩm tạm thời hết hàng";
+
+      statusEl.style.background = "#fef2f2";
+      statusEl.style.border = "1px solid #fecaca";
+      textEl.style.color = "#b91c1c";
+      iconEl.style.color = "#ef4444";
+
+    } else if (stock <= 5) {
+      iconEl.className = "bi bi-exclamation-circle-fill";
+      textEl.textContent = "Sắp hết hàng";
+      quantityEl.textContent = `Chỉ còn ${stock} sản phẩm`;
+
+      statusEl.style.background = "#fffbeb";
+      statusEl.style.border = "1px solid #fde68a";
+      textEl.style.color = "#b45309";
+      iconEl.style.color = "#f59e0b";
+
+    } else {
+      iconEl.className = "bi bi-check-circle-fill";
+      textEl.textContent = "Còn hàng";
+      quantityEl.textContent = `Còn ${stock} sản phẩm`;
+
+      statusEl.style.background = "#ecfdf5";
+      statusEl.style.border = "1px solid #a7f3d0";
+      textEl.style.color = "#047857";
+      iconEl.style.color = "#10b981";
+    }
 
     // Thông số kỹ thuật
     specsTable.innerHTML = "";
@@ -254,11 +295,24 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+
       // Nếu đã đăng nhập -> gọi API
       const productVariantId = selectedVariant.productVariantId;
+      const stock = selectedVariant.stock;
+
       const quantity = parseInt(
         document.querySelector(".quantity-input").value
       );
+
+      // kiểm tra số lượng tồn kho
+      if (stock === 0) {
+        showModal({
+          title: "Hết hàng",
+          message: "Sản phẩm này hiện đã hết hàng",
+          type: "danger",
+        });
+        return;
+      }
 
       fetch("http://localhost:8080/tech-store/api/cart-item", {
         method: "POST",
@@ -279,14 +333,11 @@ document.addEventListener("DOMContentLoaded", () => {
           const badge = document.querySelector(".header-action-btn .badge");
           if (badge) badge.textContent = data.totalQuantity;
 
-          const successModal = new bootstrap.Modal(
-            document.getElementById("successModal")
-          );
-          successModal.show();
-          // Tự động đóng sau 3 giây
-          setTimeout(() => {
-            successModal.hide();
-          }, 3000);
+          showModal({
+            title: "Thêm vào giỏ hàng",
+            message: `Thêm vào giỏ hàng thành công`,
+            type: "success",
+          });
         })
         .catch((error) => console.error("Lỗi:", error));
     });

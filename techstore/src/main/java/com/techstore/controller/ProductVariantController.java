@@ -1,6 +1,7 @@
 package com.techstore.controller;
 
 import com.techstore.dto.request.ProductVariantCreateRequest;
+import com.techstore.dto.request.ProductVariantUpdateRequest;
 import com.techstore.dto.response.ApiResponse;
 import com.techstore.dto.response.ProductVariantResponse;
 import com.techstore.service.ProductVariantService;
@@ -29,6 +30,17 @@ public class ProductVariantController {
         productVariantService.deleteProductVariant(id);
         return ApiResponse.<Void>builder()
                 .message("Xóa biến thể sản phẩm thành công")
+                .build();
+    }
+
+    @PatchMapping("/{id}")
+    public ApiResponse<ProductVariantResponse> updateProductVariant(
+            @PathVariable String id,
+            @RequestBody ProductVariantUpdateRequest request) {
+
+        return ApiResponse.<ProductVariantResponse>builder()
+                .message("Cập nhật biến thể sản phẩm thành công")
+                .result(productVariantService.updateProductVariant(id, request))
                 .build();
     }
 }
