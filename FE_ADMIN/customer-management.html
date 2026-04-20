@@ -31,6 +31,7 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="assets/css/customer-management.css" rel="stylesheet">
 </head>
 
 <body>
@@ -209,6 +210,35 @@
 
       </div>
     </section>
+
+    <div id="userDetailModal" class="user-modal d-none">
+      <div class="user-modal-content">
+
+        <span class="close-btn" onclick="closeUserModal()">&times;</span>
+
+        <h4>Thông tin người dùng</h4>
+
+        <!-- USER INFO -->
+        <div class="user-info" id="userDetailContent">
+          <!-- JS render -->
+        </div>
+
+        <h5>Thống kê</h5>
+        <div class="stats-grid" id="orderStats">
+          <!-- JS render -->
+        </div>
+
+        <!-- ORDERS -->
+        <h5 id="order-title">Đơn hàng</h5>
+        <div class="orders-grid" id="orderList"></div>
+        <div class="section mt-3 p-3">
+          <ul class="pagination center" id="pagination">
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Modal xác nhận -->
     <div class="modal fade" id="confirmModal" tabindex="-1">

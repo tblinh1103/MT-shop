@@ -405,6 +405,135 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
+  document.getElementById("btn-change-address")
+    .addEventListener("click", async function (e) {
+      e.preventDefault(); // quan trọng nếu là button trong form hoặc thẻ a
+      await loadAddresses()
+      toggleAddressList();
+    });
+
+  function toggleAddressList() {
+    const list = document.getElementById("addressListContainer");
+    list.classList.toggle("d-none");
+  }
+
+  // ================== LOAD DANH SÁCH ĐỊA CHỈ ==================
+  async function loadAddresses() {
+    try {
+      const response = await fetch("http://localhost:8080/tech-store/api/addresses", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      if (data.code !== 1000) throw new Error(data.message);
+
+      const addressesGrid = document.querySelector(".addresses-grid");
+      addressesGrid.innerHTML = `
+        <div style="text-align: left;">
+          <span style="font-size:20px;">Danh sách địa chỉ</span>
+        </div>
+        <div style="text-align: right;">
+          <button id="close-address-list" style="border:none;background:none;font-size:20px;">&times;</button>
+        </div>
+      `;
+
+      const addresses = data.result.sort((a, b) => b.isDefault - a.isDefault);
+
+      addresses.forEach((addr) => {
+        const card = document.createElement("div");
+        card.className = `address-card ${addr.isDefault ? "default" : ""}`;
+        card.dataset.aos = "fade-up";
+
+        const addressTypeMap = {
+          HOME: "Nhà",
+          OFFICE: "Văn phòng",
+          STORE: "Cửa hàng",
+          OTHER: "Khác",
+        };
+
+        card.innerHTML = `
+          <div class="card-header">
+            <h4 class="address-type">${addressTypeMap[addr.addressType] || "Khác"}</h4>
+            ${addr.isDefault ? `<span class="default-badge">Mặc định</span>` : ""}
+          </div>
+          <div class="card-body">
+            <p class="address-text">Tỉnh/Thành phố: ${addr.city}<br>Phường/Xã: ${addr.ward}<br>Chi tiết: ${addr.detailAddress || ""}</p>
+            <div class="contact-info">
+              <div><i class="bi bi-person"></i> ${addr.recipientName}</div>
+              <div><i class="bi bi-telephone"></i> ${addr.recipientPhone}</div>
+            </div>
+          </div>
+        `;
+
+        // ✅ CLICK TOÀN CARD
+        card.addEventListener("click", () => {
+          const selectedAddress = {
+            recipientName: addr.recipientName,
+            recipientPhone: addr.recipientPhone,
+            city: addr.city,
+            district: addr.district,
+            ward: addr.ward,
+            detailAddress: addr.detailAddress,
+          };
+
+          fillAddressForm(selectedAddress);
+
+          // đóng popup
+          closeAddressList();
+        });
+
+
+
+        addressesGrid.appendChild(card);
+      });
+    } catch (error) {
+      console.error("Lỗi khi tải danh sách địa chỉ:", error);
+      showModal({
+        title: "Lỗi",
+        message: `Không thể tải danh sách địa chỉ!`,
+        type: "danger",
+        autoClose: true
+      });
+    }
+  }
+
+  document.querySelector(".addresses-grid").addEventListener("click", function (e) {
+    if (e.target.id === "close-address-list") {
+      closeAddressList();
+    }
+  });
+
+  function closeAddressList() {
+    document.getElementById("addressListContainer").classList.add("d-none");
+  }
+
+  document.getElementById("addressListContainer").addEventListener("click", function (e) {
+    if (e.target === this) {
+      closeAddressList();
+    }
+  });
+
+  function selectAddress(addr) {
+    const address = {
+      recipientName: addr.recipientName,
+      recipientPhone: addr.recipientPhone,
+      city: addr.city,
+      district: addr.district,
+      ward: addr.ward,
+      detailAddress: addr.detailAddress
+    };
+
+    console.log("Selected address:", address);
+
+
+    // đóng popup nếu cần
+    closeAddressList();
+  }
+
   // -----------------------
   // Thực hiện khi load
   // -----------------------

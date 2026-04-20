@@ -5,6 +5,7 @@ import com.techstore.dto.request.OrderRequest;
 import com.techstore.dto.response.OrderItemResponse;
 import com.techstore.dto.response.OrderResponse;
 import com.techstore.dto.response.OrderStatisticsResponse;
+import com.techstore.dto.response.UserOrderStatisticsResponse;
 import com.techstore.entity.*;
 import com.techstore.enums.OrderStatus;
 import com.techstore.enums.PaymentStatus;
@@ -221,6 +222,72 @@ public class OrderService {
         }
 
         return orderResponses;
+    }
+
+    public Page<OrderResponse> getOrdersByUserId(String userId, int page, int size) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("createdAt").descending() // thay cho OrderByCreatedAtDesc
+        );
+
+        Page<Order> orders = orderRepository.findAllByUser_UserId(userId, pageable);
+
+        return orders.map(order -> {
+            OrderResponse orderResponse = orderMapper.toOrderResponse(order);
+
+            List<OrderItemResponse> orderItems = order.getOrderItems().stream()
+                    .map(orderItemMapper::toOrderItemResponse)
+                    .toList();
+
+            orderResponse.setOrderItems(orderItems);
+            orderResponse.setPayment(paymentMapper.toPaymentResponse(order.getPayment()));
+
+            return orderResponse;
+        });
+    }
+
+    public UserOrderStatisticsResponse getOrderStatisticsByUserId(String userId) {
+
+        List<Object[]> results = orderRepository.getOrderStatisticsByUserId(userId);
+
+        if (results.isEmpty()) {
+            return UserOrderStatisticsResponse.builder()
+                    .totalOrders(0)
+                    .completedOrders(0)
+                    .cancelledOrders(0)
+                    .totalCompletedAmount(0)
+                    .cancelRate(0)
+                    .rating("NO_DATA")
+                    .build();
+        }
+
+        Object[] result = results.get(0); // 👈 LẤY DÒNG ĐẦU
+
+        long totalOrders = result[0] == null ? 0 : ((Number) result[0]).longValue();
+        long completedOrders = result[1] == null ? 0 : ((Number) result[1]).longValue();
+        long cancelledOrders = result[2] == null ? 0 : ((Number) result[2]).longValue();
+        double totalCompletedAmount = result[3] == null ? 0 : ((Number) result[3]).doubleValue();
+
+        double cancelRate = totalOrders == 0 ? 0 : (cancelledOrders * 100.0 / totalOrders);
+
+        String rating;
+        if (cancelRate <= 10)
+            rating = "GOOD";
+        else if (cancelRate <= 30)
+            rating = "AVERAGE";
+        else
+            rating = "BAD";
+
+        return UserOrderStatisticsResponse.builder()
+                .totalOrders(totalOrders)
+                .completedOrders(completedOrders)
+                .cancelledOrders(cancelledOrders)
+                .totalCompletedAmount(totalCompletedAmount)
+                .cancelRate(cancelRate)
+                .rating(rating)
+                .build();
     }
 
     public Page<OrderResponse> searchOrders(

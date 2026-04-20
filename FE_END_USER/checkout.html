@@ -29,6 +29,130 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+  <style>
+    .btn-change-address {
+      margin-left: auto;
+      background: transparent;
+      border: 1px solid #0d6efd;
+      color: #0d6efd;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .btn-change-address:hover {
+      background: #0d6efd;
+      color: white;
+    }
+
+    /* overlay nền mờ */
+    #addressListContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    /* ẩn mặc định */
+    #addressListContainer.d-none {
+      display: none;
+    }
+
+    /* khung popup */
+    .addresses-grid {
+      background: #fff;
+      width: 90%;
+      max-width: 800px;
+      max-height: 80vh;
+      overflow-y: auto;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* card */
+    .address-card {
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .addresses-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      /* 2 cột bằng nhau */
+      gap: 20px;
+    }
+
+    .address-card:hover {
+      border-color: #0d6efd;
+      transform: translateY(-2px);
+    }
+
+    /* card mặc định */
+    .address-card.default {
+      border-color: #0d6efd;
+      background: #f0f7ff;
+    }
+
+    /* header */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .default-badge {
+      background: #e9ecef;
+      color: #000;
+      padding: 3px 8px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    /* actions */
+    .card-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .card-actions button {
+      border: none;
+      background: #f1f1f1;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .card-actions button:hover {
+      background: #e0e0e0;
+    }
+
+    /* animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
 </head>
 
 <body class="checkout-page">
@@ -211,6 +335,9 @@
                   <div class="section-header">
                     <div class="section-number">1</div>
                     <h3>Thông tin người nhận</h3>
+                    <button class="btn-change-address" id="btn-change-address">
+                      Chọn địa chỉ khác
+                    </button>
                   </div>
                   <div class="section-content">
                     <div class="form-group">
@@ -251,12 +378,12 @@
                       <input type="text" class="form-control" name="detailAddress" id="detailAddress"
                         placeholder="Địa chỉ chi tiết">
                     </div>
-                    <div class="form-check">
+                    <!-- <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="save-address" name="save-address">
                       <label class="form-check-label" for="save-address">
                         Lưu lại địa chỉ
                       </label>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
 
@@ -334,35 +461,35 @@
             <div class="order-summary" data-aos="fade-left" data-aos-delay="200">
               <div class="order-summary-header">
                 <h3>Tóm tắt đơn hàng</h3>
-                <span class="item-count">2 Items</span>
+                <span class="item-count"></span>
               </div>
 
               <div class="order-summary-content">
                 <div class="order-items">
                   <div class="order-item">
                     <div class="order-item-image">
-                      <img src="assets/img/product/product-1.webp" alt="Product" class="img-fluid">
+                      <img src="assets/img/product/iphone17.png" alt="Product" class="img-fluid">
                     </div>
                     <div class="order-item-details">
-                      <h4>Lorem Ipsum Dolor</h4>
-                      <p class="order-item-variant">Color: Black | Size: M</p>
+                      <h4>Iphone 17</h4>
+                      <p class="order-item-variant">Color: Black</p>
                       <div class="order-item-price">
                         <span class="quantity">1 ×</span>
-                        <span class="price">$89.99</span>
+                        <span class="price">20.000.000 VND</span>
                       </div>
                     </div>
                   </div>
 
                   <div class="order-item">
                     <div class="order-item-image">
-                      <img src="assets/img/product/product-2.webp" alt="Product" class="img-fluid">
+                      <img src="assets/img/product/iphone17.png" alt="Product" class="img-fluid">
                     </div>
                     <div class="order-item-details">
-                      <h4>Sit Amet Consectetur</h4>
-                      <p class="order-item-variant">Color: White | Size: L</p>
+                      <h4>Iphone 17</h4>
+                      <p class="order-item-variant">Color: White</p>
                       <div class="order-item-price">
-                        <span class="quantity">2 ×</span>
-                        <span class="price">$59.99</span>
+                        <span class="quantity">1 ×</span>
+                        <span class="price">20.000.000 VND</span>
                       </div>
                     </div>
                   </div>
@@ -598,6 +725,31 @@
         <div class="modal-body"> Sản phẩm đã được thêm vào giỏ hàng của bạn. </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="successModal-btn"> Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="addressListContainer" class="d-none">
+    <div class="addresses-grid">
+      <div style="text-align: left;">
+        <span style="font-size:20px;">Danh sách địa chỉ</span>
+      </div>
+      <div style="text-align: right;">
+        <button id="close-address-list" style="border:none;background:none;font-size:20px;">&times;</button>
+      </div>
+      <!-- Address Card 1 -->
+      <div class="address-card default" data-aos="fade-up" data-aos-delay="100">
+        <div class="card-header">
+          <h4 class="address-type">Nhà</h4>
+          <span class="default-badge">Mặc định</span>
+        </div>
+        <div class="card-body">
+          <p class="address-text">Tuyên Quang<br>Tuyên Quang<br>Nông Tiến<br>Xóm ABC</p>
+          <div class="contact-info">
+            <div><i class="bi bi-person"></i> Sarah Anderson</div>
+            <div><i class="bi bi-telephone"></i> +1 (555) 123-4567</div>
+          </div>
         </div>
       </div>
     </div>

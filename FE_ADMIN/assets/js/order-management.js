@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Hiển thị thống kê
   // ------------------------------
   function renderStatusBars(data) {
+    console.log(data);
 
     const orderStatusCount = {
       PENDING: data.pending || 0,

@@ -30,6 +30,37 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    /* KPI VALUE CHUNG */
+    .card-body h5[id] {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: 0.3px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto;
+    }
+
+    /* STOCK */
+    #total-stock {
+      color: #0d6efd;
+    }
+
+    /* ORDER */
+    #total-order {
+      color: #198754;
+    }
+
+    /* REVENUE */
+    #revenue-value {
+      color: #fd7e14;
+    }
+
+    /* CUSTOMER */
+    #customer-count {
+      color: #6f42c1;
+    }
+  </style>
 </head>
 
 <body>
@@ -153,7 +184,7 @@
           <div class="row">
 
             <!-- Product Card -->
-            <div class="col-xxl-4 col-md-6">
+            <div class="col-xxl-3 col-md-6">
               <div class="card info-card sales-card">
                 <div class="card-body">
                   <h5 class="card-title">Tồn kho (Sản phẩm)</h5>
@@ -162,15 +193,31 @@
                       <i class="bi bi-cart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6 id="total-stock"></h6>
+                      <h5 id="total-stock"></h5>
                     </div>
                   </div>
                 </div>
               </div>
             </div><!-- End Sales Card -->
 
+            <div class="col-xxl-3 col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Tổng đơn hàng</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-box-seam"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h5 id="total-order"></h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Revenue Card -->
-            <div class="col-xxl-4 col-md-6">
+            <div class="col-xxl-3 col-md-6">
               <div class="card info-card revenue-card">
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -190,7 +237,7 @@
                       <i class="bi bi-currency-dollar"></i>
                     </div>
                     <div class="ps-3">
-                      <h6 id="revenue-value">3.000.000.000đ</h6>
+                      <h5 id="revenue-value"></h5>
                     </div>
                   </div>
                 </div>
@@ -198,7 +245,7 @@
             </div><!-- End Revenue Card -->
 
             <!-- Customers Card -->
-            <div class="col-xxl-4 col-xl-12">
+            <div class="col-xxl-3 col-xl-12">
               <div class="card info-card customers-card">
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -218,7 +265,7 @@
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6 id="customer-count">1244</h6>
+                      <h5 id="customer-count"></h5>
                     </div>
                   </div>
                 </div>
@@ -226,7 +273,7 @@
             </div><!-- End Customers Card -->
 
             <!-- Reports Customer - Order -->
-            <div class="col-12">
+            <div class="col-7">
               <div class="card">
 
                 <div class="filter">
@@ -246,60 +293,16 @@
                   <h5 class="card-title">Báo cáo <span id="customer-order-filter-label">| Ngày</span></h5>
                   <!-- Line Chart -->
                   <div id="customerOrderChart"></div>
+                </div>
+              </div>
+            </div><!-- End Reports -->
 
-                  <!-- <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                      new ApexCharts(document.querySelector("#customerOrderChart"), {
-                        series: [{
-                          name: 'Sales',
-                          data: [31, 40, 28, 51, 42, 82, 56],
-                        }, {
-                          name: 'Revenue',
-                          data: [11, 32, 45, 32, 34, 52, 41]
-                        }, {
-                          name: 'Customers',
-                          data: [15, 11, 32, 18, 9, 24, 11]
-                        }],
-                        chart: {
-                          height: 350,
-                          type: 'area',
-                          toolbar: {
-                            show: false
-                          },
-                        },
-                        markers: {
-                          size: 4
-                        },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                        fill: {
-                          type: "gradient",
-                          gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.3,
-                            opacityTo: 0.4,
-                            stops: [0, 90, 100]
-                          }
-                        },
-                        dataLabels: {
-                          enabled: false
-                        },
-                        stroke: {
-                          curve: 'smooth',
-                          width: 2
-                        },
-                        xaxis: {
-                          type: 'datetime',
-                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                        },
-                        tooltip: {
-                          x: {
-                            format: 'dd/MM/yy HH:mm'
-                          },
-                        }
-                      }).render();
-                    });
-                  </script> -->
-                  <!-- End Line Chart -->
+            <div class="col-5">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Thống kê đơn hàng</h5>
+                  <!-- Line Chart -->
+                  <div id="orderStatusChart"></div>
                 </div>
               </div>
             </div><!-- End Reports -->
@@ -374,6 +377,7 @@
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
@@ -384,6 +388,7 @@
   <script src="assets/js/report-customer.js"></script>
   <script src="assets/js/report-customer-order.js"></script>
   <script src="assets/js/report-best-selling.js"></script>
+  <script src="assets/js/report-order.js"></script>
 
   <script src="assets/js/logout.js"></script>
 

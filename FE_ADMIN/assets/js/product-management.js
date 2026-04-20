@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const statusSelect = document.getElementById("filter-status");
   const searchProduct = document.getElementById("search-product");
   const priceMinSelect = document.getElementById("filter-price-min");
+  const priceMaxSelect = document.getElementById("filter-price-max");
   const pageSize = document.getElementById("page-size");
   let currentPage = 0;
 
@@ -225,27 +226,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
   categorySelect.addEventListener("change", () => {
     currentPage = 0;   // reset về trang đầu
-    loadProducts();
+    loadProducts();    // lọc theo danh mục
   });
   brandSelect.addEventListener("change", () => {
     currentPage = 0;   // reset về trang đầu
-    loadProducts();
+    loadProducts();    // lọc theo thương hiệu
   });
   statusSelect.addEventListener("change", () => {
     currentPage = 0;   // reset về trang đầu
-    loadProducts();
+    loadProducts();    // lọc theo trạng thái
   });
   searchProduct.addEventListener("input", () => {
     currentPage = 0;   // reset về trang đầu
-    loadProducts();
-  });
-  priceMinSelect.addEventListener("change", () => {
-    currentPage = 0;   // reset về trang đầu
-    loadProducts();
+    loadProducts();    // tìm kiếm sản phẩm
   });
   pageSize.addEventListener("change", () => {
     currentPage = 0;   // reset về trang đầu
-    loadProducts();
+    loadProducts();    // thay đổi số lượng sản phẩm trên trang
+  });
+
+  priceMinSelect.addEventListener("input", () => {
+    currentPage = 0;   // reset về trang đầu
+    loadProducts();    // lọc theo giá min
+  });
+
+  priceMaxSelect.addEventListener("input", () => {
+    currentPage = 0;   // reset về trang đầu
+    loadProducts();    // lọc theo giá max
   });
 
   // ============================================

@@ -4,6 +4,7 @@ import com.techstore.dto.request.OrderRequest;
 import com.techstore.dto.response.ApiResponse;
 import com.techstore.dto.response.OrderResponse;
 import com.techstore.dto.response.OrderStatisticsResponse;
+import com.techstore.dto.response.UserOrderStatisticsResponse;
 import com.techstore.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -65,6 +66,27 @@ public class OrderController {
                 return ApiResponse.<OrderResponse>builder()
                                 .message("Đã cập nhật trạng thái thanh toán")
                                 .result(orderService.changeOrderStatus(orderId, orderStatus))
+                                .build();
+        }
+
+        @GetMapping("/user/{userId}")
+        public ApiResponse<Page<OrderResponse>> getOrdersByUserId(
+                        @PathVariable String userId,
+                        @RequestParam(defaultValue = "0") int page,
+                        @RequestParam(defaultValue = "5") int size) {
+                return ApiResponse.<Page<OrderResponse>>builder()
+                                .message("Lấy danh sách đơn hàng theo userId")
+                                .result(orderService.getOrdersByUserId(userId, page, size))
+                                .build();
+        }
+
+        @GetMapping("/statistics/user/{userId}")
+        public ApiResponse<UserOrderStatisticsResponse> getOrderStatisticsByUserId(
+                        @PathVariable String userId) {
+
+                return ApiResponse.<UserOrderStatisticsResponse>builder()
+                                .message("Thống kê đơn hàng theo userId")
+                                .result(orderService.getOrderStatisticsByUserId(userId))
                                 .build();
         }
 

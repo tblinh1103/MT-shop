@@ -71,5 +71,5 @@ function updateRevenueCard(type, amount) {
 
 // Format tiền
 function formatCurrency(num) {
-    return num.toLocaleString("vi-VN") + "đ";
+    return num.toLocaleString("vi-VN") + " VND";
 }
