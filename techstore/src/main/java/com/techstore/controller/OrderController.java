@@ -7,6 +7,7 @@ import com.techstore.dto.response.OrderStatisticsResponse;
 import com.techstore.dto.response.UserOrderStatisticsResponse;
 import com.techstore.service.OrderService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -62,10 +63,14 @@ public class OrderController {
         @PutMapping("/{orderId}")
         public ApiResponse<OrderResponse> changeOrderStatus(
                         @PathVariable String orderId,
-                        @RequestParam String orderStatus) {
+                        @RequestParam String orderStatus,
+                        HttpServletRequest request) {
+
+                String ipAddr = request.getRemoteAddr();
+
                 return ApiResponse.<OrderResponse>builder()
                                 .message("Đã cập nhật trạng thái thanh toán")
-                                .result(orderService.changeOrderStatus(orderId, orderStatus))
+                                .result(orderService.changeOrderStatus(orderId, orderStatus, ipAddr))
                                 .build();
         }
 

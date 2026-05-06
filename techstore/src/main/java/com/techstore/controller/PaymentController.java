@@ -27,7 +27,7 @@ public class PaymentController {
     private final PaymentRepository paymentRepository;
 
     // =========================
-    // ✅ ADMIN (COD)
+    // ADMIN (COD)
     // =========================
     @PutMapping("/{paymentId}")
     public ApiResponse<PaymentResponse> changePaymentStatus(
@@ -40,7 +40,7 @@ public class PaymentController {
     }
 
     // =========================
-    // 🔥 CREATE VNPAY URL
+    // CREATE VNPAY URL
     // =========================
     @GetMapping("/{paymentId}/vnpay")
     public ApiResponse<String> createVnpay(
@@ -58,22 +58,28 @@ public class PaymentController {
     }
 
     // =========================
-    // 🔥 VNPAY RETURN
+    // VNPAY RETURN
     // =========================
     @GetMapping("/vnpay/return")
-    public void vnpayReturn(
-            @RequestParam String vnp_TxnRef,
-            @RequestParam String vnp_ResponseCode,
+    public void vnpayReturn(HttpServletRequest request,
             HttpServletResponse response) throws IOException {
 
-        Payment payment = paymentRepository.findByTxnRef(vnp_TxnRef)
-                .orElseThrow();
+        Map<String, String> fields = new HashMap<>();
+        request.getParameterMap().forEach((key, value) -> {
+            fields.put(key, value[0]);
+        });
 
-        paymentService.handleVnpayCallback(vnp_TxnRef, vnp_ResponseCode);
+        String txnRef = fields.get("vnp_TxnRef");
+
+        Payment payment = paymentRepository.findByTxnRef(txnRef)
+                .orElseThrow();
 
         String orderId = payment.getOrder().getOrderId();
 
-        if ("00".equals(vnp_ResponseCode)) {
+        String responseCode = fields.get("vnp_ResponseCode");
+
+        if ("00".equals(responseCode)) {
+            paymentService.handleVnpayCallback(fields);
             response.sendRedirect(
                     "http://127.0.0.1:5500/FE_END_USER/order-confirmation.html?orderId=" + orderId);
         } else {
@@ -81,32 +87,65 @@ public class PaymentController {
         }
     }
 
+    // =========================
+    // VNPAY IPN
+    // =========================
     @PostMapping("/vnpay/ipn")
     public ResponseEntity<String> vnpayIpn(HttpServletRequest request) {
-
+        System.out.println("HANDLE CALLBACK CALLED");
+        // Lấy params
         Map<String, String> fields = new HashMap<>();
-
         request.getParameterMap().forEach((key, value) -> {
             fields.put(key, value[0]);
         });
 
         String vnp_SecureHash = fields.get("vnp_SecureHash");
 
+        // Remove hash
         fields.remove("vnp_SecureHash");
         fields.remove("vnp_SecureHashType");
 
+        // Verify checksum
         String signValue = VnPayConfig.hashAllFields(fields);
 
         if (!signValue.equals(vnp_SecureHash)) {
             return ResponseEntity.ok("{\"RspCode\":\"97\",\"Message\":\"Invalid Checksum\"}");
         }
 
-        String txnRef = fields.get("vnp_TxnRef");
-        String responseCode = fields.get("vnp_ResponseCode");
-
-        paymentService.handleVnpayCallback(txnRef, responseCode);
+        try {
+            // Xử lý payment (CHỈ ở IPN)
+            paymentService.handleVnpayCallback(fields);
+        } catch (Exception e) {
+            return ResponseEntity.ok("{\"RspCode\":\"99\",\"Message\":\"Unknown error\"}");
+        }
 
         return ResponseEntity.ok("{\"RspCode\":\"00\",\"Message\":\"Confirm Success\"}");
     }
 
+    // =========================
+    // VNPAY REFUND
+    // =========================
+    @PostMapping("/{paymentId}/refund")
+    public ApiResponse<String> refund(
+            @PathVariable String paymentId,
+            HttpServletRequest request) throws Exception {
+
+        Payment payment = paymentRepository.findById(paymentId)
+                .orElseThrow();
+
+        if (!"PAID".equals(payment.getPaymentStatus())) {
+            throw new RuntimeException("Chưa thanh toán, không thể hoàn tiền");
+        }
+
+        // 🔥 truyền IP xuống service
+        String ipAddr = request.getRemoteAddr();
+
+        String result = paymentService.refundVnpay(payment, ipAddr);
+
+        paymentRepository.save(payment);
+
+        return ApiResponse.<String>builder()
+                .result(result)
+                .build();
+    }
 }

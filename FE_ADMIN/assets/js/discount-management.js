@@ -6,8 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  loadDiscounts(token);
-
   // Modal tạo mới
   const addBtn = document.querySelector(".btn-add-discount");
   const createModal = new bootstrap.Modal(document.getElementById("createDiscountModal"));
@@ -40,19 +38,65 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ============================================
-  //  Lọc theo trạng thái
+  //  Load lần đầu
   // ============================================
-  const filterSelect = document.getElementById("filter-discount");
-  filterSelect.addEventListener("change", function () {
-    filterDiscountByStatus(this.value);
-  });
+  loadDiscounts(token);
 });
 
+// ============================================
+//  Khai báo biến
+// ============================================
+const filterSearch = document.getElementById("filter-search");
+const filterDateFrom = document.getElementById("filter-date-from");
+const filterDateTo = document.getElementById("filter-date-to");
+const filterSystemStatus = document.getElementById("filter-system-status");
+const filterEffectiveStatus = document.getElementById("filter-effective-status");
+const filterAvailabilityStatus = document.getElementById("filter-availability-status");
+const filterDiscountRange = document.getElementById("filter-discount-range");
+let pageSizeSelect = document.getElementById("page-size-select");
+let pageNumber = 0;
 // ============================================
 //  Load danh sách discount
 // ============================================
 function loadDiscounts(token) {
-  fetch("http://localhost:8080/tech-store/api/discounts", {
+  let url = 'http://localhost:8080/tech-store/api/discounts/filter';
+
+  const params = [];
+  if (pageNumber > 0) params.push(`page=${pageNumber}`);
+  if (pageSizeSelect.value) params.push(`size=${pageSizeSelect.value}`);
+  if (filterSystemStatus.value)
+    params.push(`systemStatus=${filterSystemStatus.value}`);
+  if (filterEffectiveStatus.value)
+    params.push(`effectiveStatus=${filterEffectiveStatus.value}`);
+  if (filterAvailabilityStatus.value)
+    params.push(`availabilityStatus=${filterAvailabilityStatus.value}`);
+
+  if (filterDiscountRange.value) {
+    const range = filterDiscountRange.value.split('-');
+
+    if (range.length === 2) {
+      const minPercent = range[0];
+      const maxPercent = range[1];
+
+      params.push(`minPercent=${minPercent}`);
+      params.push(`maxPercent=${maxPercent}`);
+    }
+  }
+
+  if (filterSearch.value)
+    params.push(`keyword=${filterSearch.value}`);
+
+  if (filterDateFrom.value) {
+    params.push(`startDateFrom=${filterDateFrom.value}`);
+  }
+  if (filterDateTo.value) {
+    params.push(`startDateTo=${filterDateTo.value}`);
+  }
+
+  if (params.length > 0) {
+    url += "?" + params.join("&");
+  }
+  fetch(url, {
     method: "GET",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -60,13 +104,155 @@ function loadDiscounts(token) {
     }
   })
     .then(res => res.json())
-    .then(data => renderDiscountTable(token, data.result))
+    .then(data => {
+      renderDiscountTable(token, data.result.content);
+      renderPagination(data.result.totalPages, data.result.number);
+    })
     .catch(err => console.error("Lỗi load discounts:", err));
 }
 
+// ------------------------------
+// Build phân trang
+// ------------------------------
+const token = localStorage.getItem("token");
+function buildPagination(totalPages, currentPage = 1) {
+  const last = totalPages;
+
+  const rawPages = [
+    1,
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    last
+  ];
+
+  // 1. lọc số hợp lệ + unique
+  const pages = [...new Set(rawPages)]
+    .filter(p => p >= 1 && p <= last)
+    .sort((a, b) => a - b);
+
+  // 2. chèn "..."
+  const result = [];
+
+  for (let i = 0; i < pages.length; i++) {
+    const current = pages[i];
+    const prev = pages[i - 1];
+
+    if (i > 0) {
+      // nếu khoảng cách > 1 thì thêm "..."
+      if (current - prev > 1) {
+        result.push("...");
+      }
+    }
+
+    result.push(current);
+  }
+
+  return result;
+}
+
+function renderPagination(totalPages, currentPage0) {
+  const container = document.getElementById("pagination");
+  container.innerHTML = "";
+
+  pageNumber = currentPage0 + 1; // convert sang 1-based cho UI
+
+  const pages = buildPagination(totalPages, pageNumber);
+
+  pages.forEach(p => {
+    const li = document.createElement("li");
+
+    if (p === "...") {
+      const span = document.createElement("span");
+      span.textContent = "...";
+      span.classList.add("dots");
+      li.appendChild(span);
+    } else {
+      const btn = document.createElement("button");
+      btn.textContent = p;
+      btn.dataset.page = p;
+
+      if (p === pageNumber) btn.classList.add("active");
+
+      btn.onclick = () => {
+        pageNumber = p - 1; // quay về 0-based
+        loadDiscounts(token);
+
+        document.getElementById("action-bar")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      };
+
+      li.appendChild(btn);
+    }
+
+    container.appendChild(li);
+  });
+}
+
+// ------------------------------
+// Filter trạng thái đơn hàng
+// ------------------------------
+filterSystemStatus.addEventListener("change", () => {
+  pageNumber = 0;
+  loadDiscounts(token);
+});
+
+filterEffectiveStatus.addEventListener("change", () => {
+  pageNumber = 0;
+  loadDiscounts(token);
+});
+
+filterAvailabilityStatus.addEventListener("change", () => {
+  pageNumber = 0;
+  loadDiscounts(token);
+});
+
+filterSearch.addEventListener("input", () => {
+  pageNumber = 0;
+  loadDiscounts(token);
+});
+
+filterDateFrom.addEventListener("change", () => {
+  pageNumber = 0;
+  loadDiscounts(token);
+});
+
+filterDateTo.addEventListener("change", () => {
+  pageNumber = 0;
+  loadDiscounts(token);
+});
+
+filterDiscountRange.addEventListener("change", () => {
+  pageNumber = 0;
+  loadDiscounts(token);
+});
+
+pageSizeSelect.addEventListener("change", () => {
+  pageNumber = 0;
+  loadDiscounts(token);
+});
+
 // ============================================
-//  Render bảng discount
+//  Hiể thị bảng discount
 // ============================================
+const map = {
+  UPCOMING: "st-upcoming",
+  ACTIVE: "st-active",
+  EXPIRED: "st-expired",
+  INACTIVE: "st-inactive",
+  USED_UP: "st-used"
+};
+
+const label = {
+  UPCOMING: "Chưa bắt đầu",
+  ACTIVE: "Đang hoạt động",
+  EXPIRED: "Hết hạn",
+  INACTIVE: "Bị khóa",
+  USED_UP: "Hết lượt sử dụng"
+};
+
 function renderDiscountTable(token, discounts) {
   const tbody = document.querySelector("#discount-table tbody");
   tbody.innerHTML = "";
@@ -80,23 +266,23 @@ function renderDiscountTable(token, discounts) {
     const minAmount = discount.minOrderAmount.toLocaleString("vi-VN") + "đ";
     const maxAmount = discount.maxDiscountAmount.toLocaleString("vi-VN") + "đ";
 
-    // Kiểm tra ngày hết hạn
-    const endDateCheck = new Date(discount.endDate);
-    const now = new Date();
+    // // Kiểm tra ngày hết hạn
+    // const endDateCheck = new Date(discount.endDate);
+    // const now = new Date();
 
-    // reset giờ về 00:00:00
-    endDateCheck.setHours(0, 0, 0, 0);
-    now.setHours(0, 0, 0, 0);
+    // // reset giờ về 00:00:00
+    // endDateCheck.setHours(0, 0, 0, 0);
+    // now.setHours(0, 0, 0, 0);
 
-    if (endDateCheck < now && discount.isActive) {
-      fetch(`http://localhost:8080/tech-store/api/discounts/${discount.discountId}/status`, {
-        method: "PUT",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      })
-    }
+    // if (endDateCheck < now && discount.isActive) {
+    //   fetch(`http://localhost:8080/tech-store/api/discounts/${discount.discountId}/status`, {
+    //     method: "PUT",
+    //     headers: {
+    //       "Authorization": `Bearer ${token}`,
+    //       "Content-Type": "application/json"
+    //     }
+    //   })
+    // }
 
     // Render table
     tr.innerHTML = `
@@ -105,10 +291,15 @@ function renderDiscountTable(token, discounts) {
       <td class="align-middle">${discount.discountPercent}%</td>
       <td class="align-middle">${minAmount}</td>
       <td class="align-middle">${maxAmount}</td>
-      <td class="align-middle">${discount.quantity}</td>
+      <td class="align-middle">${discount.remainingQuantity}/${discount.totalQuantity}</td>
       <td class="align-middle">${startDate}</td>
       <td class="align-middle">${endDate}</td>
-      <td class="align-middle">${discount.isActive ? "Hoạt động" : "Không hoạt động"}</td>
+      <td class="align-middle">${discount.isActive ? "Hoạt động" : "Khóa"}</td>
+      <td class="align-middle">
+        <span class="${map[discount.status]}">
+          ${label[discount.status]}
+        </span>
+      </td>
       <td class="align-middle">
         ${discount.isActive
         ? `<button class="btn btn-sm btn-warning text-white btn-update-status"><i class="bx bxs-lock"></i></button>`
@@ -136,8 +327,6 @@ function renderDiscountTable(token, discounts) {
       deleteDiscount(discount.discountId);
     });
   });
-
-  filterDiscountByStatus(document.getElementById("filter-discount").value);
 }
 
 // ============================================
@@ -150,7 +339,7 @@ function createDiscount(token, modalInstance) {
     discountPercent: Number(document.getElementById("discountPercent").value),
     minOrderAmount: Number(document.getElementById("minOrderAmount").value),
     maxDiscountAmount: Number(document.getElementById("maxDiscountAmount").value),
-    quantity: Number(document.getElementById("quantity").value),
+    totalQuantity: Number(document.getElementById("totalQuantity").value),
     startDate: document.getElementById("startDate").value,
     endDate: document.getElementById("endDate").value,
     isActive: document.getElementById("isActive").checked
@@ -165,17 +354,6 @@ function createDiscount(token, modalInstance) {
       duration: 3000
     });
     return;
-  }
-
-  // 🔥 Nếu hết hạn → ép về false
-  const now = new Date();
-  const endDate = new Date(data.endDate);
-  // reset giờ về 00:00:00
-  endDate.setHours(0, 0, 0, 0);
-  now.setHours(0, 0, 0, 0);
-
-  if (endDate < now) {
-    data.isActive = false;
   }
 
   fetch("http://localhost:8080/tech-store/api/discounts", {
@@ -197,6 +375,7 @@ function createDiscount(token, modalInstance) {
           duration: 3000
         });
         modalInstance.hide();
+        pageNumber = 0;
         loadDiscounts(token);
         document.getElementById("createDiscountForm").reset();
       } else {
@@ -259,15 +438,6 @@ function updateDiscount(token) {
     return;
   }
 
-  // 🔥 Nếu hết hạn → ép về false
-  const now = new Date();
-  const endDate = new Date(data.endDate);
-  endDate.setHours(23, 59, 59, 999);
-
-  if (endDate < now) {
-    data.isActive = false;
-  }
-
   fetch(`http://localhost:8080/tech-store/api/discounts/${discountId}`, {
     method: "PUT",
     headers: {
@@ -287,6 +457,7 @@ function updateDiscount(token) {
           duration: 3000
         });
         bootstrap.Modal.getInstance(document.getElementById("editDiscountModal")).hide();
+        pageNumber = 0;
         loadDiscounts(token);
       } else {
         showModal({
@@ -310,22 +481,22 @@ function toggleDiscountStatus(discountId, btn) {
   const row = btn.closest("tr");
   const endDateText = row.cells[7].textContent;
 
-  // ⚠️ convert lại format dd/mm/yyyy
-  const parts = endDateText.split("/");
-  const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
-  const now = new Date();
-  endDate.setHours(0, 0, 0, 0);
-  now.setHours(0, 0, 0, 0);
-  if (endDate < now) {
-    showModal({
-      title: "Thông báo",
-      message: "Thời gian áp dụng mã giảm giá đã hết hạn, không thể thay đổi trạng thái!",
-      type: "danger",
-      autoClose: true,
-      duration: 3000
-    });
-    return;
-  }
+  // // ⚠️ convert lại format dd/mm/yyyy
+  // const parts = endDateText.split("/");
+  // const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
+  // const now = new Date();
+  // endDate.setHours(0, 0, 0, 0);
+  // now.setHours(0, 0, 0, 0);
+  // if (endDate < now) {
+  //   showModal({
+  //     title: "Thông báo",
+  //     message: "Thời gian áp dụng mã giảm giá đã hết hạn, không thể thay đổi trạng thái!",
+  //     type: "danger",
+  //     autoClose: true,
+  //     duration: 3000
+  //   });
+  //   return;
+  // }
   showConfirmModal("Bạn có chắc chắn muốn thay đổi trạng thái mã giảm giá này?")
     .then((confirmed) => {
       if (!confirmed) return;
@@ -340,6 +511,7 @@ function toggleDiscountStatus(discountId, btn) {
         .then(res => res.json())
         .then(response => {
           if (response.code === 1000 && response.result) {
+            pageNumber = 0;
             loadDiscounts(token);
           } else {
             showModal({
@@ -353,17 +525,6 @@ function toggleDiscountStatus(discountId, btn) {
         })
         .catch(err => console.error("Lỗi đổi trạng thái:", err));
     });
-}
-
-// ============================================
-//  LỌC MÃ GIẢM GIÁ
-// ============================================
-function filterDiscountByStatus(status) {
-  const rows = document.querySelectorAll("#discount-table tbody tr");
-  rows.forEach(row => {
-    const statusCell = row.cells[8].textContent.trim();
-    row.style.display = (status === "" || (status === "true" && statusCell === "Hoạt động") || (status === "false" && statusCell === "Không hoạt động")) ? "" : "none";
-  });
 }
 
 // ============================================
@@ -389,6 +550,7 @@ function deleteDiscount(discountId) {
               autoClose: true,
               duration: 3000
             });
+            pageNumber = 0;
             loadDiscounts(token);
           } else {
             showModal({

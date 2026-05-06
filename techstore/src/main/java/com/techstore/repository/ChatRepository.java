@@ -16,18 +16,17 @@ public class ChatRepository {
     public List<ChatResponse> findByConversationId(String conversationId) {
 
         String sql = """
-            SELECT type, content
-            FROM spring_ai_chat_memory
-            WHERE conversation_id = ?
-            ORDER BY timestamp ASC
-        """;
+                    SELECT type, content
+                    FROM spring_ai_chat_memory
+                    WHERE conversation_id = ?
+                    ORDER BY timestamp ASC
+                """;
 
         return jdbcTemplate.query(sql,
                 (rs, rowNum) -> ChatResponse.builder()
                         .type(rs.getString("type"))
                         .content(rs.getString("content"))
                         .build(),
-                conversationId
-        );
+                conversationId);
     }
 }

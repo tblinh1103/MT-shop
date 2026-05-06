@@ -115,7 +115,7 @@ addBrandForm.addEventListener('submit', (event) => {
       } else {
         showModal({
           title: "Lỗi",
-          message: "Không thể tạo mới thương hiệu!",
+          message: data.message,
           type: "danger",
           autoClose: true,
           duration: 3000,
@@ -155,7 +155,7 @@ editBrandForm.addEventListener('submit', (event) => {
       } else {
         showModal({
           title: "Lỗi",
-          message: "Không thể cập nhật thương hiệu!",
+          message: data.message,
           type: "danger",
           autoClose: true,
           duration: 3000,

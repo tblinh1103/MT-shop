@@ -29,7 +29,7 @@ public interface ProductRepository extends
                 FROM Product p
                 JOIN p.category c
                 JOIN p.brand b
-                LEFT JOIN p.productVariants pv ON pv.isDefault = true
+                JOIN p.productVariants pv ON pv.isDefault = true
                 LEFT JOIN p.images i ON i.isMain = true
                 LEFT JOIN p.reviews r
                 WHERE p.productStatus = 'ACTIVE'
@@ -52,8 +52,8 @@ public interface ProductRepository extends
                     p.productName,
                     c.categoryName,
                     b.brandName,
-                    (SELECT pv.originalPrice FROM ProductVariant pv WHERE pv.product = p AND pv.isDefault = TRUE),
-                    (SELECT pv.promotionalPrice FROM ProductVariant pv WHERE pv.product = p AND pv.isDefault = TRUE),
+                    pv.originalPrice,
+                    pv.promotionalPrice,
                     (SELECT i.imageUrl FROM Image i WHERE i.product = p AND i.isMain = TRUE),
                     COALESCE((SELECT AVG(r.rating) FROM Review r WHERE r.product = p), 0),
                     COALESCE((SELECT COUNT(r.reviewId) FROM Review r WHERE r.product = p), 0)
@@ -61,7 +61,9 @@ public interface ProductRepository extends
                 FROM Product p
                 JOIN p.category c
                 JOIN p.brand b
+                JOIN p.productVariants pv
                 WHERE p.productStatus = 'ACTIVE'
+                AND pv.isDefault = TRUE
                 ORDER BY p.createdAt DESC
             """)
     List<ProductOverviewResponse> findTop4LatestProductOverviews(Pageable pageable);
@@ -72,8 +74,8 @@ public interface ProductRepository extends
                     p.productName,
                     c.categoryName,
                     b.brandName,
-                    (SELECT pv.originalPrice FROM ProductVariant pv WHERE pv.product = p AND pv.isDefault = TRUE),
-                    (SELECT pv.promotionalPrice FROM ProductVariant pv WHERE pv.product = p AND pv.isDefault = TRUE),
+                    pv.originalPrice,
+                    pv.promotionalPrice,
                     (SELECT i.imageUrl FROM Image i WHERE i.product = p AND i.isMain = TRUE),
                     COALESCE((SELECT AVG(r.rating) FROM Review r WHERE r.product = p), 0),
                     COALESCE((SELECT COUNT(r.reviewId) FROM Review r WHERE r.product = p), 0)
@@ -81,6 +83,7 @@ public interface ProductRepository extends
                 FROM Product p
                 JOIN p.category c
                 JOIN p.brand b
+                JOIN p.productVariants pv ON pv.isDefault = true
                 WHERE p.productStatus = 'ACTIVE'
                   AND (:keyword IS NULL OR :keyword = ''
                        OR LOWER(p.productName) LIKE LOWER(CONCAT('%', :keyword, '%'))
@@ -89,11 +92,15 @@ public interface ProductRepository extends
             """)
     List<ProductOverviewResponse> searchProductsByKeyword(String keyword);
 
-    @Query("SELECT p FROM Product p " +
-            "WHERE " +
-            "(:categoryId IS NULL OR p.category.categoryId = :categoryId) AND " +
-            "(:brandId IS NULL OR p.brand.brandId = :brandId)")
+    @Query("""
+            SELECT DISTINCT p FROM Product p
+            JOIN p.productVariants pv ON pv.isDefault = true
+            WHERE (:categoryId IS NULL OR p.category.categoryId = :categoryId)
+            AND (:brandId IS NULL OR p.brand.brandId = :brandId)
+            """)
     List<Product> findAllByCategoryIdAndBrandId(@Param("categoryId") String categoryId,
             @Param("brandId") String brandId);
+
+    boolean existsByProductNameIgnoreCase(String productName);
 
 }

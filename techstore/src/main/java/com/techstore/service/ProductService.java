@@ -50,6 +50,10 @@ public class ProductService {
         Brand brand = brandRepository.findById(request.getBrandId())
                 .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_EXISTED));
 
+        if (productRepository.existsByProductNameIgnoreCase(request.getProductName().trim())) {
+            throw new AppException(ErrorCode.PRODUCT_NAME_EXISTED);
+        }
+
         product.setCategory(category);
         product.setBrand(brand);
 
@@ -154,6 +158,7 @@ public class ProductService {
         }
 
         if (request.getImages() != null) {
+            product.getImages().clear(); // 🔥 xóa ảnh cũ (Hibernate sẽ delete DB)
 
             List<Image> images = request.getImages().stream()
                     .map(img -> {
@@ -165,7 +170,7 @@ public class ProductService {
                     })
                     .toList();
 
-            product.setImages(new ArrayList<>(images));
+            product.getImages().addAll(images);
         }
 
         return productMapper.toProductResponse(productRepository.save(product));

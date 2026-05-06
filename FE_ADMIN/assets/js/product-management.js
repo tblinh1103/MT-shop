@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
           autoClose: true,
           duration: 3000,
         });
-
+        currentPage = 0
         loadProducts();
       } else {
         const err = await res.json();
@@ -349,6 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         // Chọn cách cập nhật UI: load lại cả danh sách để đồng bộ hoặc cập nhật cục bộ
         // Ở đây gọi loadProducts() để đảm bảo dữ liệu đồng bộ
+        currentPage = 0
         loadProducts();
       })
       .catch((err) => {
@@ -377,6 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //  Load Filters & Products lần đầu
   // ============================================
   Promise.all([loadCategories(), loadBrands()]).then(() => {
+    currentPage = 0
     loadProducts();
   });
 });

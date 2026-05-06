@@ -108,7 +108,7 @@ async function loadDiscountsForCustomer() {
                             <span class="fw-medium">${new Date(discount.startDate).toLocaleDateString("vi-VN")}</span> - 
                             <span class="fw-medium">${new Date(discount.endDate).toLocaleDateString("vi-VN")}</span>
                         </div>
-                        <div>(Số lượng: <span class="fw-medium">${discount.quantity}</span>)</div>
+                        <div>(Số lượng còn lại: <span class="fw-medium">${discount.remainingQuantity}</span>)</div>
                     </div>
                 </div>
             `;

@@ -580,11 +580,6 @@
           btn.onclick = () => removeItem(btn.dataset.id);
         });
 
-        //Nút Cập nhật giỏ hàng
-        document.querySelector(".btn-update-cart").onclick = () => {
-          renderCart();
-        };
-
         // Nút Xóa giỏ hàng
         document.querySelector(".btn-delete-cart").onclick = async () => {
           await fetch("http://localhost:8080/tech-store/api/carts", {

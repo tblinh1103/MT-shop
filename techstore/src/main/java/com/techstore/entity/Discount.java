@@ -32,7 +32,9 @@ public class Discount {
     private BigDecimal maxDiscountAmount;
 
     @Column(nullable = false)
-    private Integer quantity;
+    private Integer totalQuantity;
+    @Column(nullable = false)
+    private Integer remainingQuantity;
 
     @Column(nullable = false)
     private LocalDate startDate;

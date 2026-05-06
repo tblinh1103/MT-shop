@@ -76,8 +76,7 @@ public class SecurityConfig {
         private final String[] ADMIN_ENDPOINTS_PUT = {
                         "/api/discounts/*/status",
                         "/api/discounts/*",
-                        "/api/brands/*",
-                        "/api/users/password"
+                        "/api/brands/*"
         };
 
         private final String[] ADMIN_ENDPOINTS_DELETE = {
@@ -102,8 +101,7 @@ public class SecurityConfig {
 
         private final String[] CUSTOMER_ENDPOINTS_PUT = {
                         "/api/reviews",
-                        "/api/users/my-info",
-                        "/api/users/password"
+                        "/api/users/my-info"
         };
 
         private final String[] CUSTOMER_ENDPOINTS_DELETE = {
@@ -118,6 +116,9 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(request -> request
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                                 .requestMatchers("/api/payments/**").permitAll()
+
+                                                .requestMatchers(HttpMethod.PUT, "/api/users/password")
+                                                .hasAnyRole(RoleName.ADMIN.name(), RoleName.CUSTOMER.name())
 
                                                 // ✅ STATIC + HOME
                                                 .requestMatchers(
@@ -196,15 +197,4 @@ public class SecurityConfig {
         public PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder(10);
         }
-
-        // @Bean
-        // public JwtDecoder jwtDecoder() {
-        // SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(),
-        // "HS512");
-        //
-        // return NimbusJwtDecoder
-        // .withSecretKey(secretKeySpec)
-        // .macAlgorithm(MacAlgorithm.HS512)
-        // .build();
-        // }
 }

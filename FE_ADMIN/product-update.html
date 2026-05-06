@@ -205,7 +205,7 @@
                   </div>
                   <div class="col-2">
                     <label for="category" class="form-label">Danh mục</label>
-                    <input type="text" class="form-control" id="category">
+                    <input type="text" class="form-control" id="category" readonly>
                   </div>
                   <div class="col-2">
                     <label for="brand" class="form-label">Thương hiệu</label>
@@ -227,11 +227,20 @@
                     </select>
                   </div>
                   <div class="col-12">
-                    <label for="productImage" class="form-label">Tải ảnh</label>
-                    <input class="form-control" type="file" id="productImage" multiple>
-                    <div id="imagePreview" class="mt-3 d-flex flex-wrap gap-2"></div>
+                    <div for="imageProduct" class="mt-3 d-flex flex-wrap gap-2">Ảnh sản phẩm</div>
+                    <div id="imageProduct" class="mt-3 d-flex flex-wrap gap-2"></div>
+                  </div>
+                  <div class="col-12">
+                    <label for="productImageNew" class="form-label">Tải ảnh</label>
+                    <input class="form-control" type="file" id="productImageNew" multiple>
+                    <div id="imageInput" class="mt-3 d-flex flex-wrap gap-2"></div>
                   </div>
                 </form>
+
+                <!-- Alert thông báo lỗi -->
+                <div id="update-product-error" class="alert alert-danger d-none text-center" role="alert">
+                  Vui lòng điền đầy đủ thông tin sản phẩm!
+                </div>
 
                 <div class="mt-2 d-flex justify-content-center">
                   <button id="btn-update-product" class="btn btn-sm btn-success btn-update-product">Cập nhật</button>

@@ -33,7 +33,88 @@
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="assets/css/discount-management.css" rel="stylesheet">
+  <style>
+    /* trạng thái dạng pill */
+    .st-upcoming,
+    .st-active,
+    .st-expired,
+    .st-inactive,
+    .st-used {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      width: 100%;
+      justify-content: center;
+    }
 
+    /* DOT */
+    .st-upcoming::before,
+    .st-active::before,
+    .st-expired::before,
+    .st-inactive::before,
+    .st-used::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    /* colors */
+    .st-upcoming {
+      background: #ffedd5;
+      color: #9a3412;
+      box-shadow: 0 0 0 1px #fb923c inset;
+    }
+
+    .st-upcoming::before {
+      background: #f97316;
+    }
+
+    .st-active {
+      background: #dcfce7;
+      color: #166534;
+      box-shadow: 0 0 0 1px #22c55e inset;
+    }
+
+    .st-active::before {
+      background: #22c55e;
+    }
+
+    .st-expired {
+      background: #fee2e2;
+      color: #991b1b;
+      box-shadow: 0 0 0 1px #ef4444 inset;
+    }
+
+    .st-expired::before {
+      background: #ef4444;
+    }
+
+    .st-inactive {
+      background: #e2e8f0;
+      color: #334155;
+      box-shadow: 0 0 0 1px #64748b inset;
+    }
+
+    .st-inactive::before {
+      background: #64748b;
+    }
+
+    .st-used {
+      background: #1f2937;
+      color: #ffffff;
+      box-shadow: 0 0 0 1px #111827 inset;
+    }
+
+    .st-used::before {
+      background: #9ca3af;
+    }
+  </style>
 </head>
 
 <body>
@@ -151,30 +232,72 @@
 
     <!-- FILTER -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
-      <!-- SEARCH -->
-      <div class="bg-white p-4 rounded-2xl shadow">
-        <h2 class="font-semibold mb-3 text-sm">🔍 Tìm kiếm</h2>
-        <input type="text" placeholder="Nhập mã, tên voucher..." class="w-full p-2 border rounded text-sm" />
-      </div>
 
-      <!-- STATUS -->
-      <div class="bg-white p-4 rounded-2xl shadow">
-        <h2 class="font-semibold mb-3 text-sm">📦 Trạng thái</h2>
-        <select class="w-full p-2 border rounded text-sm" name="filter-discount" id="filter-discount">
-          <option value="">Tất cả</option>
-          <option value="true">Hoạt động</option>
-          <option value="false">Không hoạt động</option>
-        </select>
+      <!-- SEARCH -->
+      <div class="bg-white p-2 rounded-2xl shadow md:col-span-2">
+        <h2 class="font-semibold mb-3 text-sm">Tìm kiếm</h2>
+        <input type="text" id="filter-search" name="filterSearch" placeholder="Nhập mã, tên voucher..."
+          class="w-full p-2 border rounded text-sm" />
       </div>
 
       <!-- DATE -->
-      <div class="bg-white p-4 rounded-2xl shadow md:col-span-2">
-        <h2 class="font-semibold mb-3 text-sm">📅 Thời gian</h2>
+      <div class="bg-white p-2 rounded-2xl shadow md:col-span-2">
+        <h2 class="font-semibold mb-3 text-sm">Thời gian</h2>
         <div class="flex space-x-2">
-          <input type="date" class="p-2 border rounded w-full text-sm">
-          <input type="date" class="p-2 border rounded w-full text-sm">
+          <input type="date" id="filter-date-from" name="filterDateFrom" class="p-2 border rounded w-full text-sm">
+          <input type="date" id="filter-date-to" name="filterDateTo" class="p-2 border rounded w-full text-sm">
         </div>
       </div>
+
+      <!-- STATUS SYSTEM -->
+      <div class="bg-white p-2 rounded-2xl shadow">
+        <h2 class="font-semibold mb-3 text-sm">Trạng thái hệ thống</h2>
+        <select id="filter-system-status" name="filterSystemStatus" class="w-full p-2 border rounded text-sm">
+          <option value="">Tất cả</option>
+          <option value="true">Hoạt động</option>
+          <option value="false">Khóa</option>
+        </select>
+      </div>
+
+      <!-- EFFECTIVE STATUS -->
+      <div class="bg-white p-2 rounded-2xl shadow">
+        <h2 class="font-semibold mb-3 text-sm">Trạng thái hiệu lực</h2>
+        <select id="filter-effective-status" name="filterEffectiveStatus" class="w-full p-2 border rounded text-sm">
+          <option value="">Tất cả</option>
+          <option value="ACTIVE">Đang hoạt động</option>
+          <option value="UPCOMING">Chưa bắt đầu</option>
+          <option value="EXPIRED">Hết hạn</option>
+          <option value="USED_UP">Hết lượt sử dụng</option>
+          <option value="INACTIVE">Bị khóa</option>
+        </select>
+      </div>
+
+      <!-- AVAILABILITY STATUS -->
+      <div class="bg-white p-2 rounded-2xl shadow">
+        <h2 class="font-semibold mb-3 text-sm">Trạng thái khả dụng</h2>
+        <select id="filter-availability-status" name="filterAvailabilityStatus"
+          class="w-full p-2 border rounded text-sm">
+          <option value="">Tất cả</option>
+          <option value="AVAILABLE">Còn khả dụng</option>
+          <option value="NEAR_EMPTY">Gần hết</option>
+          <option value="EMPTY">Đã hết</option>
+        </select>
+      </div>
+
+      <!-- DISCOUNT RANGE -->
+      <div class="bg-white p-2 rounded-2xl shadow">
+        <h2 class="font-semibold mb-3 text-sm">Khoảng giảm giá</h2>
+        <select id="filter-discount-range" name="filterDiscountRange" class="w-full p-2 border rounded text-sm">
+          <option value="">Tất cả</option>
+          <option value="0-5">0-5%</option>
+          <option value="6-10">6-10%</option>
+          <option value="11-15">11-15%</option>
+          <option value="16-20">16-20%</option>
+          <option value="21-30">21-30%</option>
+          <option value="31-100">Trên 30%</option>
+        </select>
+      </div>
+
     </div>
 
     <!-- ACTION BAR -->
@@ -182,17 +305,12 @@
 
       <div class="flex items-center space-x-2 text-sm">
         <span>Hiển thị</span>
-        <select id="page-size" class="p-1.5 border rounded text-sm">
+        <select id="page-size-select" class="p-1.5 border rounded text-sm">
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
         </select>
-        <span>sản phẩm / trang</span>
-      </div>
-
-      <div class="section p-1">
-        <ul class="pagination center" id="pagination">
-        </ul>
+        <span>mã giảm giá / trang</span>
       </div>
 
       <!-- ACTION -->
@@ -208,16 +326,17 @@
         <table class="table table-hover" id="discount-table">
           <thead>
             <tr>
-              <th class="p-3">Mã</th>
-              <th class="p-3">Mô tả</th>
-              <th class="p-3">Giảm</th>
-              <th class="p-3">Đơn tối thiểu</th>
-              <th class="p-3">Giảm tối đa</th>
-              <th class="p-3">SL</th>
-              <th class="p-3">Bắt đầu</th>
-              <th class="p-3">Kết thúc</th>
-              <th class="p-3">Trạng thái</th>
-              <th class="p-3">Hành động</th>
+              <th>Mã</th>
+              <th>Mô tả</th>
+              <th>Giảm</th>
+              <th>Đơn tối thiểu</th>
+              <th>Giảm tối đa</th>
+              <th>Còn lại</th>
+              <th>Bắt đầu</th>
+              <th>Kết thúc</th>
+              <th>Trạng thái hệ thống</th>
+              <th>Trạng thái hiệu lực</th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -227,7 +346,7 @@
               <td class="align-middle">30%</td>
               <td class="align-middle">100.000đ</td>
               <td class="align-middle">500.000đ</td>
-              <td class="align-middle">50</td>
+              <td class="align-middle">50/100</td>
               <td class="align-middle">1/12/2025</td>
               <td class="align-middle">31/12/2025</td>
               <td class="align-middle">Hoạt động</td>
@@ -243,82 +362,15 @@
         </table>
         <!-- End Table with stripped rows -->
 
-        <!-- Edit Discount Modal -->
-        <div class="modal fade" id="editDiscountModal" tabindex="-1" aria-labelledby="editDiscountModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="editDiscountModalLabel">Chỉnh sửa mã giảm giá</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <form id="editDiscountForm">
-                  <input type="hidden" id="editDiscountId">
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="editCode" class="form-label">Mã</label>
-                      <input type="text" class="form-control" id="editCode" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <label for="editDescription" class="form-label">Mô tả</label>
-                      <input type="text" class="form-control" id="editDescription" required>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="editDiscountPercent" class="form-label">Giảm (%)</label>
-                      <input type="number" class="form-control" id="editDiscountPercent" min="0" max="100" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <label for="editMinOrderAmount" class="form-label">Đơn tối thiểu</label>
-                      <input type="number" class="form-control" id="editMinOrderAmount" min="0" required>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="editMaxDiscountAmount" class="form-label">Giảm tối đa</label>
-                      <input type="number" class="form-control" id="editMaxDiscountAmount" min="0" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <label for="editQuantity" class="form-label">Số lượng</label>
-                      <input type="number" class="form-control" id="editQuantity" min="1" required>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="editStartDate" class="form-label">Bắt đầu</label>
-                      <input type="date" class="form-control" id="editStartDate" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <label for="editEndDate" class="form-label">Kết thúc</label>
-                      <input type="date" class="form-control" id="editEndDate" required>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3 d-flex align-items-center">
-                      <div class="form-check mb-0">
-                        <input class="form-check-input" type="checkbox" id="editIsActive">
-                        <label class="form-check-label ms-2" for="editIsActive">Hoạt động</label>
-                      </div>
-                    </div>
-                  </div>
+        <div class="section mt-3 p-3">
+          <ul class="pagination center" id="pagination">
 
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary" id="updateDiscountBtn">Cập nhật</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
+          </ul>
         </div>
-
-
       </div>
-
     </section>
-    <!-- Modal -->
+
+    <!-- Modal thêm mã giảm giá -->
     <div class="modal fade" id="createDiscountModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -364,8 +416,8 @@
                   </div>
 
                   <div class="form-row-custom">
-                    <label>Số lượng</label>
-                    <input type="number" class="form-control" id="quantity" min="1" required>
+                    <label>Tổng số lượng</label>
+                    <input type="number" class="form-control" id="totalQuantity" min="1" required>
                   </div>
 
                   <div class="form-row-custom">
@@ -390,6 +442,87 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                 <button type="submit" class="btn btn-success">Tạo</button>
               </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Discount Modal -->
+    <div class="modal fade" id="editDiscountModal" tabindex="-1" aria-labelledby="editDiscountModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="editDiscountModalLabel">Chỉnh sửa mã giảm giá</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="editDiscountForm">
+              <input type="hidden" id="editDiscountId">
+
+              <div class="row">
+
+                <div class="col-md-6">
+
+                  <div class="form-row-custom">
+                    <label for="editCode">Mã</label>
+                    <input type="text" class="form-control" id="editCode" required>
+                  </div>
+
+                  <div class="form-row-custom">
+                    <label for="editDescription">Mô tả</label>
+                    <input type="text" class="form-control" id="editDescription" required>
+                  </div>
+
+                  <div class="form-row-custom">
+                    <label for="editDiscountPercent">Giảm (%)</label>
+                    <input type="number" class="form-control" id="editDiscountPercent" min="0" max="100" required>
+                  </div>
+
+                  <div class="form-row-custom">
+                    <label for="editMinOrderAmount">Đơn tối thiểu</label>
+                    <input type="number" class="form-control" id="editMinOrderAmount" min="0" required>
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="form-row-custom">
+                    <label for="editMaxDiscountAmount">Giảm tối đa</label>
+                    <input type="number" class="form-control" id="editMaxDiscountAmount" min="0" required>
+                  </div>
+
+                  <div class="form-row-custom">
+                    <label for="editQuantity">Số lượng</label>
+                    <input type="number" class="form-control" id="editQuantity" min="1" required>
+                  </div>
+
+                  <div class="form-row-custom">
+                    <label for="editStartDate">Bắt đầu</label>
+                    <input type="date" class="form-control" id="editStartDate" required>
+                  </div>
+
+                  <div class="form-row-custom">
+                    <label for="editEndDate">Kết thúc</label>
+                    <input type="date" class="form-control" id="editEndDate" required>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="mt-3 form-check-inline-custom">
+                <input class="form-check-input" type="checkbox" id="editIsActive">
+                <label class="form-check-label" for="editIsActive">Hoạt động</label>
+              </div>
+
+              <div class="modal-footer mt-3">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-primary" id="updateDiscountBtn">Cập nhật</button>
+              </div>
 
             </form>
           </div>
@@ -397,6 +530,7 @@
         </div>
       </div>
     </div>
+
     <!-- Modal xác nhận -->
     <div class="modal fade" id="confirmModal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">

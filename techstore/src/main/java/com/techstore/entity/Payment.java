@@ -35,5 +35,11 @@ public class Payment {
     @Column(unique = true)
     private String txnRef;
 
+    @Column(name = "transaction_no")
+    private String transactionNo;
+
+    @Column(name = "pay_date")
+    private String payDate;
+
     private String vnpResponseCode;
 }

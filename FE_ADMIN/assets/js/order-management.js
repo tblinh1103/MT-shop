@@ -29,11 +29,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const orderStatuses = [
-    { value: "PENDING", label: "Đang xử lý", color: "#f39c12" },
-    { value: "CONFIRMED", label: "Đã xác nhận", color: "#3498db" },
-    { value: "SHIPPED", label: "Đã vận chuyển", color: "#8e44ad" },
-    { value: "CANCELLED", label: "Đã hủy", color: "#e74c3c" },
-    { value: "COMPLETED", label: "Đã hoàn thành", color: "#2ecc71" },
+    { value: "PENDING", label: "Đang xử lý", color: "#f7c948" },
+    { value: "CONFIRMED", label: "Đã xác nhận", color: "#5dade2" },
+    { value: "SHIPPED", label: "Đã vận chuyển", color: "#af7ac5" },
+    { value: "CANCELLED", label: "Đã hủy", color: "#ec7063" },
+    { value: "COMPLETED", label: "Đã hoàn thành", color: "#58d68d" },
   ];
 
   const orderTransitionMap = {
@@ -82,17 +82,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     const status = orderStatuses.find(s => s.value === select.value);
     if (!status) return;
 
-    select.style.backgroundColor = status.color;
-    select.style.color = "#fff";
-    select.style.border = "none";
-    select.style.width = "125px";
+    const map = {
+      PENDING: { bg: "#fef3c7", text: "#92400e", border: "#f59e0b" },
+      CONFIRMED: { bg: "#dbeafe", text: "#1e3a8a", border: "#3b82f6" },
+      SHIPPED: { bg: "#ede9fe", text: "#5b21b6", border: "#8b5cf6" },
+      COMPLETED: { bg: "#dcfce7", text: "#166534", border: "#22c55e" },
+      CANCELLED: { bg: "#fee2e2", text: "#991b1b", border: "#ef4444" },
+    };
+
+    const style = map[select.value];
+
+    select.style.backgroundColor = style.bg;
+    // select.style.color = style.text;
+    select.style.border = `1.5px solid ${style.border}`;
+    select.style.borderRadius = "999px";
+    select.style.padding = "5px";
+    select.style.fontWeight = "600";
+    select.style.appearance = "none";
+    select.style.width = "140px";
+    select.style.textAlign = "center";
   }
 
   // ------------------------------
   // Set màu cho select payment
   // ------------------------------
   const paymentStatuses = [
-    { value: "PENDING", label: "Đang xử lý", color: "#f39c12" },
+    { value: "PENDING", label: "Chưa thanh toán", color: "#f1c40f" },
     { value: "PAID", label: "Đã thanh toán", color: "#2ecc71" },
   ];
 
@@ -102,13 +117,35 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   function setPaymentSelectColor(select) {
-    const status = paymentStatuses.find(s => s.value === select.value);
-    if (!status) return;
+    const map = {
+      PENDING: {
+        bg: "#fef3c7",
+        text: "#92400e",
+        border: "#f59e0b"
+      },
+      PAID: {
+        bg: "#dcfce7",
+        text: "#166534",
+        border: "#22c55e"
+      }
+    };
 
-    select.style.backgroundColor = status.color;
-    select.style.color = "#fff";
+    const style = map[select.value];
+    if (!style) return;
+
+    select.style.backgroundColor = style.bg;
+
     select.style.border = "none";
-    select.style.width = "125px";
+    select.style.boxShadow = `inset 0 0 0 1.5px ${style.border}`;
+
+    select.style.borderRadius = "999px";
+    select.style.padding = "5px";
+    select.style.fontWeight = "600";
+
+    select.style.appearance = "none";
+    select.style.width = "150px";
+    select.style.cursor = "pointer";
+    select.style.textAlign = "center";
   }
 
   function renderOrderStatusLabel(status) {
@@ -202,22 +239,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       orders.forEach((order) => {
-        // Tự động hủy đơn hàng nếu thanh toán qua ngân hàng nhưng chưa thanh toán
-        if (order.payment.paymentMethod === "BANK" && order.payment.paymentStatus === "PENDING"
-          && order.orderStatus !== "CANCELLED") {
-          fetch(
-            `http://localhost:8080/tech-store/api/orders/${order.orderId}?orderStatus=CANCELLED`,
-            {
-              method: "PUT",
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          loadOrders();
-          return;
-        }
+        // // Tự động hủy đơn hàng nếu thanh toán qua ngân hàng nhưng chưa thanh toán
+        // if (order.payment.paymentMethod === "BANK" && order.payment.paymentStatus === "PENDING"
+        //   && order.orderStatus !== "CANCELLED") {
+        //   fetch(
+        //     `http://localhost:8080/tech-store/api/orders/${order.orderId}?orderStatus=CANCELLED`,
+        //     {
+        //       method: "PUT",
+        //       headers: {
+        //         Authorization: `Bearer ${token}`,
+        //         "Content-Type": "application/json",
+        //       },
+        //     }
+        //   );
+        //   loadOrders();
+        //   return;
+        // }
 
         // Tự động hoàn thành đơn hàng nếu thanh toán khi nhận hàng và đã giao hàng
         if (order.payment.paymentMethod === "CASH" && order.payment.paymentStatus === "PAID"
@@ -416,7 +453,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   <!-- LEFT: THÔNG TIN ĐƠN -->
   <div class="bg-white p-4 rounded-2xl shadow">
-    <h2 class="font-semibold mb-2">📦 Thông tin đơn hàng</h2>
+    <h2 class="font-semibold mb-2">Thông tin đơn hàng</h2>
 
     <p class="text-left"><span class="fw-semibold">Mã đơn hàng:</span> ${order.orderCode}</p>
     <p class="text-left"><span class="fw-semibold">Thời gian đặt:</span> ${new Date(order.createdAt).toLocaleString()}</p>
@@ -435,7 +472,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   <!-- RIGHT: NGƯỜI NHẬN -->
   <div class="bg-white p-4 rounded-2xl shadow">
-    <h2 class="font-semibold mb-2">👤 Người nhận</h2>
+    <h2 class="font-semibold mb-2">Người nhận</h2>
 
     <p class="text-left"><span class="fw-semibold">Tên:</span> ${order.recipientName}</p>
     <p class="text-left"><span class="fw-semibold">SĐT:</span> ${order.recipientPhone}</p>
@@ -448,7 +485,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   <!-- FULL WIDTH: THANH TOÁN -->
   <div class="col-span-2 bg-white p-4 rounded-2xl shadow">
-    <h2 class="font-semibold mb-2">💰 Thanh toán</h2>
+    <h2 class="font-semibold mb-2">Thanh toán</h2>
 
     <div class="space-y-2">
 
@@ -542,23 +579,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      //Không thể thay đổi trạng thái Đã thanh toán
-      const select = tr.cells[6].querySelector(".payment-status-select");
-      const paymentStatusCheck = select.value;
-
-      if (paymentStatusCheck === "PENDING") {
-        showModal({
-          title: "Thông báo",
-          message: "Không thể thay đổi trạng thái 'Đã thanh toán'",
-          type: "danger",
-          autoClose: true,
-          duration: 3000
-        });
-        pageNumber--;
-        loadOrders();
-        return;
-      }
-
       const paymentId = tr.dataset.paymentId;
       const newStatus = selectPayment.value;
       setPaymentSelectColor(selectPayment);
@@ -587,7 +607,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         loadOrders();
       } catch (err) {
         console.error(err);
-        alert("Không thể cập nhật trạng thái thanh toán!");
+        showModal({
+          title: "Thông báo",
+          message: "Không thể cập nhật trạng thái thanh toán!",
+          type: "danger",
+          autoClose: true,
+          duration: 3000
+        });
       }
     }
 
@@ -616,6 +642,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           autoClose: true,
           duration: 3000,
         });
+        pageNumber--;
+        loadOrders();
         loadOrderStatistics()
       } catch (err) {
         console.error(err);

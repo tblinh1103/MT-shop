@@ -12,7 +12,7 @@ public class DiscountRequest {
     private Integer discountPercent;
     private BigDecimal minOrderAmount;
     private BigDecimal maxDiscountAmount;
-    private Integer quantity;
+    private Integer totalQuantity;
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isActive;

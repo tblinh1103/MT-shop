@@ -135,7 +135,9 @@ function renderOrders(orders) {
                     ${(order.orderStatus === "PENDING" || order.orderStatus === "CONFIRMED") ? `
                         <button type="button"
                             class="btn-cancel-order"
-                            data-order-id="${order.orderId}">
+                            data-order-id="${order.orderId}"
+                            data-payment-method="${order.payment.paymentMethod}"
+                            data-payment-status="${order.payment.paymentStatus}">
                             Hủy đơn hàng
                         </button>
                     ` : ""}
@@ -239,7 +241,7 @@ function updateOrderBadge(count) {
 }
 
 // =============================
-//  FILTER CLIENT-SIDE
+//  LỌC DANH SÁCH ĐƠN HÀNG
 // =============================
 function filterOrders(status) {
     if (status === "ALL") {
@@ -273,14 +275,19 @@ document.addEventListener("DOMContentLoaded", () => {
 // =============================
 //  HỦY ĐƠN HÀNG
 // =============================
-// 
-
 document.addEventListener("click", async function (e) {
     if (e.target.classList.contains("btn-cancel-order")) {
         const orderId = e.target.getAttribute("data-order-id");
+        const paymentMethod = e.target.getAttribute("data-payment-method");
+        const paymentStatus = e.target.getAttribute("data-payment-status");
 
-        const confirmed = await showConfirmModal("Bạn có chắc muốn hủy đơn hàng này không?");
-        if (!confirmed) return;
+        if (paymentMethod === "BANK" && paymentStatus === "PAID") {
+            const confirmed = await showConfirmModal("Bạn đã thanh toán đơn hàng, nếu muốn hủy, bạn sẽ phải liên hệ với Quản trị viên để hoàn tiền, bạn có chắc chắn muốn hủy đơn hàng này không?");
+            if (!confirmed) return;
+        } else {
+            const confirmed = await showConfirmModal("Bạn có chắc muốn hủy đơn hàng này không?");
+            if (!confirmed) return;
+        }
 
         const token = localStorage.getItem("token");
 

@@ -197,11 +197,25 @@ document.addEventListener("DOMContentLoaded", async function () {
         },
         body: JSON.stringify({
           discountCode: code,
-          cartTotal: originalTotal // 🔥 luôn dùng giá gốc
+          cartTotal: originalTotal, // 🔥 luôn dùng giá gốc
         })
       });
 
       const result = await response.json();
+
+      if (result.code === 7156) {
+        appliedDiscountCode = null;
+        discountAmount = 0;
+        updateCartTotalUI();
+
+        showModal({
+          title: "Thông báo",
+          message: `Bạn đã sử dụng mã này rồi!`,
+          type: "warning",
+          autoClose: true
+        });
+        return;
+      }
 
       if (result.code !== 1000) {
         appliedDiscountCode = null;
@@ -210,7 +224,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         showModal({
           title: "Cảnh báo",
-          message: `Mã giảm giá không hợp lệ!`,
+          message: result.message,
           type: "warning",
           autoClose: true
         });
@@ -338,13 +352,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (result.code !== 1000) {
         showModal({
           title: "Thông báo",
-          message: `Tạo đơn hàng thất bại!`,
+          message: result.message,
           type: "danger",
           autoClose: false
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
         return;
       }
 
@@ -362,8 +373,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       // 🔵 BANK → gọi VNPAY
       // =========================
       if (paymentMethod === "BANK") {
-
-        // 🔥 gọi API lấy link VNPAY
         const vnpayRes = await fetch(
           `http://localhost:8080/tech-store/api/payments/${order.payment.paymentId}/vnpay`,
           {
@@ -386,8 +395,6 @@ document.addEventListener("DOMContentLoaded", async function () {
           });
           return;
         }
-
-        // 🔥 redirect sang VNPAY
         window.location.href = vnpayResult.result;
       }
 

@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target.classList.contains("btn-review")) {
 
             const itemEl = e.target.closest(".item");
-            currentProductId = e.target.getAttribute("data-product-id") 
-                               || itemEl.getAttribute("data-product-id");
+            currentProductId = e.target.getAttribute("data-product-id")
+                || itemEl.getAttribute("data-product-id");
 
             if (!currentProductId) {
                 console.error("Không tìm thấy productId!");
@@ -65,13 +65,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("submitReviewBtn").addEventListener("click", async () => {
 
         if (currentRating === 0) {
-            alert("Vui lòng chọn số sao!");
+            const errorDiv = document.getElementById("reviewError");
+            errorDiv.classList.remove("d-none"); // hiện lỗi
             return;
         }
 
         const token = localStorage.getItem("token");
         if (!token) {
-            alert("Bạn cần đăng nhập để đánh giá");
+            showModal({
+                title: "Thông báo",
+                message: "Bạn cần đăng nhập để đánh giá",
+                type: "danger",
+                autoClose: true,
+                duration: 2000
+            });
             return;
         }
 
@@ -95,15 +102,33 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Review response:", data);
 
             if (data.code === 1000) {
-                alert("Đánh giá thành công!");
+                showModal({
+                    title: "Thông báo",
+                    message: "Đánh giá thành công!",
+                    type: "success",
+                    autoClose: true,
+                    duration: 2000
+                });
                 reviewModal.hide();
             } else {
-                alert("Lỗi: " + data.message);
+                showModal({
+                    title: "Thông báo",
+                    message: data.message,
+                    type: "danger",
+                    autoClose: true,
+                    duration: 2000
+                });
             }
 
         } catch (error) {
             console.error("Lỗi đánh giá:", error);
-            alert("Không thể gửi đánh giá!");
+            showModal({
+                title: "Thông báo",
+                message: "Không thể gửi đánh giá!",
+                type: "danger",
+                autoClose: true,
+                duration: 2000
+            });
         }
     });
 

@@ -80,14 +80,32 @@ document.addEventListener("DOMContentLoaded", async function () {
       const result = await response.json();
 
       if (result.code === 1000) {
-        alert("Cập nhật thông tin thành công!");
+        showModal({
+          title: "Thông báo",
+          message: `Cập nhật thông tin thành công!`,
+          type: "success",
+          autoClose: true,
+          duration: 2000
+        });
         await loadUserInfo(); // load lại dữ liệu mới, bao gồm fullname
       } else {
-        alert("Lỗi: " + result.message);
+        showModal({
+          title: "Thông báo",
+          message: result.message,
+          type: "danger",
+          autoClose: true,
+          duration: 2000
+        });
       }
     } catch (error) {
       console.error("Lỗi khi cập nhật:", error);
-      alert("Không thể kết nối máy chủ!");
+      showModal({
+        title: "Thông báo",
+        message: "Không thể kết nối máy chủ!",
+        type: "danger",
+        autoClose: true,
+        duration: 2000
+      });
     }
   });
 
@@ -105,7 +123,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Kiểm tra confirm password
     if (newPassword !== confirmPassword) {
-      alert("Xác nhận mật khẩu không khớp!");
+      showModal({
+        title: "Thông báo",
+        message: "Xác nhận mật khẩu không khớp!",
+        type: "danger",
+        autoClose: true,
+        duration: 2000
+      });
       return;
     }
 
@@ -129,15 +153,33 @@ document.addEventListener("DOMContentLoaded", async function () {
       const result = await response.json();
 
       if (result.code === 1000) {
-        alert("Cập nhật mật khẩu thành công! Vui lòng đăng nhập lại.");
+        showModal({
+          title: "Thông báo",
+          message: "Cập nhật mật khẩu thành công! Vui lòng đăng nhập lại.",
+          type: "success",
+          autoClose: true,
+          duration: 2000
+        });
         localStorage.removeItem("token"); // Xóa token
         window.location.href = "login.html"; // Chuyển về trang đăng nhập
       } else {
-        alert("Lỗi: " + result.message);
+        showModal({
+          title: "Thông báo",
+          message: result.message,
+          type: "danger",
+          autoClose: true,
+          duration: 2000
+        });
       }
     } catch (error) {
       console.error("Lỗi khi cập nhật mật khẩu:", error);
-      alert("Không thể kết nối server!", error);
+      showModal({
+        title: "Thông báo",
+        message: "Không thể kết nối server!",
+        type: "danger",
+        autoClose: true,
+        duration: 2000
+      });
     }
   });
 });

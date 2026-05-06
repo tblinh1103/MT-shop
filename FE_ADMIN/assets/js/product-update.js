@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
+    // ------------------------------
+    // Khai báo biến
+    // ------------------------------
     const token = localStorage.getItem('token') || '';
-    const categoryInput = document.getElementById('category');
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('productId');
     const brandSelect = document.getElementById('brand');
@@ -15,10 +17,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         'Cáp sạc': document.querySelector('.card-charging-cable-variant')
     };
 
+    // ------------------------------
+    // Các hàm ẩn hiện variant
+    // ------------------------------
     function hideAllVariantCards() {
         Object.values(variantCards).forEach(card => card.style.display = 'none');
     }
 
+    // ------------------------------
+    // Hàm hiện variant theo category
+    // ------------------------------
     function showVariantCard(categoryName) {
         hideAllVariantCards();
         if (variantCards[categoryName]) {
@@ -26,6 +34,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+    // ------------------------------
+    // Hàm load brand
+    // ------------------------------
     async function loadBrands() {
         try {
             const response = await fetch('http://localhost:8080/tech-store/api/brands', {
@@ -46,29 +57,66 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+    // ------------------------------
+    // Hàm hiển thị thông tin sản phẩm
+    // ------------------------------
     function fillProductInfo(product) {
         document.getElementById('productName').value = product.productName || '';
         document.getElementById('category').value = product.category?.categoryName || '';
-        document.getElementById('warrantyMonths').value = product.warrantyMonths || '';
+        document.getElementById('warrantyMonths').value = product.warrantyMonths || '0';
         document.getElementById('productStatus').value = product.productStatus || 'ACTIVE';
         if (product.brand?.brandId) {
             document.getElementById('brand').value = product.brand.brandId;
         }
 
-        const imagePreview = document.getElementById('imagePreview');
-        imagePreview.innerHTML = '';
+        const imageProduct = document.getElementById('imageProduct');
+        imageProduct.innerHTML = '';
         if (product.images) {
             product.images.forEach(img => {
+
+                const wrapper = document.createElement("div");
+                wrapper.style.position = "relative";
+                wrapper.style.display = "inline-block";
+                wrapper.style.margin = "5px";
+
                 const image = document.createElement('img');
                 image.src = img.imageUrl;
                 image.style.width = '100px';
                 image.style.height = '100px';
                 image.style.objectFit = 'cover';
-                imagePreview.appendChild(image);
+
+                const btnRemove = document.createElement('button');
+                btnRemove.textContent = '×';
+                btnRemove.style.position = 'absolute';
+                btnRemove.style.top = '0';
+                btnRemove.style.right = '0';
+                btnRemove.style.background = 'red';
+                btnRemove.style.color = 'white';
+                btnRemove.style.border = 'none';
+                btnRemove.style.borderRadius = '50%';
+                btnRemove.style.width = '20px';
+                btnRemove.style.height = '20px';
+                btnRemove.style.cursor = 'pointer';
+                btnRemove.style.display = 'flex';
+                btnRemove.style.alignItems = 'center';
+                btnRemove.style.justifyContent = 'center';
+                btnRemove.style.fontSize = '14px';
+                btnRemove.style.lineHeight = '1';
+
+                btnRemove.addEventListener("click", function () {
+                    wrapper.remove();
+                });
+
+                wrapper.appendChild(image);
+                wrapper.appendChild(btnRemove);
+                imageProduct.appendChild(wrapper);
             });
         }
     }
 
+    // ------------------------------
+    // Hàm hiển thị thông tin variant
+    // ------------------------------
     function fillVariantCard(variant) {
         const categoryName = variant.categoryName || document.getElementById('category').value;
         const card = variantCards[categoryName];
@@ -87,6 +135,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
 
+    // ------------------------------
+    // Hàm load sản phẩm
+    // ------------------------------
     async function loadProduct() {
         await loadBrands();
 
@@ -99,6 +150,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const data = await response.json();
         const product = data.result;
 
+        // Hiện thông tin sản phẩm và ẩn Variant khác
         fillProductInfo(product);
         showVariantCard(product.category?.categoryName);
 
@@ -131,39 +183,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    categoryInput.addEventListener('change', function () {
-        const category = this.value;
-        showVariantCard(category);
-        const defaultVariant = window.productVariants?.find(v => v.isDefault);
-        if (defaultVariant) fillVariantCard(defaultVariant);
-    });
-
-    const productImageInput = document.getElementById('productImage');
-    productImageInput.addEventListener('change', function () {
-        const files = Array.from(this.files);
-        const imagePreview = document.getElementById('imagePreview');
-        imagePreview.innerHTML = '';
-        files.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.style.width = '100px';
-                img.style.height = '100px';
-                img.style.objectFit = 'cover';
-                imagePreview.appendChild(img);
-            }
-            reader.readAsDataURL(file);
-        });
-    });
-
     // ------------------------------
-    // Update sản phẩm
+    // Update ảnh
     // ------------------------------
     let selectedFiles = [];
 
-    const inputImage = document.getElementById("productImage");
-    const previewContainer = document.getElementById("imagePreview");
+    const inputImage = document.getElementById("productImageNew");
+    const previewContainer = document.getElementById("imageInput");
 
     // Khi chọn file
     inputImage.addEventListener("change", (event) => {
@@ -213,21 +239,86 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
+
+    // ------------------------------
+    // Update sản phẩm
+    // ------------------------------
     async function updateProduct() {
 
-        let imageObjects = [];
+        const productName = document.getElementById("productName").value;
+        const warrantyMonths = Number(document.getElementById("warrantyMonths").value);
+
+        if (!productName) {
+            const errorDiv = document.getElementById("update-product-error");
+            errorDiv.textContent = "Vui lòng nhập tên sản phẩm!";
+            errorDiv.classList.remove("d-none");
+            return;
+        }
+
+        if (warrantyMonths < 0 || warrantyMonths > 60) {
+            const errorDiv = document.getElementById("update-product-error");
+            errorDiv.textContent = "Bảo hành phải từ 0 đến 60 tháng!";
+            errorDiv.classList.remove("d-none");
+            return;
+        }
+
+        // Lấy ảnh cũ
+        const imageObjects = [];
+        const images = document.querySelectorAll('#imageProduct img');
+        images.forEach(img => {
+            imageObjects.push({
+                imageUrl: img.src,
+                isMain: imageObjects.length === 0
+            });
+        });
+        console.log(imageObjects);
+
+        // Lấy thông tin sản phẩm
         const productId = new URLSearchParams(window.location.search).get("productId");
         const token = localStorage.getItem("token") || "";
 
-        // ✅ Nếu có ảnh mới thì upload
+        // Nếu có ảnh mới thì upload
+        // if (selectedFiles.length > 0) {
+        //     for (let i = 0; i < selectedFiles.length; i++) {
+        //         const file = selectedFiles[i];
+        //         const formData = new FormData();
+        //         formData.append("file", file);
+        //         try {
+        //             const uploadRes = await fetch(
+        //                 "http://localhost:8080/tech-store/api/upload/image",
+        //                 {
+        //                     method: "POST",
+        //                     headers: {
+        //                         Authorization: "Bearer " + token,
+        //                     },
+        //                     body: formData,
+        //                 }
+        //             );
+
+        //             const uploadData = await uploadRes.json();
+
+        //             imageObjects.push({
+        //                 imageUrl: uploadData.result,
+        //                 isMain: imageObjects.length === 0
+        //             });
+
+        //         } catch (err) {
+        //             console.error("Upload ảnh lỗi:", err);
+        //             alert("Upload ảnh thất bại!");
+        //             return;
+        //         }
+        //     }
+        // } 
+
+        const errorDiv = document.getElementById("update-product-error");
+        errorDiv.classList.add("d-none");
+
         if (selectedFiles.length > 0) {
+            try {
+                const uploadPromises = selectedFiles.map(async (file) => {
+                    const formData = new FormData();
+                    formData.append("file", file);
 
-            for (let i = 0; i < selectedFiles.length; i++) {
-                const file = selectedFiles[i];
-                const formData = new FormData();
-                formData.append("file", file);
-
-                try {
                     const uploadRes = await fetch(
                         "http://localhost:8080/tech-store/api/upload/image",
                         {
@@ -241,18 +332,32 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                     const uploadData = await uploadRes.json();
 
-                    imageObjects.push({
+                    return {
                         imageUrl: uploadData.result,
-                        isMain: i === 0,
-                    });
+                        isMain: false
+                    };
+                });
 
-                } catch (err) {
-                    console.error("Upload ảnh lỗi:", err);
-                    alert("Upload ảnh thất bại!");
-                    return;
+                const newImages = await Promise.all(uploadPromises);
+
+                // Nếu chưa có main → set ảnh đầu tiên làm main
+                if (imageObjects.length === 0 && newImages.length > 0) {
+                    newImages[0].isMain = true;
                 }
-            }
 
+                imageObjects.push(...newImages);
+
+            } catch (err) {
+                console.error("Upload ảnh lỗi:", err);
+                showModal({
+                    title: "Thông báo",
+                    message: "Upload ảnh thất bại!",
+                    type: "danger",
+                    autoClose: true,
+                    duration: 3000
+                });
+                return;
+            }
         }
 
         // 🔥 Build payload
@@ -285,12 +390,24 @@ document.addEventListener('DOMContentLoaded', async function () {
             const result = await res.json();
 
             console.log("Update thành công:", result);
-            alert("Cập nhật sản phẩm thành công!");
+            showModal({
+                title: "Thông báo",
+                message: "Cập nhật sản phẩm thành công!",
+                type: "success",
+                autoClose: true,
+                duration: 3000
+            });
             loadProduct();
 
         } catch (err) {
             console.error("Lỗi update sản phẩm:", err);
-            alert("Cập nhật sản phẩm thất bại!");
+            showModal({
+                title: "Thông báo",
+                message: "Cập nhật sản phẩm thất bại!",
+                type: "danger",
+                autoClose: true,
+                duration: 3000
+            });
         }
     }
 
@@ -300,7 +417,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
     // ------------------------------
-    // Thêm biến thể
+    // Lấy dữ liệu biến thể
     // ------------------------------
     function extractVariant(card) {
         return {
@@ -326,6 +443,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         };
     }
 
+    // ------------------------------
+    // Lưu biến thể
+    // ------------------------------
     document.querySelectorAll(".btn-save-product-variant").forEach((btn) => {
         btn.addEventListener("click", async () => {
             const card = btn.closest(".card");
@@ -349,14 +469,20 @@ document.addEventListener('DOMContentLoaded', async function () {
                 throw new Error(data?.message || "Save variant failed");
             }
 
-            alert("Thêm biến thể thành công!");
+            showModal({
+                title: "Thông báo",
+                message: "Thêm biến thể thành công!",
+                type: "success",
+                autoClose: true,
+                duration: 3000
+            });
             loadProduct();
         });
     });
 
 
     // ------------------------------
-    // Hiển thị thông tin biến thể
+    // Hiển thị thông tin chi tiết biến thể
     // ------------------------------
     let currentVariantId = null;
     variantsTable.addEventListener('click', function (e) {
@@ -368,6 +494,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             renderVariantToForm(variant);
         }
     });
+
 
     function renderVariantToForm(variant) {
         if (!variant) return;
@@ -495,11 +622,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     // ------------------------------
     // Sửa biến thể
     // ------------------------------
-
     function buildProductSpecs() {
-
         const category = document.getElementById("category").value;
-
         const prefixMap = {
             'Điện thoại': 'phone',
             'Laptop': 'laptop',
@@ -511,7 +635,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const prefix = prefixMap[category];
         if (!prefix) return [];
-        // 🔥 Ưu tiên modal đang active
+        // Ưu tiên modal đang active
         let modal = document.querySelector(".variant-modal-overlay.active");
 
         // fallback nếu chưa có active
@@ -577,11 +701,23 @@ document.addEventListener('DOMContentLoaded', async function () {
         const data = await res.json();
 
         if (res.ok) {
-            alert("Update thành công");
+            showModal({
+                title: "Thông báo",
+                message: "Update thành công",
+                type: "success",
+                autoClose: true,
+                duration: 3000
+            });
             document.getElementById(`${prefix}-modal`).classList.remove("active");
             loadProduct();
         } else {
-            alert("Update thất bại");
+            showModal({
+                title: "Thông báo",
+                message: "Update thất bại",
+                type: "danger",
+                autoClose: true,
+                duration: 3000
+            });
             console.log(data);
         }
     }

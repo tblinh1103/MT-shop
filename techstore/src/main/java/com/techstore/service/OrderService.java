@@ -1,5 +1,7 @@
 package com.techstore.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techstore.dto.request.OrderItemRequest;
 import com.techstore.dto.request.OrderRequest;
 import com.techstore.dto.response.OrderItemResponse;
@@ -16,6 +18,7 @@ import com.techstore.mapper.OrderMapper;
 import com.techstore.mapper.PaymentMapper;
 import com.techstore.repository.*;
 import com.techstore.specification.OrderSpecification;
+import com.techstore.service.PaymentService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,10 +29,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,11 +45,15 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductVariantRepository productVariantRepository;
     private final DiscountRepository discountRepository;
+    private final UserDiscountRepository userDiscountRepository;
 
     private final OrderMapper orderMapper;
     private final OrderItemMapper orderItemMapper;
     private final PaymentMapper paymentMapper;
+    private final PaymentService paymentService;
+    private final PaymentRepository paymentRepository;
 
+    @Transactional
     public OrderResponse createOrder(OrderRequest request) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -51,15 +61,27 @@ public class OrderService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Discount discount = null;
+
         if (request.getDiscountCode() != null) {
             discount = discountRepository.findByCode(request.getDiscountCode())
                     .orElseThrow(() -> new AppException(ErrorCode.DISCOUNT_NOT_EXISTED));
 
-            if (discount.getQuantity() <= 0) {
+            // 🔥 check user đã dùng chưa
+            if (userDiscountRepository.existsByUserIdAndDiscountId(user.getUserId(), discount.getDiscountId())) {
+                throw new AppException(ErrorCode.DISCOUNT_ALREADY_USED);
+            }
+
+            // 🔥 check logic giống applyDiscount
+            LocalDate today = LocalDate.now();
+
+            if (!Boolean.TRUE.equals(discount.getIsActive())
+                    || today.isBefore(discount.getStartDate())
+                    || today.isAfter(discount.getEndDate())
+                    || discount.getRemainingQuantity() <= 0
+                    || request.getSubtotal().compareTo(discount.getMinOrderAmount()) < 0) {
                 throw new AppException(ErrorCode.DISCOUNT_INVALID);
             }
         }
-
         Order order = orderMapper.toOrder(request);
         order.setUser(user);
         order.setOrderStatus(OrderStatus.PENDING.name());
@@ -67,10 +89,10 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItemRequest itemRequest : request.getOrderItems()) {
             ProductVariant variant = productVariantRepository.findById(itemRequest.getProductVariantId())
-                    .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_FOUNT));
+                    .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_FOUND));
 
             if (variant.getStock() < itemRequest.getQuantity())
-                throw new AppException(ErrorCode.OUT_OF_STOCK);
+                throw new AppException(ErrorCode.OUT_OF_STOCK_2);
 
             // Trừ kho
             variant.setStock(variant.getStock() - itemRequest.getQuantity());
@@ -98,8 +120,23 @@ public class OrderService {
         order.setPayment(payment);
 
         if (discount != null) {
-            discount.setQuantity(discount.getQuantity() - 1);
-            discountRepository.save(discount);
+
+            // trừ số lượng
+            int updated = discountRepository.decreaseRemainingQuantity(discount.getDiscountId());
+            if (updated == 0)
+                throw new AppException(ErrorCode.DISCOUNT_OUT_OF_STOCK);
+
+            // lưu lịch sử
+            UserDiscount userDiscount = UserDiscount.builder()
+                    .id(UUID.randomUUID().toString())
+                    .userId(user.getUserId())
+                    .discountId(discount.getDiscountId())
+                    .usedAt(LocalDateTime.now())
+                    .build();
+
+            userDiscountRepository.save(userDiscount);
+
+            order.setDiscount(discount);
         }
 
         order = orderRepository.save(order);
@@ -178,10 +215,40 @@ public class OrderService {
         return orderResponses;
     }
 
-    public OrderResponse changeOrderStatus(String orderId, String orderStatus) {
+    @Transactional
+    public OrderResponse changeOrderStatus(String orderId, String orderStatus, String ipAddr) {
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
 
+        String currentStatus = order.getOrderStatus();
+
+        // Không cho hủy đơn đã hoàn thành
+        if ("CANCELLED".equals(orderStatus) && "COMPLETED".equals(currentStatus)) {
+            throw new AppException(ErrorCode.ORDER_NOT_EXISTED);
+        }
+
+        // =============================
+        // HOÀN TIỀN VNPAY
+        // =============================
+
+        // =============================
+        // HOÀN KHO KHI HỦY ĐƠN
+        // =============================
+        if ("CANCELLED".equals(orderStatus)) {
+
+            for (OrderItem item : order.getOrderItems()) {
+
+                ProductVariant variant = item.getProductVariant();
+
+                if (variant != null) {
+                    variant.setStock(variant.getStock() + item.getQuantity());
+                    productVariantRepository.save(variant);
+                }
+            }
+        }
+
+        // Update trạng thái
         order.setOrderStatus(orderStatus);
 
         order = orderRepository.save(order);

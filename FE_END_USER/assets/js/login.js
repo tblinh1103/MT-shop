@@ -91,5 +91,11 @@ document.querySelector(".forgot-password").addEventListener("click", async funct
   });
 
   const data = await res.json();
-  alert(data.message);
+  showModal({
+    title: "Thông báo",
+    message: data.message,
+    type: "danger",
+    autoClose: true,
+    duration: 2000
+  });
 });

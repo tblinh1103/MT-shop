@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let starsHtml = "";
             for (let i = 1; i <= 5; i++) {
                 starsHtml += i <= review.rating
-                    ? `<i class="bi bi-star-fill text-warning"></i>` 
+                    ? `<i class="bi bi-star-fill text-warning"></i>`
                     : `<i class="bi bi-star"></i>`;
             }
 
@@ -159,14 +159,32 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             const data = await res.json();
             if (data.code === 1000) {
-                alert("Xóa đánh giá thành công!");
+                showModal({
+                    title: "Thông báo",
+                    message: "Xóa đánh giá thành công!",
+                    type: "success",
+                    autoClose: true,
+                    duration: 2000
+                });
                 loadMyReviews();
             } else {
-                alert("Lỗi: " + data.message);
+                showModal({
+                    title: "Thông báo",
+                    message: data.message,
+                    type: "danger",
+                    autoClose: true,
+                    duration: 2000
+                });
             }
         } catch (err) {
             console.error(err);
-            alert("Không thể xóa đánh giá!");
+            showModal({
+                title: "Thông báo",
+                message: "Không thể xóa đánh giá!",
+                type: "danger",
+                autoClose: true,
+                duration: 2000
+            });
         } finally {
             deleteReviewModal.hide();
             reviewIdToDelete = null;
@@ -179,13 +197,25 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("submitEditReviewBtn").addEventListener("click", async () => {
         if (!currentReviewId) return;
         if (currentRating === 0) {
-            alert("Vui lòng chọn số sao!");
+            showModal({
+                title: "Thông báo",
+                message: "Vui lòng chọn số sao!",
+                type: "danger",
+                autoClose: true,
+                duration: 2000
+            });
             return;
         }
 
         const token = localStorage.getItem("token");
         if (!token) {
-            alert("Bạn cần đăng nhập để đánh giá");
+            showModal({
+                title: "Thông báo",
+                message: "Bạn cần đăng nhập để đánh giá",
+                type: "danger",
+                autoClose: true,
+                duration: 2000
+            });
             return;
         }
 
@@ -205,16 +235,34 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             const data = await res.json();
             if (data.code === 1000) {
-                alert("Cập nhật đánh giá thành công!");
+                showModal({
+                    title: "Thông báo",
+                    message: "Cập nhật đánh giá thành công!",
+                    type: "success",
+                    autoClose: true,
+                    duration: 2000
+                });
                 editReviewModal.hide();
                 currentReviewId = null;
                 loadMyReviews();
             } else {
-                alert("Lỗi: " + data.message);
+                showModal({
+                    title: "Thông báo",
+                    message: data.message,
+                    type: "danger",
+                    autoClose: true,
+                    duration: 2000
+                });
             }
         } catch (err) {
             console.error(err);
-            alert("Không thể cập nhật đánh giá!");
+            showModal({
+                title: "Thông báo",
+                message: "Không thể cập nhật đánh giá!",
+                type: "danger",
+                autoClose: true,
+                duration: 2000
+            });
         }
     });
 

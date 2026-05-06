@@ -28,6 +28,10 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
+
     @Builder.Default
     @Column(name = "subtotal", nullable = false)
     private BigDecimal subtotal = BigDecimal.ZERO;

@@ -71,7 +71,7 @@ public class CartItemService {
                 });
 
         ProductVariant productVariant = productVariantRepository.findById(request.getProductVariantId())
-                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_FOUNT));
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_FOUND));
 
         // Check nếu item chưa có trong cart thì tạo mới
         CartItem cartItem = cartItemRepository
@@ -117,7 +117,7 @@ public class CartItemService {
         int quantity = tempCart.getOrDefault(productVariantId, 0) + request.getQuantity();
 
         ProductVariant productVariant = productVariantRepository.findById(productVariantId)
-                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_FOUNT));
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_FOUND));
 
         if (quantity > productVariant.getStock())
             throw new AppException(ErrorCode.OUT_OF_STOCK);
@@ -166,7 +166,7 @@ public class CartItemService {
             int tempQuantity = entry.getValue();
 
             ProductVariant productVariant = productVariantRepository.findById(productVariantId)
-                    .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_FOUNT));
+                    .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_VARIANT_NOT_FOUND));
 
             CartItem cartItem = cartItemRepository
                     .findByCart_CartIdAndProductVariant_ProductVariantId(cart.getCartId(), productVariantId)

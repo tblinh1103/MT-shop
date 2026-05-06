@@ -45,4 +45,13 @@ public class VnPayConfig {
 
         return hmacSHA512(vnp_HashSecret, hashData.toString());
     }
+
+    public static String getRandomNumber(int len) {
+        Random rnd = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            sb.append(rnd.nextInt(10));
+        }
+        return sb.toString();
+    }
 }

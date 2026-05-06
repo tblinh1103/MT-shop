@@ -189,12 +189,34 @@ function setupCategoryChange() {
 // Lưu sản phẩm
 // ------------------------------
 async function saveProduct() {
+
+  const productName = document.getElementById("productName").value;
+  const warrantyMonths = document.getElementById("warrantyMonths").value;
+
+  if (productName === "") {
+    const errorDiv = document.getElementById("add-product-error");
+    errorDiv.textContent = "Vui lòng nhập tên sản phẩm!";
+    errorDiv.classList.remove("d-none");
+    return;
+  }
+  if (warrantyMonths < 0 || warrantyMonths > 60) {
+    const errorDiv = document.getElementById("add-product-error");
+    errorDiv.textContent = "Bảo hành phải từ 0 đến 60 tháng!";
+    errorDiv.classList.remove("d-none");
+    return;
+  }
   if (selectedFiles.length === 0) {
-    alert("Vui lòng chọn ít nhất 1 ảnh!");
+    const errorDiv = document.getElementById("add-product-error");
+    errorDiv.textContent = "Vui lòng chọn ít nhất 1 ảnh!";
+    errorDiv.classList.remove("d-none");
     return;
   }
 
+  let imageObjects = [];
+
   try {
+    const errorDiv = document.getElementById("add-product-error");
+    errorDiv.classList.add("d-none");
     const uploadPromises = selectedFiles.map((file, index) => {
       const formData = new FormData();
       formData.append("file", file);
@@ -213,13 +235,19 @@ async function saveProduct() {
         }));
     });
 
-    const imageObjects = await Promise.all(uploadPromises);
+    imageObjects = await Promise.all(uploadPromises);
 
     console.log(imageObjects);
 
   } catch (err) {
     console.error("Upload ảnh lỗi:", err);
-    alert("Upload ảnh thất bại!");
+    showModal({
+      title: "Thông báo",
+      message: "Upload ảnh thất bại!",
+      type: "danger",
+      autoClose: true,
+      duration: 3000
+    });
   }
 
   const product = {
@@ -243,7 +271,13 @@ async function saveProduct() {
 
     const result = await res.json();
     console.log("Tạo sản phẩm thành công:", result);
-    alert("Lưu sản phẩm thành công!");
+    showModal({
+      title: "Thông báo",
+      message: "Lưu sản phẩm thành công!",
+      type: "success",
+      autoClose: true,
+      duration: 3000
+    });
     currentProductId = result.result.productId;
 
     loadProductVariants(currentProductId);
@@ -254,7 +288,13 @@ async function saveProduct() {
     selectedFiles = [];
   } catch (err) {
     console.error("Lỗi tạo sản phẩm:", err);
-    alert("Lưu sản phẩm thất bại!");
+    showModal({
+      title: "Thông báo",
+      message: "Lưu sản phẩm thất bại!",
+      type: "danger",
+      autoClose: true,
+      duration: 3000
+    });
   }
 }
 
@@ -313,12 +353,24 @@ document.querySelectorAll(".btn-save-product-variant").forEach((btn) => {
         }
       );
       const result = await res.json();
-      alert("Lưu biến thể thành công!");
+      showModal({
+        title: "Thông báo",
+        message: "Lưu biến thể thành công!",
+        type: "success",
+        autoClose: true,
+        duration: 3000
+      });
       console.log(result);
       loadProductVariants(currentProductId);
     } catch (err) {
       console.error(err);
-      alert("Lưu biến thể thất bại!");
+      showModal({
+        title: "Thông báo",
+        message: "Lưu biến thể thất bại!",
+        type: "danger",
+        autoClose: true,
+        duration: 3000
+      });
     }
   });
 });

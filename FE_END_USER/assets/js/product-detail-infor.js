@@ -280,7 +280,9 @@ document.addEventListener("DOMContentLoaded", () => {
     qtyInput.max = selectedVariant.stock;
   }
 
-  //Thêm vào giỏ
+  // ============================================
+  //  Thêm vào giỏ hàng
+  // ============================================
   document
     .getElementById("add-to-cart-btn")
     .addEventListener("click", function () {
@@ -327,17 +329,25 @@ document.addEventListener("DOMContentLoaded", () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Thêm vào giỏ thành công:", data);
+          if (data.code === 1000) {
+            console.log("Thêm vào giỏ thành công:", data);
 
-          // Cập nhật badge giỏ hàng
-          const badge = document.querySelector(".header-action-btn .badge");
-          if (badge) badge.textContent = data.totalQuantity;
+            // Cập nhật badge giỏ hàng
+            const badge = document.querySelector(".header-action-btn .badge");
+            if (badge) badge.textContent = data.totalQuantity;
 
-          showModal({
-            title: "Thêm vào giỏ hàng",
-            message: `Thêm vào giỏ hàng thành công`,
-            type: "success",
-          });
+            showModal({
+              title: "Thông báo",
+              message: `Thêm vào giỏ hàng thành công`,
+              type: "success",
+            });
+          } else {
+            showModal({
+              title: "Thông báo",
+              message: data.message,
+              type: "danger",
+            });
+          }
         })
         .catch((error) => console.error("Lỗi:", error));
     });
